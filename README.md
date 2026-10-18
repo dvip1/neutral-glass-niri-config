@@ -1,8 +1,8 @@
 # dotfiles
 
-[![Desktop demo](demo.gif)](out.mp4)
-
-_Click the preview for the full-quality video (`out.mp4`)._
+| Dark | Light |
+|:---:|:---:|
+| ![Desktop, dark mode](screenshots/dark.png) | ![Desktop, light mode](screenshots/light.png) |
 
 Managed with [GNU stow](https://www.gnu.org/software/stow/). Every top-level folder is a
 **package** that mirrors the layout of `$HOME`, e.g. `niri/.config/niri/config.kdl` is linked to
@@ -42,3 +42,5 @@ then `./install.sh <tool>`.
   shell history, `alacritty/themes` (a 56 MB clone, git-ignored), `mimeapps.list` (GLib rewrites it by
   rename, which would replace the link), browser/app data, and anything with credentials (`~/.config/gh`).
 - Before pushing this anywhere public, re-check for secrets: `git grep -inE 'token|secret|password|api.?key'`.
+
+![Desktop demo](demo.gif)
