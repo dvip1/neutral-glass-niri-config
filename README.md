@@ -31,16 +31,4 @@ then `./install.sh <tool>`.
 | desktop-entries | launcher entries for those scripts (they hold absolute `/home/dvip/...` paths) |
 | git, easyeffects, mako | misc |
 
-## Notes
-
-- **Generated files are tracked.** `theme apply` rewrites `waybar/style.css`, `swaync/style.css`,
-  `swayosd/style.css`, `fuzzel.ini`, `swaylock/config` and `theme/.../out/niri.kdl`. Toggling
-  dark/light therefore shows up in `git status`. Edit `theme.toml` / `templates/`, not those files.
-- **Directories are linked as a whole** (stow "folding"), so tools that save by rename keep writing
-  into the repo. Single files (`.zshrc`, `.tmux.conf`, ...) are linked one by one.
-- **Not here on purpose:** shell rc files (`.zshrc`, `.bashrc`, ...), fish, ghostty, zellij, htop and gtk-3.0 (left as plain files in `$HOME`), tmux plugins (`~/.tmux/plugins`, let tpm fetch them), `~/.oh-my-zsh`,
-  shell history, `alacritty/themes` (a 56 MB clone, git-ignored), `mimeapps.list` (GLib rewrites it by
-  rename, which would replace the link), browser/app data, and anything with credentials (`~/.config/gh`).
-- Before pushing this anywhere public, re-check for secrets: `git grep -inE 'token|secret|password|api.?key'`.
-
 ![Desktop demo](demo.gif)

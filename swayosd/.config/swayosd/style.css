@@ -3,12 +3,12 @@
 window#osd {
   padding: 12px 20px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(16, 16, 16, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(245, 245, 248, 0.55);
 }
 window#osd #container { margin: 6px; }
-window#osd image, window#osd label { color: #ffffff; font-family: "Adwaita Sans", "Cascadia Code NF", sans-serif; font-size: 13px; }
+window#osd image, window#osd label { color: #1a1a1a; font-family: "Adwaita Sans", "Cascadia Code NF", sans-serif; font-size: 13px; }
 window#osd progressbar:disabled, window#osd image:disabled { opacity: 0.5; }
 window#osd progressbar { min-height: 6px; border-radius: 999px; background: transparent; }
-window#osd trough { min-height: inherit; border-radius: inherit; border: none; background: rgba(255, 255, 255, 0.2); }
-window#osd progress { min-height: inherit; border-radius: inherit; border: none; background: #ffffff; }
+window#osd trough { min-height: inherit; border-radius: inherit; border: none; background: rgba(0, 0, 0, 0.18); }
+window#osd progress { min-height: inherit; border-radius: inherit; border: none; background: #1a1a1a; }
