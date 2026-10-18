@@ -1,0 +1,9 @@
+# backups and editor noise
+*.bak
+*.bak.*
+*~
+__pycache__/
+# big third-party clones that live inside a package (re-download instead)
+alacritty/.config/alacritty/themes/
+# tracked in its own repo (dvip1/nvim-config)
+nvim/

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Kept for the launcher entry and old habits. The real command is `theme`.
+case "$1" in
+  --dark)   exec "$HOME/.local/bin/theme" dark ;;
+  --light)  exec "$HOME/.local/bin/theme" light ;;
+  --status) exec "$HOME/.local/bin/theme" status ;;
+  *)        exec "$HOME/.local/bin/theme" toggle ;;
+esac

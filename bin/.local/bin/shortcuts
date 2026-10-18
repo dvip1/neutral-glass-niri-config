@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# Opens every niri keybind (read live from your config) in vim, read-only.
+#   shortcuts --print   print the list instead of opening nvim
+set -uo pipefail
+OUT="${XDG_CACHE_HOME:-$HOME/.cache}/niri-shortcuts.txt"
+mkdir -p "$(dirname "$OUT")"
+
+python3 -I - "$HOME/.config/niri/config.kdl" > "$OUT" <<'PY'
+import re, sys
+from collections import OrderedDict
+
+text = open(sys.argv[1]).read()
+m = re.search(r'^binds\s*\{', text, re.M)
+body, depth, i = [], 1, m.end()
+while i < len(text) and depth:
+    depth += (text[i] == '{') - (text[i] == '}')
+    i += 1
+block = text[m.end():i - 1]
+
+rows = []
+for line in block.splitlines():
+    s = line.strip()
+    if not s or s.startswith('//'):
+        continue
+    mm = re.match(r'^([A-Za-z0-9_+]+)\s+(.*?)\{\s*(.*?)\s*\}\s*$', s)
+    if not mm:
+        continue
+    key, props, act = mm.groups()
+    act = act.rstrip(';').strip()
+    t = re.search(r'hotkey-overlay-title="([^"]*)"', props)
+    rows.append((key, t.group(1) if t else None, act))
+
+def group(act):
+    a = act.split()[0] if act else ''
+    if a.startswith(('spawn',)): return 'Apps & menus'
+    if a.startswith('screenshot'): return 'Screenshots'
+    if 'monitor' in a: return 'Monitors'
+    if 'workspace' in a: return 'Workspaces'
+    if a.startswith('focus'): return 'Focus'
+    if a.startswith(('move', 'consume', 'expel')): return 'Move windows & columns'
+    if a in ('quit', 'power-off-monitors', 'show-hotkey-overlay', 'toggle-overview',
+             'toggle-keyboard-shortcuts-inhibit', 'close-window'): return 'Session & overview'
+    return 'Layout & size'
+
+def human(act):
+    a = act.split(None, 1)
+    name = a[0].replace('-', ' ')
+    if a[0].startswith('spawn') and len(a) > 1:
+        args = re.findall(r'"([^"]*)"', a[1])
+        return 'run: ' + ' '.join(args)
+    return name + (' ' + a[1].replace('"', '') if len(a) > 1 else '')
+
+# collapse Mod+1..9 style runs
+groups = OrderedDict()
+seen = {}
+for key, title, act in rows:
+    g = group(act)
+    mnum = re.match(r'^(focus-workspace|move-column-to-workspace) (\d)$', act)
+    if mnum:
+        base = (mnum.group(1), key.rsplit('+', 1)[0])
+        if base in seen:
+            seen[base][0] = seen[base][0].rsplit('+', 1)[0] + '+1..9'
+            continue
+        entry = [key, title or human(act)]
+        seen[base] = entry
+        groups.setdefault(g, []).append(entry)
+        continue
+    groups.setdefault(g, []).append([key, title or human(act)])
+
+order = ['Apps & menus', 'Session & overview', 'Focus', 'Move windows & columns',
+         'Workspaces', 'Monitors', 'Layout & size', 'Screenshots']
+width = max(len(k) for g in groups.values() for k, _ in g) + 3
+print('NIRI SHORTCUTS   (read-only; press q to close, / to search)')
+print('Mod = the Super / Windows key')
+for g in order + [x for x in groups if x not in order]:
+    if g not in groups: continue
+    print('\n== %s ==' % g)
+    for k, d in groups[g]:
+        print('  %s%s' % (k.ljust(width), d))
+PY
+
+[[ ${1:-} == --print ]] && { cat "$OUT"; exit 0; }
+# vim/vi with no user config (-u NONE) so the terminal background shows through.
+# y copies the selected (or current) line(s) to the system clipboard via wl-copy.
+EDITOR_BIN=$(command -v vim || command -v vi)
+exec kitty -o hide_window_decorations=yes --title Shortcuts \
+  "$EDITOR_BIN" -N -R -u NONE -i NONE \
+  -c 'set nowrap nonumber norelativenumber laststatus=0 noruler' \
+  -c 'nnoremap q :q<CR>' \
+  -c 'xnoremap y :w !wl-copy<CR><CR>' \
+  -c 'nnoremap yy :.w !wl-copy<CR><CR>' \
+  "$OUT"

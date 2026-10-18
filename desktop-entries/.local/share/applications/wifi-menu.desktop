@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Wi-Fi
+GenericName=Wi-Fi Networks
+Comment=Choose and connect to a Wi-Fi network
+Exec=/home/dvip/.local/bin/wifi-menu
+Icon=/usr/share/icons/breeze/devices/22/network-wireless.svg
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=wifi;wi-fi;wireless;network;internet;connect;

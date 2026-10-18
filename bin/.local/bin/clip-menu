@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Clipboard history in fuzzel, with image thumbnails.
+#   clip-menu --list   prints the entries (debug)
+set -uo pipefail
+
+CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/clip-menu"
+mkdir -p "$CACHE"
+
+thumb() {  # thumb ID OUT: decode a clipboard image into a small PNG
+  cliphist decode "$1" 2>/dev/null | python3 -I -c '
+import io, sys
+from PIL import Image
+im = Image.open(io.BytesIO(sys.stdin.buffer.read()))
+im.thumbnail((600, 600))
+im.convert("RGBA").save(sys.stdout.buffer, "PNG")
+' > "$2" 2>/dev/null || rm -f "$2"
+}
+
+build() {
+  local line id txt f kind
+  while IFS= read -r line; do
+    id=${line%%$'\t'*}; txt=${line#*$'\t'}
+    if [[ $txt == "[[ binary data"* ]]; then
+      f="$CACHE/$id.png"
+      [[ -s $f ]] || thumb "$id" "$f"
+      kind=$(sed -E 's/^\[\[ binary data ([^ ]+ [^ ]+) ([^ ]+) ([^ ]+) \]\]$/\2 \3, \1/' <<<"$txt")
+      if [[ -s $f ]]; then
+        printf '%s\t  Image  (%s)\0icon\x1f%s\n' "$id" "$kind" "$f"
+      else
+        printf '%s\t  Image  (%s)\n' "$id" "$kind"
+      fi
+    else
+      printf '%s\t%s\n' "$id" "$txt"
+    fi
+  done < <(cliphist list)
+
+  # drop thumbnails for entries that no longer exist
+  local ids; ids=$(cliphist list | cut -f1)
+  for f in "$CACHE"/*.png; do
+    [[ -e $f ]] || continue
+    id=$(basename "$f" .png)
+    grep -qxF "$id" <<<"$ids" || rm -f "$f"
+  done
+}
+
+[[ ${1:-} == --list ]] && { build | tr '\0\037' '|~'; exit 0; }
+
+build | fuzzel --dmenu --width 60 --nth-delimiter=$'\t' --with-nth=2 -p "clipboard  " \
+      | cliphist decode | wl-copy

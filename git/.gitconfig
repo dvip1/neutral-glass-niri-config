@@ -1,0 +1,6 @@
+[safe]
+	directory = *
+	directory = *
+[user]
+	name = dvip1
+	email = dvip@localhost.com

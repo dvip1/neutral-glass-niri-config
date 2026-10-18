@@ -1,0 +1,163 @@
+# ~/.config/theme/theme.toml  -  the one place to change how the desktop looks.
+#
+#   theme apply     regenerate every app's config from this file and reload them
+#   theme toggle    flip dark <-> light (also: theme dark / theme light)
+#
+# Colours can be "#rrggbb", "#rrggbbaa" or "rgba(r, g, b, a)". Alpha is the glass
+# transparency (0 = invisible, 1 = solid). Each app's layout lives in templates/.
+
+[font]
+family = "Cascadia Code NF"
+size = 13          # notifications, menus, volume popup
+bar_size = 13.5    # waybar
+
+[shape]
+radius = 12        # bar, notification cards, windows (niri blur follows this too)
+radius_large = 14  # launcher / menus and the volume popup
+ring_width = 2     # focus ring around the active window, in px
+
+[kitty]            # themes from kitty's own collection (run `kitten themes` to browse names)
+dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1
+light = "Modus Operandi"    # white/black, text 21:1, every colour >= 7:1
+no_preference = "dark"      # which one to use if the OS reports no preference
+
+[targets]          # template -> where the generated file goes
+waybar  = { src = "templates/waybar.css",  dest = "~/.config/waybar/style.css" }
+swaync  = { src = "templates/swaync.css",  dest = "~/.config/swaync/style.css" }
+swayosd = { src = "templates/swayosd.css", dest = "~/.config/swayosd/style.css" }
+fuzzel  = { src = "templates/fuzzel.ini",  dest = "~/.config/fuzzel/fuzzel.ini" }
+swaylock = { src = "templates/swaylock.conf", dest = "~/.config/swaylock/config" }
+niri    = { src = "templates/niri.kdl",    dest = "~/.config/theme/out/niri.kdl" }
+
+[dark]
+# Bar (waybar)
+bar_bg       = "rgba(28, 28, 33, 0.58)"
+bar_border   = "rgba(255, 255, 255, 0.13)"
+fg           = "#e6e6e6"
+fg_strong    = "#ffffff"
+fg_muted     = "#8c8c8c"
+fg_title     = "#b8b8c0"
+pill_bg      = "rgba(255, 255, 255, 0.04)"
+pill_hover   = "rgba(255, 255, 255, 0.10)"
+ws_hover     = "rgba(255, 255, 255, 0.08)"
+ws_active_bg = "rgba(255, 255, 255, 0.13)"
+ws_urgent_bg = "rgba(243, 139, 168, 0.15)"
+c_crit       = "#f38ba8"
+c_warn       = "#f9e2af"
+c_ok         = "#a6e3a1"
+tip_bg       = "rgba(28, 28, 33, 0.88)"
+tip_border   = "rgba(255, 255, 255, 0.14)"
+
+# Notifications (swaync)
+sw_text        = "#ffffff"
+sw_dim         = "rgba(255, 255, 255, 0.6)"
+sw_body        = "rgba(255, 255, 255, 0.85)"
+sw_card        = "rgba(16, 16, 16, 0.78)"
+sw_border      = "rgba(255, 255, 255, 0.14)"
+sw_border_crit = "rgba(255, 255, 255, 0.55)"
+sw_btn         = "rgba(255, 255, 255, 0.12)"
+sw_btn_hover   = "rgba(255, 255, 255, 0.25)"
+sw_btn_soft    = "rgba(255, 255, 255, 0.08)"
+sw_cc          = "rgba(16, 16, 16, 0.45)"
+sw_switch_on   = "rgba(255, 255, 255, 0.45)"
+sw_slider      = "#ffffff"
+
+# Launcher + menus (fuzzel)
+fz_bg        = "#1c1c2194"
+fz_text      = "#b8b8c0ff"
+fz_prompt    = "#ffffffff"
+fz_input     = "#ffffffff"
+fz_match     = "#e0e8ffff"
+fz_sel_match = "#ffffffff"
+fz_sel       = "#ffffff1f"
+fz_sel_text  = "#ffffffff"
+fz_border    = "#ffffff22"
+
+# Volume / brightness popup (swayosd)
+osd_bg     = "rgba(16, 16, 16, 0.50)"
+osd_border = "rgba(255, 255, 255, 0.14)"
+osd_fg     = "#ffffff"
+osd_trough = "rgba(255, 255, 255, 0.2)"
+osd_bar    = "#ffffff"
+
+# Window focus ring (niri)
+ring_active   = "#ffffff66"
+ring_inactive = "#ffffff1a"
+
+# Lock screen (swaylock)
+lock_bg       = "#1e1e2e"
+lock_inside   = "#1e1e2e"
+lock_ring     = "#313244"
+lock_text     = "#cdd6f4"
+lock_key_hl   = "#89b4fa"
+lock_bs_hl    = "#f38ba8"
+lock_ring_ver = "#89b4fa"
+lock_bad      = "#f38ba8"
+lock_clear    = "#f9e2af"
+
+
+[light]
+# Bar (waybar)
+bar_bg       = "rgba(242, 242, 246, 0.62)"
+bar_border   = "rgba(0, 0, 0, 0.12)"
+fg           = "#26262b"
+fg_strong    = "#000000"
+fg_muted     = "#6e6e76"
+fg_title     = "#46464e"
+pill_bg      = "rgba(0, 0, 0, 0.05)"
+pill_hover   = "rgba(0, 0, 0, 0.10)"
+ws_hover     = "rgba(0, 0, 0, 0.08)"
+ws_active_bg = "rgba(0, 0, 0, 0.12)"
+ws_urgent_bg = "rgba(192, 57, 43, 0.15)"
+c_crit       = "#c0392b"
+c_warn       = "#a86a00"
+c_ok         = "#2e7d32"
+tip_bg       = "rgba(246, 246, 249, 0.92)"
+tip_border   = "rgba(0, 0, 0, 0.14)"
+
+# Notifications (swaync)
+sw_text        = "#1a1a1a"
+sw_dim         = "rgba(0, 0, 0, 0.55)"
+sw_body        = "rgba(0, 0, 0, 0.8)"
+sw_card        = "rgba(250, 250, 252, 0.86)"
+sw_border      = "rgba(0, 0, 0, 0.14)"
+sw_border_crit = "rgba(0, 0, 0, 0.55)"
+sw_btn         = "rgba(0, 0, 0, 0.10)"
+sw_btn_hover   = "rgba(0, 0, 0, 0.20)"
+sw_btn_soft    = "rgba(0, 0, 0, 0.06)"
+sw_cc          = "rgba(245, 245, 248, 0.5)"
+sw_switch_on   = "rgba(0, 0, 0, 0.5)"
+sw_slider      = "#ffffff"
+
+# Launcher + menus (fuzzel)
+fz_bg        = "#f2f2f6c8"
+fz_text      = "#3a3a42ff"
+fz_prompt    = "#000000ff"
+fz_input     = "#000000ff"
+fz_match     = "#000000ff"
+fz_sel_match = "#000000ff"
+fz_sel       = "#00000018"
+fz_sel_text  = "#000000ff"
+fz_border    = "#00000022"
+
+# Volume / brightness popup (swayosd)
+osd_bg     = "rgba(245, 245, 248, 0.55)"
+osd_border = "rgba(0, 0, 0, 0.14)"
+osd_fg     = "#1a1a1a"
+osd_trough = "rgba(0, 0, 0, 0.18)"
+osd_bar    = "#1a1a1a"
+
+# Window focus ring (niri)
+ring_active   = "#00000066"
+ring_inactive = "#0000001a"
+
+# Lock screen (swaylock)
+lock_bg       = "#1e1e2e"
+lock_inside   = "#1e1e2e"
+lock_ring     = "#313244"
+lock_text     = "#cdd6f4"
+lock_key_hl   = "#89b4fa"
+lock_bs_hl    = "#f38ba8"
+lock_ring_ver = "#89b4fa"
+lock_bad      = "#f38ba8"
+lock_clear    = "#f9e2af"

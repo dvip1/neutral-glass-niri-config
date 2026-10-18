@@ -1,0 +1,33 @@
+# Hallownest — Hollow Knight inspired dark theme
+
+[colors.primary]
+background = '#1A0E2E'
+foreground = '#C8A8E9'
+
+[colors.cursor]
+cursor = '#55FFDD'
+text = '#1A0E2E'
+
+[colors.selection]
+text = 'CellForeground'
+background = '#3D2460'
+
+[colors.normal]
+black   = '#2A1A4A'
+red     = '#C4406B'
+green   = '#7FB89E'
+yellow  = '#D9B36C'
+blue    = '#3E7CB1'
+magenta = '#7B4FA6'
+cyan    = '#3ECFB0'
+white   = '#A9A0C9'
+
+[colors.bright]
+black   = '#5A3A8A'
+red     = '#E85C8A'
+green   = '#9ED9BE'
+yellow  = '#F0CE8C'
+blue    = '#6FA8DC'
+magenta = '#9B6FC9'
+cyan    = '#55FFDD'
+white   = '#E8DFFA'

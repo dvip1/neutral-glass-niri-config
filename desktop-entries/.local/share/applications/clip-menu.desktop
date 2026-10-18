@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Clipboard History
+GenericName=Clipboard
+Comment=Browse and re-copy things you copied earlier
+Exec=/home/dvip/.local/bin/clip-menu
+Icon=/usr/share/icons/breeze/actions/22/edit-paste.svg
+Terminal=false
+Categories=Utility;
+Keywords=clipboard;history;paste;copy;cliphist;

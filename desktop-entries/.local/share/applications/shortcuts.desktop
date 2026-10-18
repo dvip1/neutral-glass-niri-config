@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Shortcuts
+GenericName=Keyboard Shortcuts
+Comment=Show all niri keyboard shortcuts in nvim
+Exec=/home/dvip/.local/bin/shortcuts
+Icon=/usr/share/icons/breeze/devices/22/input-keyboard.svg
+Terminal=false
+Categories=Utility;
+Keywords=shortcut;shortcuts;keybind;keybinds;keys;hotkeys;keyboard;cheatsheet;help;

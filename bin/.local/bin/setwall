@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Usage: setwall /path/to/picture   set wallpaper (fill mode) and remember it
+#        setwall                  restore the last wallpaper (used at login)
+set -euo pipefail
+
+STATE="$HOME/.config/niri/wallpaper"
+DEFAULT_COLOR="#1e1e2e"
+
+if [[ $# -ge 1 ]]; then
+  img=$(realpath -- "$1" 2>/dev/null) || { echo "setwall: no such file: $1" >&2; exit 1; }
+  [[ -f "$img" ]] || { echo "setwall: not a file: $img" >&2; exit 1; }
+  printf '%s\n' "$img" > "$STATE"
+elif [[ -s "$STATE" ]]; then
+  img=$(<"$STATE")
+else
+  img=""
+fi
+
+# start the new one first, then drop the old one, so there is no flash
+old=$(pgrep -x swaybg || true)
+if [[ -n "$img" && -f "$img" ]]; then
+  setsid swaybg -i "$img" -m fill >/dev/null 2>&1 &
+else
+  setsid swaybg -c "$DEFAULT_COLOR" >/dev/null 2>&1 &
+fi
+sleep 0.3
+[[ -n "$old" ]] && kill $old 2>/dev/null || true

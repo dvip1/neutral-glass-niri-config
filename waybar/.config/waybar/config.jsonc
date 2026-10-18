@@ -1,0 +1,78 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "margin-top": 8,
+  "margin-bottom": 4,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 4,
+  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["custom/notification", "pulseaudio", "bluetooth", "network", "battery", "tray"],
+
+  "niri/workspaces": {
+  "format": "{icon}",
+  "format-icons": { "active": "●", "default": "○" }
+},
+"niri/window": {
+    "format": "{title}",
+    "max-length": 45,
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) — Zen Browser": "󰈹  $1",
+      "(.*) - nv(.*)": "  nvim $2"
+    }
+  },
+  "clock": {
+    "format": "<span size='large'></span>  {:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%", "format-icons": {"default": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"]},
+    "format-muted": "<span size='large'></span>",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+  "bluetooth": {
+    "format": "<span size='large'>\uf294</span>",
+    "format-on": "<span size='large'>\uf294</span>",
+    "format-off": "<span size='large'>\uf294</span>",
+    "format-disabled": "<span size='large'>\uf294</span>",
+    "format-connected": "<span size='large'>\uf294</span> {device_alias}",
+    "format-connected-battery": "<span size='large'>\uf294</span> {device_alias} {device_battery_percentage}%",
+    "tooltip-format": "{controller_alias}  ({status})",
+    "tooltip-format-connected": "{controller_alias}\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}  {device_battery_percentage}%",
+    "on-click": "$HOME/.local/bin/bt-menu",
+    "max-length": 24
+  },
+  "network": {
+    "format-wifi": "<span size='large'></span> {essid}",
+    "format-ethernet": "<span size='large'></span>",
+    "format-disconnected": "<span size='large'></span>",
+    "tooltip-format": "{ifname}  {ipaddr}\n{essid}  {signalStrength}%",
+    "on-click": "$HOME/.local/bin/wifi-menu"
+  },
+  "battery": {
+    "format": "{icon} {capacity}%", "format-icons": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"],
+    "format-charging": "<span size='large'></span> {capacity}%",
+    "states": { "warning": 25, "critical": 10 }
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "\uf0f3<span foreground='white'><sup>\uf111</sup></span>",
+      "none": "\uf0f3",
+      "dnd-notification": "\uf1f6<span foreground='white'><sup>\uf111</sup></span>",
+      "dnd-none": "\uf1f6"
+    },
+    "return-type": "json",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "tray": { "spacing": 8 }
+}

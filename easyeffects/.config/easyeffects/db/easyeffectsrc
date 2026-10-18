@@ -1,0 +1,16 @@
+[Presets]
+lastLoadedOutputPreset=Classical
+
+[StreamInputs]
+inputDevice=alsa_input.pci-0000_04_00.6.HiFi__Mic2__source
+
+[StreamOutputs]
+mostUsedPresets=Pop,Classical
+outputDevice=alsa_output.pci-0000_04_00.6.HiFi__Speaker__sink
+plugins=equalizer#0,crossfeed#0
+usedPresets=Pop:4,Classical:3
+
+[Window]
+height=858
+visiblePipeWirePage=modulesPage
+width=746

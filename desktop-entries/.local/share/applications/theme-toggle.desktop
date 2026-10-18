@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Toggle Dark / Light Mode
+GenericName=Theme
+Comment=Switch the desktop between dark and light glass
+Exec=/home/dvip/.local/bin/theme-toggle
+Icon=/usr/share/icons/breeze/preferences/22/preferences-desktop-color.svg
+Terminal=false
+Categories=Settings;
+Keywords=dark;light;mode;theme;toggle;appearance;color;colour;night;day;

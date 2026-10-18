@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Wi-Fi menu in fuzzel (NetworkManager). Pick a network to connect.
+#   wifi-menu --list   prints the network list (debug)
+set -uo pipefail
+
+TAB=$'\t'
+menu()   { fuzzel --dmenu --width 50 --nth-delimiter="$TAB" --with-nth=3 -p "wi-fi  " "$@"; }
+note()   { notify-send -a wifi "$1" "${2:-}"; }
+wifidev(){ nmcli -t -f DEVICE,TYPE dev | awk -F: '$2=="wifi"{print $1; exit}'; }
+
+bars() {
+  local s=$1
+  if   (( s >= 75 )); then echo "▂▄▆█"
+  elif (( s >= 50 )); then echo "▂▄▆ "
+  elif (( s >= 25 )); then echo "▂▄  "
+  else                     echo "▂   "; fi
+}
+
+# lines: ssid <TAB> security <TAB> display
+networks() {
+  local lock=$''
+  declare -A seen
+  nmcli --escape no -t -f IN-USE,SIGNAL,SECURITY,SSID dev wifi list --rescan no \
+    | sort -t: -k2,2 -nr \
+    | while IFS=: read -r inuse sig sec ssid; do
+        [[ -z $ssid ]] && continue
+        printf '%s\t%s\t%s\t%s\n' "$ssid" "$sec" "$inuse" "$sig"
+      done \
+    | while IFS=$'\t' read -r ssid sec inuse sig; do
+        [[ -n ${seen[$ssid]:-} ]] && continue
+        seen[$ssid]=1
+        mark=" "; [[ $inuse == "*" ]] && mark="●"
+        l=" "; [[ -n $sec && $sec != "--" ]] && l=$lock
+        printf '%s\t%s\t%s  %s  %s  %s\n' "$ssid" "$sec" "$mark" "$(bars "$sig")" "$ssid" "$l"
+      done
+}
+
+[[ ${1:-} == --list ]] && { networks; exit 0; }
+
+if [[ $(nmcli radio wifi) != enabled ]]; then
+  c=$(printf '::on\t\tTurn Wi-Fi on\n' | menu) || exit 0
+  [[ -n $c ]] && nmcli radio wifi on && note "Wi-Fi on"
+  exit 0
+fi
+
+nmcli dev wifi rescan >/dev/null 2>&1 &   # refresh for next time
+
+dev=$(wifidev)
+extra=$(printf '::rescan\t\t⟳  Rescan\n')
+nmcli -t -f DEVICE,STATE dev | grep -q "^$dev:connected" && extra+=$(printf '\n::disc\t\t✕  Disconnect')
+extra+=$(printf '\n::off\t\t⏻  Turn Wi-Fi off')
+
+choice=$( { networks; printf '%s\n' "$extra"; } | menu ) || exit 0
+ssid=${choice%%"$TAB"*}
+rest=${choice#*"$TAB"}; sec=${rest%%"$TAB"*}
+
+case $ssid in
+  ::rescan) nmcli dev wifi rescan >/dev/null 2>&1; sleep 3; exec "$0" ;;
+  ::disc)   nmcli dev disconnect "$dev" >/dev/null 2>&1 && note "Wi-Fi disconnected"; exit 0 ;;
+  ::off)    nmcli radio wifi off && note "Wi-Fi off"; exit 0 ;;
+  ::on|"")  exit 0 ;;
+esac
+
+if [[ $sec == *802.1X* ]]; then
+  note "Enterprise network" "Set it up once with nm-connection-editor"
+  exit 0
+fi
+
+note "Connecting…" "$ssid"
+if nmcli -g NAME connection show | grep -Fxq -- "$ssid"; then
+  out=$(nmcli connection up id "$ssid" 2>&1)
+elif [[ -z $sec || $sec == "--" ]]; then
+  out=$(nmcli dev wifi connect "$ssid" 2>&1)
+else
+  pw=$(fuzzel --dmenu --width 50 --prompt-only "password for $ssid  " --password) || exit 0
+  [[ -z $pw ]] && exit 0
+  out=$(nmcli dev wifi connect "$ssid" password "$pw" 2>&1)
+fi
+
+if [[ $? -eq 0 ]]; then note "Connected" "$ssid"
+else note "Couldn't connect to $ssid" "$(tail -1 <<<"$out" | cut -c1-120)"; fi

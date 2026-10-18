@@ -1,0 +1,11 @@
+[general]
+import = ["~/.config/alacritty/theme.toml"]
+
+[terminal.shell]
+program = "tmux"
+
+[bell]
+command = { program = "notify-send", args = ["-a", "Alacritty", "-i", "utilities-terminal", "-u", "normal", "Terminal", "A task needs your attention"] }
+animation = "EaseOutExpo"
+duration = 100
+color = "#ffffff"

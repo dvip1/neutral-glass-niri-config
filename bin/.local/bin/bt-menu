@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Bluetooth menu in fuzzel: connect/disconnect paired devices, power toggle,
+# and scan + pair new ones.   bt-menu --list   prints the device list (debug)
+set -uo pipefail
+
+MAC_RE='([0-9A-F]{2}:){5}[0-9A-F]{2}'
+menu()   { fuzzel --dmenu --width 56 -p "bluetooth  " "$@"; }
+note()   { notify-send -a bluetooth "$1" "${2:-}"; }
+powered(){ bluetoothctl show | grep -q 'Powered: yes'; }
+mac_of() { grep -oE "$MAC_RE" <<<"$1" | tail -1; }
+name_of(){ bluetoothctl info "$1" | sed -n 's/^\s*Name: //p'; }
+connected(){ bluetoothctl info "$1" | grep -q 'Connected: yes'; }
+
+paired_lines() {
+  bluetoothctl devices Paired | while read -r _ mac name; do
+    if connected "$mac"; then mark="●"; else mark="○"; fi
+    printf '%s  %s  (%s)\n' "$mark" "$name" "$mac"
+  done
+}
+
+[[ ${1:-} == --list ]] && { paired_lines; exit 0; }
+
+scan_and_pair() {
+  note "Scanning…" "Put the device in pairing mode (8 s)"
+  bluetoothctl --timeout 8 scan on >/dev/null 2>&1
+  known=$(bluetoothctl devices Paired | grep -oE "$MAC_RE")
+  list=$(bluetoothctl devices | while read -r _ mac name; do
+           grep -qx "$mac" <<<"$known" && continue
+           # skip unnamed devices (name is just the MAC with dashes)
+           [[ "${name//-/:}" == "$mac" ]] && continue
+           printf '%s  (%s)\n' "$name" "$mac"
+         done)
+  [[ -z $list ]] && { note "No new devices found"; return; }
+  pick=$(menu <<<"$list") || return
+  mac=$(mac_of "$pick"); [[ -z $mac ]] && return
+  note "Pairing…" "$pick"
+  if bluetoothctl --agent NoInputNoOutput pair "$mac" >/dev/null 2>&1; then
+    bluetoothctl trust "$mac" >/dev/null 2>&1
+    bluetoothctl connect "$mac" >/dev/null 2>&1 && note "Connected" "$pick" || note "Paired, but connecting failed" "$pick"
+  else
+    note "Pairing failed" "This device may need a PIN. Try blueman or bluetui."
+  fi
+}
+
+if ! powered; then
+  choice=$(printf 'Turn Bluetooth on\n' | menu) || exit 0
+  [[ $choice == "Turn Bluetooth on" ]] && bluetoothctl power on >/dev/null && note "Bluetooth on"
+  exit 0
+fi
+
+choice=$( { paired_lines; printf '＋  Scan for new devices\n⏻  Turn Bluetooth off\n'; } | menu ) || exit 0
+
+case $choice in
+  "＋"*) scan_and_pair ;;
+  "⏻"*)  bluetoothctl power off >/dev/null && note "Bluetooth off" ;;
+  *)
+    mac=$(mac_of "$choice"); [[ -z $mac ]] && exit 0
+    name=$(name_of "$mac")
+    if connected "$mac"; then
+      bluetoothctl disconnect "$mac" >/dev/null 2>&1 && note "Disconnected" "$name"
+    else
+      note "Connecting…" "$name"
+      bluetoothctl connect "$mac" >/dev/null 2>&1 && note "Connected" "$name" || note "Couldn't connect" "$name (is it on and in range?)"
+    fi ;;
+esac

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Search open windows in fuzzel and jump to the one you pick.
+#   win-menu --list   prints the list (debug)
+set -uo pipefail
+
+list() {
+  local ws; ws=$(niri msg --json workspaces)
+  niri msg --json windows | WS="$ws" python3 -I -c '
+import json, os, sys
+ws = {w["id"]: (w.get("name") or w.get("idx")) for w in json.loads(os.environ["WS"])}
+wins = json.load(sys.stdin)
+wins.sort(key=lambda w: -((w.get("focus_timestamp") or {}).get("secs", 0)))
+for w in wins:
+    app = (w.get("app_id") or "?").split(".")[-1]
+    title = (w.get("title") or "").replace("\t", " ").replace("\n", " ")
+    flag = "  [floating]" if w.get("is_floating") else ""
+    where = ws.get(w.get("workspace_id"), "?")
+    print("%s\t%s  %s  -  %s%s" % (w["id"], where, app, title, flag))
+'
+}
+
+[[ ${1:-} == --list ]] && { list; exit 0; }
+
+pick=$(list | fuzzel --dmenu --width 70 --nth-delimiter=$'\t' --with-nth=2 -p "windows  ") || exit 0
+id=${pick%%$'\t'*}
+[[ $id =~ ^[0-9]+$ ]] && niri msg action focus-window --id "$id"

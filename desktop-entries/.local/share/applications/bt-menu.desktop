@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Bluetooth
+GenericName=Bluetooth Devices
+Comment=Connect, disconnect and pair Bluetooth devices
+Exec=/home/dvip/.local/bin/bt-menu
+Icon=/usr/share/icons/breeze/devices/22/network-bluetooth.svg
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=bluetooth;bt;headphones;earbuds;pair;connect;wireless;

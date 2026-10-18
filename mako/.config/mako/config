@@ -1,0 +1,28 @@
+font=Cascadia Code NF 11
+background-color=#101010a8
+text-color=#ffffff
+border-color=#ffffff30
+border-size=1
+border-radius=12
+padding=14
+margin=0
+outer-margin=10
+width=340
+anchor=top-right
+layer=overlay
+default-timeout=6000
+icons=1
+max-icon-size=40
+format=<b>%s</b>\n%b
+
+# click to dismiss
+on-button-left=dismiss
+on-button-middle=none
+on-button-right=dismiss-all
+
+[urgency=low]
+default-timeout=3000
+
+[urgency=critical]
+border-color=#ffffffa0
+default-timeout=0
