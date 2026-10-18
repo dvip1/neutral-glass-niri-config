@@ -9,7 +9,7 @@ cache="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-media"
 
 art() {
     local url
-    url=$(playerctl metadata mpris:artUrl 2>/dev/null) || { echo; return; }
+    url=$(playerctl -p playerctld metadata mpris:artUrl 2>/dev/null) || { echo; return; }
     [ -n "$url" ] || { echo; return; }
     mkdir -p "$cache"
     local key out src
@@ -42,7 +42,7 @@ EOF
 
 button() {
     local which=$1
-    playerctl --follow status 2>/dev/null | while read -r status; do
+    playerctl -p playerctld --follow status 2>/dev/null | while read -r status; do
         case "$status" in
             Playing|Paused)
                 case "$which" in

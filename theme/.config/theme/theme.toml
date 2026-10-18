@@ -29,6 +29,7 @@ swayosd = { src = "templates/swayosd.css", dest = "~/.config/swayosd/style.css" 
 fuzzel  = { src = "templates/fuzzel.ini",  dest = "~/.config/fuzzel/fuzzel.ini" }
 swaylock = { src = "templates/swaylock.conf", dest = "~/.config/swaylock/config" }
 niri    = { src = "templates/niri.kdl",    dest = "~/.config/theme/out/niri.kdl" }
+nowplaying = { src = "templates/nowplaying.css", dest = "~/.config/theme/out/nowplaying.css" }
 
 [dark]
 # Bar (waybar)

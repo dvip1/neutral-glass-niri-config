@@ -51,6 +51,14 @@ layer-rule {
     geometry-corner-radius {{radius_large}}
 }
 layer-rule {
+    match namespace="^nowplaying$"
+    background-effect {
+        blur true
+        xray false
+    }
+    geometry-corner-radius {{radius_large}}
+}
+layer-rule {
     match namespace="^swayosd$"
     background-effect {
         blur true

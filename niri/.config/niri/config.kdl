@@ -271,6 +271,7 @@ layout {
 spawn-at-startup "waybar"
 spawn-at-startup "swaync"
 spawn-at-startup "swayosd-server"
+spawn-at-startup "playerctld" "daemon"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist -max-items 500 store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist -max-items 500 store"
 spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock -f" "timeout" "600" "niri msg action power-off-monitors" "resume" "niri msg action power-on-monitors" "before-sleep" "swaylock -f"
@@ -405,6 +406,7 @@ binds {
     Mod+Ctrl+N hotkey-overlay-title="Toggle Do Not Disturb" { spawn "swaync-client" "-d" "-sw"; }
 
     Mod+B hotkey-overlay-title="Bluetooth Menu" { spawn-sh "$HOME/.local/bin/bt-menu"; }
+    Mod+P hotkey-overlay-title="Media Players" { spawn-sh "$HOME/.local/bin/nowplaying"; }
     Mod+V hotkey-overlay-title="Clipboard History" { spawn-sh "$HOME/.local/bin/clip-menu"; }
     Mod+Ctrl+V hotkey-overlay-title="Clear Clipboard History" { spawn-sh "cliphist wipe && rm -rf $HOME/.cache/clip-menu && notify-send -a clipboard 'Clipboard history cleared'"; }
     Alt+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }

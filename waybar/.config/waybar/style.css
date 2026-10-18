@@ -10,15 +10,15 @@
 
 window#waybar {
   /* Matches Fuzzel's 1c1c21 base with ~58% opacity */
-  background: rgba(242, 242, 246, 0.62);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(28, 28, 33, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 12px;
-  color: #26262b;
+  color: #e6e6e6;
 }
 
 /* Right: status icons share ONE pill (#status group); each icon gets a soft hover. */
 #status {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   margin: 5px 4px;
   padding: 0 4px;
@@ -30,7 +30,7 @@ window#waybar {
 #network,
 #battery {
   background: transparent;
-  color: #26262b;
+  color: #e6e6e6;
   padding: 0 8px;
   margin: 3px 0;
   border-radius: 7px;
@@ -42,7 +42,7 @@ window#waybar {
 #bluetooth:hover,
 #network:hover,
 #battery:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 #battery {
@@ -64,33 +64,33 @@ window#waybar {
 #workspaces button {
   padding: 0 8px;
   margin: 5px 2px;
-  color: #6e6e76;
+  color: #8c8c8c;
   background: transparent;
   border-radius: 6px;
   transition: all 0.2s ease;
 }
 
 #workspaces button:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: #26262b;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e6e6e6;
 }
 
 /* Matches Fuzzel's selection-radius and selection alpha */
 #workspaces button.active {
-  color: #000000;
-  background: rgba(0, 0, 0, 0.12);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.13);
   font-weight: bold;
 }
 
 #workspaces button.urgent {
-  color: #c0392b;
-  background: rgba(192, 57, 43, 0.15);
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.15);
 }
 
 /* Center clock: the quiet anchor (date dimmed in markup, time carries the weight) */
 #clock {
   font-feature-settings: "tnum";
-  color: #000000;
+  color: #ffffff;
   font-weight: 600;
   padding: 0 10px;
 }
@@ -98,7 +98,7 @@ window#waybar {
 /* Left: media pill = album art + title; prev/play/next slide out on hover (drawer).
    Pill lives on the group, so it vanishes with the modules when nothing plays. */
 #media {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   margin: 5px 0 5px 8px;
 }
@@ -108,19 +108,19 @@ window#waybar {
 }
 
 #mpris {
-  color: #46464e;
+  color: #b8b8c0;
   padding: 0 10px 0 4px;
 }
 
 #mpris.paused {
-  color: #6e6e76;
+  color: #8c8c8c;
 }
 
 /* cava bars: the one moving thing on the bar, kept quiet in colour */
 #custom-media-viz {
   font-family: "Cascadia Code NF";
   font-size: 16px;
-  color: #46464e;
+  color: #b8b8c0;
   letter-spacing: 2px;
   padding: 0 12px 0 2px;
 }
@@ -128,7 +128,7 @@ window#waybar {
 #custom-media-prev,
 #custom-media-toggle,
 #custom-media-next {
-  color: #26262b;
+  color: #e6e6e6;
   padding: 0 7px;
   margin: 3px 0;
   border-radius: 7px;
@@ -142,39 +142,39 @@ window#waybar {
 #custom-media-prev:hover,
 #custom-media-toggle:hover,
 #custom-media-next:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* States */
-#bluetooth.off, #bluetooth.disabled { color: #6e6e76; }
+#bluetooth.off, #bluetooth.disabled { color: #8c8c8c; }
 #pulseaudio.muted {
-  color: #6e6e76;
+  color: #8c8c8c;
 }
 
 #network.disconnected {
-  color: #c0392b;
+  color: #f38ba8;
 }
 
 #battery.warning {
-  color: #a86a00;
+  color: #f9e2af;
 }
 
 #battery.critical {
-  color: #c0392b;
+  color: #f38ba8;
 }
 
 #battery.charging {
-  color: #2e7d32;
+  color: #a6e3a1;
 }
 
 /* Frosted Tooltip to match Fuzzel */
 tooltip {
-  background: rgba(246, 246, 249, 0.92);
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(28, 28, 33, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
 }
 
 tooltip label {
-  color: #26262b;
+  color: #e6e6e6;
   padding: 6px;
 }
