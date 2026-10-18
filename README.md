@@ -1,6 +1,8 @@
 # dotfiles
 
-<video src="out.mp4" controls autoplay muted loop width="720"></video>
+[![Desktop demo](demo.gif)](out.mp4)
+
+_Click the preview for the full-quality video (`out.mp4`)._
 
 Managed with [GNU stow](https://www.gnu.org/software/stow/). Every top-level folder is a
 **package** that mirrors the layout of `$HOME`, e.g. `niri/.config/niri/config.kdl` is linked to
