@@ -7,3 +7,5 @@ __pycache__/
 alacritty/.config/alacritty/themes/
 # tracked in its own repo (dvip1/nvim-config)
 nvim/
+# local context notes for the next AI session (not pushed)
+CLAUDE.md

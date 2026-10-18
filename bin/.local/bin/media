@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Waybar media helpers (playerctl).
+#   media art               print a rounded album-art PNG path (empty = hide module)
+#   media button prev|toggle|next
+#                           stream an icon for a waybar custom module, empty while no player
+set -u
+
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-media"
+
+art() {
+    local url
+    url=$(playerctl metadata mpris:artUrl 2>/dev/null) || { echo; return; }
+    [ -n "$url" ] || { echo; return; }
+    mkdir -p "$cache"
+    local key out src
+    key=$(printf '%s' "$url" | sha1sum | cut -c1-16)
+    out="$cache/$key.png"
+    if [ ! -s "$out" ]; then
+        case "$url" in
+            file://*) src=$(python3 -Ic 'import sys,urllib.parse as u; print(u.unquote(u.urlparse(sys.argv[1]).path))' "$url") ;;
+            http*://*) src="$cache/$key.src"; curl -fsSL --max-time 5 -o "$src" "$url" || { echo; return; } ;;
+            *) echo; return ;;
+        esac
+        # square crop + rounded corners, rendered at 3x for HiDPI
+        python3 -I - "$src" "$out" <<'EOF' || { echo; return; }
+import sys
+from PIL import Image, ImageDraw, ImageOps
+src, out = sys.argv[1], sys.argv[2]
+size, radius = 72, 18
+im = ImageOps.fit(Image.open(src).convert("RGBA"), (size, size), Image.LANCZOS)
+mask = Image.new("L", (size * 4, size * 4), 0)
+ImageDraw.Draw(mask).rounded_rectangle((0, 0, size * 4 - 1, size * 4 - 1), radius * 4, fill=255)
+im.putalpha(mask.resize((size, size), Image.LANCZOS))
+im.save(out)
+EOF
+        rm -f "$cache/$key.src"
+        # keep the cache small
+        ls -1t "$cache"/*.png 2>/dev/null | tail -n +40 | xargs -r rm -f
+    fi
+    echo "$out"
+}
+
+button() {
+    local which=$1
+    playerctl --follow status 2>/dev/null | while read -r status; do
+        case "$status" in
+            Playing|Paused)
+                case "$which" in
+                    prev) echo "󰒮" ;;
+                    next) echo "󰒭" ;;
+                    toggle) [ "$status" = Playing ] && echo "󰏤" || echo "󰐊" ;;
+                esac ;;
+            *) echo ;;
+        esac
+    done
+}
+
+case "${1:-}" in
+    art) art ;;
+    button) button "${2:?prev|toggle|next}" ;;
+    *) echo "usage: media art | media button prev|toggle|next" >&2; exit 1 ;;
+esac

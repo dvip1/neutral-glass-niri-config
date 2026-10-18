@@ -62,6 +62,7 @@ def load():
 def context(cfg, mode):
     ctx = {
         'font': cfg['font']['family'],
+        'icon_font': cfg['font']['icons'],
         'font_size': cfg['font']['size'],
         'bar_font_size': cfg['font']['bar_size'],
         'radius': cfg['shape']['radius'],

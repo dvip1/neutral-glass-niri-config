@@ -1,5 +1,7 @@
 # dotfiles
 
+<video src="out.mp4" controls autoplay muted loop width="720"></video>
+
 Managed with [GNU stow](https://www.gnu.org/software/stow/). Every top-level folder is a
 **package** that mirrors the layout of `$HOME`, e.g. `niri/.config/niri/config.kdl` is linked to
 `~/.config/niri/config.kdl`. The real files live here, so `git` tracks every change.

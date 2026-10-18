@@ -7,7 +7,8 @@
 # transparency (0 = invisible, 1 = solid). Each app's layout lives in templates/.
 
 [font]
-family = "Cascadia Code NF"
+family = "Adwaita Sans"     # UI text everywhere (kitty/nvim keep their own mono font)
+icons = "Cascadia Code NF"  # fallback that supplies the Nerd Font icon glyphs
 size = 13          # notifications, menus, volume popup
 bar_size = 13.5    # waybar
 

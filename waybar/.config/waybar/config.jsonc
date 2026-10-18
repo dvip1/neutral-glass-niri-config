@@ -7,9 +7,9 @@
   "margin-left": 10,
   "margin-right": 10,
   "spacing": 4,
-  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-left": ["niri/workspaces", "group/media"],
   "modules-center": ["clock"],
-  "modules-right": ["custom/notification", "pulseaudio", "bluetooth", "network", "battery", "tray"],
+  "modules-right": ["group/status", "tray"],
 
   "niri/workspaces": {
   "format": "{icon}",
@@ -25,11 +25,11 @@
     }
   },
   "clock": {
-    "format": "<span size='large'></span>  {:%a %d %b  %H:%M}",
+    "format": "<span alpha='36000'>{0:%a %d %b}</span>   {0:%H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>"
   },
   "pulseaudio": {
-    "format": "{icon} {volume}%", "format-icons": {"default": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"]},
+    "format": "{icon}", "tooltip-format": "Volume {volume}%  ·  {desc}", "format-icons": {"default": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"]},
     "format-muted": "<span size='large'></span>",
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
@@ -38,8 +38,8 @@
     "format-on": "<span size='large'>\uf294</span>",
     "format-off": "<span size='large'>\uf294</span>",
     "format-disabled": "<span size='large'>\uf294</span>",
-    "format-connected": "<span size='large'>\uf294</span> {device_alias}",
-    "format-connected-battery": "<span size='large'>\uf294</span> {device_alias} {device_battery_percentage}%",
+    "format-connected": "<span size='large'>\uf294</span>",
+    "format-connected-battery": "<span size='large'>\uf294</span>",
     "tooltip-format": "{controller_alias}  ({status})",
     "tooltip-format-connected": "{controller_alias}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
@@ -48,7 +48,7 @@
     "max-length": 24
   },
   "network": {
-    "format-wifi": "<span size='large'></span> {essid}",
+    "format-wifi": "<span size='large'></span>",
     "format-ethernet": "<span size='large'></span>",
     "format-disconnected": "<span size='large'></span>",
     "tooltip-format": "{ifname}  {ipaddr}\n{essid}  {signalStrength}%",
@@ -63,9 +63,9 @@
     "tooltip": false,
     "format": "{icon}",
     "format-icons": {
-      "notification": "\uf0f3<span foreground='white'><sup>\uf111</sup></span>",
+      "notification": "\uf0f3<sup>\uf111</sup>",
       "none": "\uf0f3",
-      "dnd-notification": "\uf1f6<span foreground='white'><sup>\uf111</sup></span>",
+      "dnd-notification": "\uf1f6<sup>\uf111</sup>",
       "dnd-none": "\uf1f6"
     },
     "return-type": "json",
@@ -73,6 +73,56 @@
     "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw",
     "escape": true
+  },
+  "group/media": {
+    "orientation": "horizontal",
+    "modules": ["image#media-art", "group/media-ctl", "custom/media-viz"]
+  },
+  "group/media-ctl": {
+    "orientation": "horizontal",
+    "drawer": { "transition-duration": 250, "transition-left-to-right": true, "children-class": "media-ctl" },
+    "modules": ["mpris", "custom/media-prev", "custom/media-toggle", "custom/media-next"]
+  },
+  "group/status": {
+    "orientation": "horizontal",
+    "modules": ["custom/notification", "pulseaudio", "bluetooth", "network", "battery"]
+  },
+  "image#media-art": {
+    "exec": "$HOME/.local/bin/media art",
+    "size": 22,
+    "interval": 2,
+    "on-click": "playerctl play-pause"
+  },
+  "mpris": {
+    "format": "{title}",
+    "title-len": 26,
+    "tooltip-format": "{player}  ({status})\n{title}\n{artist}  {album}\n{position} / {length}",
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous",
+    "on-scroll-up": "playerctl position 5+",
+    "on-scroll-down": "playerctl position 5-"
+  },
+  "custom/media-viz": {
+    "exec": "$HOME/.local/bin/media-viz 12",
+    "format": "{}",
+    "tooltip": false,
+    "on-click": "playerctl play-pause"
+  },
+  "custom/media-prev": {
+    "exec": "$HOME/.local/bin/media button prev",
+    "on-click": "playerctl previous",
+    "tooltip": false
+  },
+  "custom/media-toggle": {
+    "exec": "$HOME/.local/bin/media button toggle",
+    "on-click": "playerctl play-pause",
+    "tooltip": false
+  },
+  "custom/media-next": {
+    "exec": "$HOME/.local/bin/media button next",
+    "on-click": "playerctl next",
+    "tooltip": false
   },
   "tray": { "spacing": 8 }
 }

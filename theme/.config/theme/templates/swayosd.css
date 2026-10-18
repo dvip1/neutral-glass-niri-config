@@ -7,7 +7,7 @@ window#osd {
   background: {{osd_bg}};
 }
 window#osd #container { margin: 6px; }
-window#osd image, window#osd label { color: {{osd_fg}}; font-family: "{{font}}"; font-size: {{font_size}}px; }
+window#osd image, window#osd label { color: {{osd_fg}}; font-family: "{{font}}", "{{icon_font}}", sans-serif; font-size: {{font_size}}px; }
 window#osd progressbar:disabled, window#osd image:disabled { opacity: 0.5; }
 window#osd progressbar { min-height: 6px; border-radius: 999px; background: transparent; }
 window#osd trough { min-height: inherit; border-radius: inherit; border: none; background: {{osd_trough}}; }
