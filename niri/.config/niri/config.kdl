@@ -212,8 +212,8 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
-// This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "waybar"
+// The bar: Quickshell (~/.config/quickshell). waybar's config is still in the repo if needed.
+spawn-at-startup "qs"
 spawn-at-startup "swaync"
 spawn-at-startup "swayosd-server"
 spawn-at-startup "playerctld" "daemon"
@@ -573,7 +573,7 @@ binds {
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
     // rather than stacked on top of each other.
-    Mod+W hotkey-overlay-title="Show / Hide the Bar" { spawn-sh "pkill -SIGUSR1 -x waybar"; }
+    Mod+W hotkey-overlay-title="Show / Hide the Bar" { spawn "qs" "ipc" "call" "bar" "toggle"; }
     Mod+Ctrl+W { toggle-column-tabbed-display; }
 
     // Actions to switch layouts.
