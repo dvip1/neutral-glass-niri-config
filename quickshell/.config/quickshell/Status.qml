@@ -1,4 +1,4 @@
-// Right: notifications, volume, bluetooth, network, battery and the tray share ONE pill,
+// Right: notifications, volume, microphone, bluetooth, network, battery and the tray share ONE pill,
 // with one highlight gliding between whatever is hovered. Clicks open the same scripts the
 // waybar modules did.
 import QtQuick
@@ -15,6 +15,8 @@ Rectangle {
     id: root
     property var window
     signal batteryClicked()       // open / close the power sheet
+    signal bellClicked()          // open / close swaync's notification centre
+    property bool ccOpen: false   // swaync reports its control centre as open
     readonly property string bin: Quickshell.env("HOME") + "/.local/bin/"
 
     implicitWidth: row.implicitWidth + 8
@@ -39,7 +41,7 @@ Rectangle {
             window: root.window
             glide: hoverGlide
             property string alt: "none"
-            onClicked: m => root.sh(m.button === Qt.RightButton ? "swaync-client -d -sw" : "swaync-client -t -sw")
+            onClicked: m => m.button === Qt.RightButton ? root.sh("swaync-client -d -sw") : root.bellClicked()
             Icon {
                 text: notif.alt.startsWith("dnd") ? "󰂛" : "󰂚"
                 color: root.tone(notif)
@@ -55,7 +57,13 @@ Rectangle {
                 running: true
                 command: ["swaync-client", "-swb"]
                 stdout: SplitParser {
-                    onRead: line => { try { notif.alt = JSON.parse(line).alt } catch (e) {} }
+                    onRead: line => {
+                        try {
+                            const j = JSON.parse(line)
+                            notif.alt = j.alt
+                            root.ccOpen = [].concat(j.class).includes("cc-open")
+                        } catch (e) {}
+                    }
                 }
             }
         }
@@ -75,6 +83,25 @@ Rectangle {
             Icon {
                 text: vol.muted ? "󰝟" : vol.level > 1.005 ? "󰝝" : vol.level < 0.34 ? "󰕿" : vol.level < 0.67 ? "󰖀" : "󰕾"
                 color: root.tone(vol, vol.muted ? Theme.fgMuted : undefined)
+            }
+        }
+
+        // ---- microphone (default input): click mutes / unmutes, like the Fn mic key ----
+        Btn {
+            id: mic
+            window: root.window
+            glide: hoverGlide
+            readonly property var source: Pipewire.defaultAudioSource
+            readonly property real level: source && source.audio ? source.audio.volume : 0
+            readonly property bool muted: source && source.audio ? source.audio.muted : false
+            visible: source !== null
+            PwObjectTracker { objects: [mic.source] }
+            tip: source ? (muted ? "Microphone off" : "Microphone " + Math.round(level * 100) + "%") + "  ·  " + (source.description || source.name) : ""
+            onClicked: root.sh("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")
+            onWheel: w => root.sh("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ " + (w.angleDelta.y > 0 ? "2%+" : "2%-"))
+            Icon {
+                text: mic.muted ? "󰍭" : "󰍬"
+                color: root.tone(mic, mic.muted ? Theme.fgMuted : undefined)
             }
         }
 

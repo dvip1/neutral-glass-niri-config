@@ -2,7 +2,6 @@
 // time left (UPower), IdeaPad charge-limit state (read-only), the power profile (tuned-ppd via
 // power-profiles, no root) and a "Power settings" row (~/.local/bin/power-settings).
 // Open/close behaviour comes from Sheet.qml. (Replaces ~/.local/bin/powerpanel, the GTK4 version.)
-//   qs ipc call powerpanel toggle
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -26,11 +25,6 @@ Sheet {
     property string summary: ""
 
     onWantChanged: if (want) { limitProc.running = true; idleProc.running = true }
-
-    IpcHandler {
-        target: "powerpanel"
-        function toggle(): void { pp.want = !pp.want }
-    }
 
     function duration(secs) {
         const m = Math.round(secs / 60), h = Math.floor(m / 60)
@@ -238,7 +232,7 @@ Sheet {
             hoverEnabled: true
             onClicked: {
                 Quickshell.execDetached([Quickshell.env("HOME") + "/.local/bin/power-settings"])
-                pp.want = false
+                pp.dismiss()
             }
         }
     }

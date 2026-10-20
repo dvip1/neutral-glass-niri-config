@@ -1,7 +1,7 @@
 // Now playing: a glass sheet under the bar's media pill, one card per player with
 // prev / play / next and a seek bar. Clicking a card hands the bar to that player (it becomes
 // playerctld's active player). Open/close behaviour comes from Sheet.qml.
-// (Replaces ~/.local/bin/nowplaying, the GTK4 version.)   qs ipc call nowplaying toggle
+// (Replaces ~/.local/bin/nowplaying, the GTK4 version.)
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -23,12 +23,7 @@ Sheet {
     function rank(p) { const i = order.indexOf(inst(p)); return i < 0 ? order.length : i }
 
     onWantChanged: if (want) orderProc.running = true
-    onPlayersChanged: if (want && players.length === 0) want = false
-
-    IpcHandler {
-        target: "nowplaying"
-        function toggle(): void { np.want = !np.want && np.players.length > 0 }
-    }
+    onPlayersChanged: if (want && players.length === 0) dismiss()
 
     // playerctld's order, and making a player the active one (rotate the list the shorter way)
     Process {

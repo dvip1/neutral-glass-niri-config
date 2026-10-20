@@ -1,4 +1,4 @@
-// Volume / brightness OSD (replaces swayosd): a glass pill with icon, level bar and percentage
+// Volume / microphone / brightness OSD (replaces swayosd): a glass pill with icon, level bar and percentage
 // that fades in quickly and fades away. Its surface keeps one size (resizing a layer surface per
 // frame stutters), niri blurs it via the "osd" layer-rule. Volume pops up on its own whenever the default
 // output's volume or mute changes (keys, bar scroll, apps); brightness via
@@ -62,6 +62,19 @@ PanelWindow {
         target: osd.sink ? osd.sink.audio : null
         function onVolumesChanged() { osd.volumeChanged() }
         function onMutedChanged() { osd.volumeChanged() }
+    }
+
+    // ---- microphone: the default input (Fn mic key, bar click / scroll) ----
+    readonly property var source: Pipewire.defaultAudioSource
+    PwObjectTracker { objects: [osd.source] }
+    function micChanged() {
+        if (!armed || !source || !source.audio) return
+        pop(source.audio.muted ? "󰍭" : "󰍬", source.audio.volume, 1, source.audio.muted)
+    }
+    Connections {
+        target: osd.source ? osd.source.audio : null
+        function onVolumesChanged() { osd.micChanged() }
+        function onMutedChanged() { osd.micChanged() }
     }
 
     IpcHandler {

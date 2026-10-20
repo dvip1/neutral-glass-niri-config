@@ -2,8 +2,8 @@
 // The surface is created at its final size and never resized while animating (a layer surface
 // resize costs a compositor round trip per frame: it stutters and runs late). Instead the glass
 // tint comes up quickly over niri's blur and the contents fade in with a small drop.
-// Closes on Esc, when the pointer leaves it, if the pointer never comes in, or when `want`
-// is toggled off (the pill clicked again).
+// It is a popover: `want` is driven by the bar (click the pill to open, again to close; a
+// click anywhere else closes it via the bar's catcher). Esc asks to close with dismiss().
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
@@ -17,7 +17,7 @@ PanelWindow {
     property real edge: 0             // distance from that edge
     property int pad: 6
     property string namespace: "sheet"
-    property bool entered: false
+    signal dismiss()
     default property alias content: col.data
     readonly property real inner: full - 2 * pad
 
@@ -30,24 +30,15 @@ PanelWindow {
     color: "transparent"
     visible: want || shut.running
     WlrLayershell.namespace: namespace
-    WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.layer: WlrLayer.Overlay   // above the bar's click catcher (Top)
     WlrLayershell.keyboardFocus: want ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     onWantChanged: {
-        if (want) { entered = false; shut.stop(); open = 0; grow.restart(); idle.restart() }
-        else { grow.stop(); leave.stop(); shut.restart() }
+        if (want) { shut.stop(); open = 0; grow.restart() }
+        else { grow.stop(); shut.restart() }
     }
     NumberAnimation { id: grow; target: sheet; property: "open"; to: 1; duration: 150; easing.type: Easing.OutCubic }
     NumberAnimation { id: shut; target: sheet; property: "open"; to: 0; duration: 100; easing.type: Easing.InCubic }
-
-    Timer { id: leave; interval: 300; onTriggered: sheet.want = false }
-    Timer { id: idle; interval: 4000; onTriggered: if (!sheet.entered) sheet.want = false }
-    HoverHandler {
-        onHoveredChanged: {
-            if (hovered) { sheet.entered = true; leave.stop() }
-            else if (sheet.entered && sheet.want) leave.restart()
-        }
-    }
 
     Rectangle {
         anchors.fill: parent
@@ -58,7 +49,7 @@ PanelWindow {
         // the blur behind is there from the first frame, so the tint starts part-way up
         opacity: 0.4 + 0.6 * sheet.open
         focus: true
-        Keys.onEscapePressed: sheet.want = false
+        Keys.onEscapePressed: sheet.dismiss()
     }
 
     Column {

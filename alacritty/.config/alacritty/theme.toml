@@ -1,33 +1,33 @@
-# Pharloom — Hollow Knight: Silksong inspired light theme
+# Hallownest — Hollow Knight inspired dark theme
 
 [colors.primary]
-background = '#EDE6D6'
-foreground = '#3A2B4A'
+background = '#1A0E2E'
+foreground = '#C8A8E9'
 
 [colors.cursor]
-cursor = '#7A4E8C'
-text = '#EDE6D6'
+cursor = '#55FFDD'
+text = '#1A0E2E'
 
 [colors.selection]
 text = 'CellForeground'
-background = '#D8CBB5'
+background = '#3D2460'
 
 [colors.normal]
-black   = '#3A2B4A'
-red     = '#A32F4C'
-green   = '#3E7D55'
-yellow  = '#96682B'
-blue    = '#33528A'
-magenta = '#7A3F8C'
-cyan    = '#24706A'
-white   = '#6E6178'
+black   = '#2A1A4A'
+red     = '#C4406B'
+green   = '#7FB89E'
+yellow  = '#D9B36C'
+blue    = '#3E7CB1'
+magenta = '#7B4FA6'
+cyan    = '#3ECFB0'
+white   = '#A9A0C9'
 
 [colors.bright]
-black   = '#5A4A68'
-red     = '#C43B5A'
-green   = '#4A9464'
-yellow  = '#B07C2E'
-blue    = '#3E63A4'
-magenta = '#9450A8'
-cyan    = '#2C867E'
-white   = '#2C1F38'
+black   = '#5A3A8A'
+red     = '#E85C8A'
+green   = '#9ED9BE'
+yellow  = '#F0CE8C'
+blue    = '#6FA8DC'
+magenta = '#9B6FC9'
+cyan    = '#55FFDD'
+white   = '#E8DFFA'

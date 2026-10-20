@@ -3,7 +3,7 @@
   "positionX": "right",
   "positionY": "top",
   "layer": "overlay",
-  "control-center-layer": "top",
+  "control-center-layer": "overlay",
   "cssPriority": "user",
   "control-center-margin-top": 10,
   "control-center-margin-bottom": 10,
