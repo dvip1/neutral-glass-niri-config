@@ -6,7 +6,7 @@ import QtQuick
 import Quickshell
 
 Singleton {
-    readonly property string mode: "dark"
+    readonly property string mode: "light"
 
     // Fonts (sizes in logical px, like the CSS; Text takes points, so use px * 0.75)
     readonly property string font: "Adwaita Sans"
@@ -21,28 +21,35 @@ Singleton {
     readonly property int radiusSmall: 7
 
     // Motion
-    readonly property int hoverIn: 110
-    readonly property int hoverOut: 320
-    readonly property int pillMs: 420
-    readonly property var spring: [0.34, 1.35, 0.64, 1, 1, 1]
+    readonly property int hoverIn: 70
+    readonly property int hoverOut: 180
+    readonly property int pillMs: 240
+    readonly property var spring: [0.3, 1.12, 0.6, 1, 1, 1]
 
     // Colours
-    readonly property color barBg: "#941c1c1c"
-    readonly property color barBorder: "#21ffffff"
-    readonly property color fg: "#ffe6e6e6"
-    readonly property color fgStrong: "#ffffffff"
-    readonly property color fgMuted: "#ff8c8c8c"
-    readonly property color fgTitle: "#ffb8b8b8"
-    readonly property color pillBg: "#0affffff"
-    readonly property color pillHover: "#1affffff"
-    readonly property color pillPress: "#29ffffff"
-    readonly property color wsDot: "#52ffffff"
-    readonly property color wsDotHover: "#9effffff"
-    readonly property color wsPill: "#ffe6e6e6"
-    readonly property color crit: "#fff08a80"
-    readonly property color warn: "#ffe8c170"
-    readonly property color tipBg: "#e01c1c1c"
-    readonly property color tipBorder: "#24ffffff"
+    readonly property color barBg: "#9ef2f2f2"
+    readonly property color barBorder: "#1f000000"
+    readonly property color fg: "#ff262626"
+    readonly property color fgStrong: "#ff000000"
+    readonly property color fgMuted: "#ff6e6e6e"
+    readonly property color fgTitle: "#ff464646"
+    readonly property color pillBg: "#0d000000"
+    readonly property color pillHover: "#1a000000"
+    readonly property color pillPress: "#29000000"
+    readonly property color wsDot: "#42000000"
+    readonly property color wsDotHover: "#8c000000"
+    readonly property color wsPill: "#ff262626"
+    readonly property color wsHover: "#14000000"
+    readonly property color wsActiveBg: "#1f000000"
+    readonly property color crit: "#ffc0392b"
+    readonly property color warn: "#ffa86a00"
+    readonly property color tipBg: "#ebf6f6f6"
+    readonly property color tipBorder: "#24000000"
+    readonly property color osdBg: "#8cf5f5f5"
+    readonly property color osdBorder: "#24000000"
+    readonly property color osdFg: "#ff1a1a1a"
+    readonly property color osdTrough: "#2e000000"
+    readonly property color osdBar: "#ff1a1a1a"
 
     // the same colour, fully transparent: animating from this avoids a dark fringe
     function clear(c) { return Qt.rgba(c.r, c.g, c.b, 0) }

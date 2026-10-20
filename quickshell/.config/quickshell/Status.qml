@@ -14,6 +14,7 @@ import Quickshell.Widgets
 Rectangle {
     id: root
     property var window
+    signal batteryClicked()       // open / close the power sheet
     readonly property string bin: Quickshell.env("HOME") + "/.local/bin/"
 
     implicitWidth: row.implicitWidth + 8
@@ -135,7 +136,7 @@ Rectangle {
             readonly property var state: pct <= 10 ? Theme.crit : pct <= 25 ? Theme.warn : undefined
             visible: dev !== null && dev.isPresent
             padding: 9
-            onClicked: Quickshell.execDetached([root.bin + "powerpanel"])
+            onClicked: root.batteryClicked()
             Icon {
                 text: (bat.charging ? ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"] : ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"])[Math.min(4, Math.floor(bat.pct / 20))]
                 color: root.tone(bat, bat.state)

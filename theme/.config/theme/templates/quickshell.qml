@@ -39,10 +39,17 @@ Singleton {
     readonly property color wsDot: "{{ws_dot|qml}}"
     readonly property color wsDotHover: "{{ws_dot_hover|qml}}"
     readonly property color wsPill: "{{ws_pill|qml}}"
+    readonly property color wsHover: "{{ws_hover|qml}}"
+    readonly property color wsActiveBg: "{{ws_active_bg|qml}}"
     readonly property color crit: "{{c_crit|qml}}"
     readonly property color warn: "{{c_warn|qml}}"
     readonly property color tipBg: "{{tip_bg|qml}}"
     readonly property color tipBorder: "{{tip_border|qml}}"
+    readonly property color osdBg: "{{osd_bg|qml}}"
+    readonly property color osdBorder: "{{osd_border|qml}}"
+    readonly property color osdFg: "{{osd_fg|qml}}"
+    readonly property color osdTrough: "{{osd_trough|qml}}"
+    readonly property color osdBar: "{{osd_bar|qml}}"
 
     // the same colour, fully transparent: animating from this avoids a dark fringe
     function clear(c) { return Qt.rgba(c.r, c.g, c.b, 0) }

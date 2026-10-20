@@ -10,6 +10,7 @@ import Quickshell.Widgets
 Rectangle {
     id: root
     property var window
+    signal panel()                // title clicked: open / close the now-playing sheet
 
     readonly property var player: {
         const all = Mpris.players.values
@@ -59,7 +60,7 @@ Rectangle {
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
                     onStatusChanged: if (status === Image.Ready) fadeIn.restart()
-                    NumberAnimation on opacity { id: fadeIn; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
+                    NumberAnimation on opacity { id: fadeIn; from: 0; to: 1; duration: 220; easing.type: Easing.OutCubic }
                 }
             }
             MouseArea { anchors.fill: parent; onClicked: root.run("play-pause") }
@@ -72,7 +73,7 @@ Rectangle {
             width: titleBox.width + (open ? buttons.implicitWidth : 0)
             height: parent.height
             clip: true
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
+            Behavior on width { NumberAnimation { duration: 160; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
 
             Item {
                 id: titleBox
@@ -94,7 +95,7 @@ Rectangle {
                     hoverEnabled: true
                     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                     onClicked: m => {
-                        if (m.button === Qt.LeftButton) Quickshell.execDetached([Quickshell.env("HOME") + "/.local/bin/nowplaying"])
+                        if (m.button === Qt.LeftButton) root.panel()
                         else if (m.button === Qt.RightButton) root.run("next")
                         else root.run("previous")
                     }

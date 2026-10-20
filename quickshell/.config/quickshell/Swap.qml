@@ -10,7 +10,7 @@ Item {
     property real pointSize: Theme.fontPx * 0.75
     property bool tnum: false
     property real slide: 0        // px the text travels while changing (0 = crossfade only)
-    property int duration: 280
+    property int duration: 180
 
     property Text cur: a
     property bool ready: false

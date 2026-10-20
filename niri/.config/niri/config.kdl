@@ -215,7 +215,6 @@ layout {
 // The bar: Quickshell (~/.config/quickshell). waybar's config is still in the repo if needed.
 spawn-at-startup "qs"
 spawn-at-startup "swaync"
-spawn-at-startup "swayosd-server"
 spawn-at-startup "playerctld" "daemon"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist -max-items 500 store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist -max-items 500 store"
@@ -334,8 +333,7 @@ binds {
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
-    // Max volume (150%) is set in ~/.config/swayosd/config.toml; ~/.local/bin/volume shows a
-    // distinct OSD above 100%.
+    // ~/.local/bin/volume caps at 150%; the Quickshell OSD (Osd.qml) shows any volume change.
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume up"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume down"; }
     XF86AudioMute        allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume mute"; }
@@ -351,8 +349,8 @@ binds {
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "swayosd-client" "--brightness" "raise"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "swayosd-client" "--brightness" "lower"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "$HOME/.local/bin/brightness up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "$HOME/.local/bin/brightness down"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -363,7 +361,7 @@ binds {
     Mod+Ctrl+N hotkey-overlay-title="Toggle Do Not Disturb" { spawn "swaync-client" "-d" "-sw"; }
 
     Mod+B hotkey-overlay-title="Bluetooth Menu" { spawn-sh "$HOME/.local/bin/bt-menu"; }
-    Mod+P hotkey-overlay-title="Media Players" { spawn-sh "$HOME/.local/bin/nowplaying"; }
+    Mod+P hotkey-overlay-title="Media Players" { spawn "qs" "ipc" "call" "nowplaying" "toggle"; }
     Mod+V hotkey-overlay-title="Clipboard History" { spawn-sh "$HOME/.local/bin/clip-menu"; }
     Mod+Ctrl+V hotkey-overlay-title="Clear Clipboard History" { spawn-sh "cliphist wipe && rm -rf $HOME/.cache/clip-menu && notify-send -a clipboard 'Clipboard history cleared'"; }
     Alt+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }

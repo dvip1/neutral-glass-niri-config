@@ -1,32 +1,16 @@
 #!/usr/bin/env bash
 # Usage: volume up|down|mute   (bound to the XF86Audio* keys in niri)
-# Up to 100% this is plain swayosd-client. swayosd shows the normal "high" icon above 100%,
-# so in that range we set the volume ourselves and show its custom OSD with the
-# overamplified icon and the percentage instead. MAX must match max_volume in
-# ~/.config/swayosd/config.toml so the bar is scaled the same either way.
+# Changes the default output with wpctl, up to 150 % (same cap as scrolling on the bar's volume
+# icon). The Quickshell OSD pops up by itself whenever the volume or mute changes.
 set -euo pipefail
 
 STEP=5
-MAX=150
+MAX=1.5
 SINK=@DEFAULT_AUDIO_SINK@
 
 case "${1:-}" in
-  up) sign=+ ;;
-  down) sign=- ;;
-  mute) exec swayosd-client --output-volume mute-toggle ;;
+  up) wpctl set-mute "$SINK" 0; wpctl set-volume -l "$MAX" "$SINK" "$STEP%+" ;;
+  down) wpctl set-volume "$SINK" "$STEP%-" ;;
+  mute) wpctl set-mute "$SINK" toggle ;;
   *) echo "usage: volume up|down|mute" >&2; exit 2 ;;
 esac
-
-state=$(wpctl get-volume "$SINK")          # "Volume: 1.05" or "Volume: 1.05 [MUTED]"
-cur=$(awk '{printf "%d", $2 * 100 + 0.5}' <<<"$state")
-new=$((cur $sign STEP))
-((new > MAX)) && new=$MAX
-
-if ((new <= 100)) || [[ $state == *MUTED* ]]; then
-  exec swayosd-client --output-volume "$sign$STEP"
-fi
-
-wpctl set-volume "$SINK" "$new%"
-swayosd-client --custom-icon audio-volume-overamplified-symbolic \
-  --custom-progress "$(awk -v v="$new" -v m="$MAX" 'BEGIN { printf "%.3f", v / m }')" \
-  --custom-progress-text "$new%"

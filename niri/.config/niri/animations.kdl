@@ -7,18 +7,49 @@
 // The corner radius (12) must match `radius` in ~/.config/theme/theme.toml.
 
 animations {
+    // Springs: stiff and just under critical damping: quick, with a barely-there settle.
     window-movement {
-        spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
-    }
-    window-resize {
-        spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
+        spring damping-ratio=0.88 stiffness=1200 epsilon=0.0001
     }
     horizontal-view-movement {
-        spring damping-ratio=0.9 stiffness=800 epsilon=0.0001
+        spring damping-ratio=0.9 stiffness=1200 epsilon=0.0001
+    }
+    workspace-switch {
+        spring damping-ratio=0.9 stiffness=1400 epsilon=0.0001
+    }
+
+    // Resize: old content crossfades into the new, through a faint lens that is strongest
+    // mid-resize and flat at rest; corners stay rounded the whole time.
+    window-resize {
+        spring damping-ratio=0.9 stiffness=1200 epsilon=0.0001
+        custom-shader r"
+            float rs_box(vec2 p, vec2 b, float r) {
+                vec2 q = abs(p) - b + vec2(r);
+                return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
+            }
+
+            vec4 resize_color(vec3 coords_curr_geo, vec3 size_curr_geo) {
+                vec2 half_size = size_curr_geo.xy * 0.5;
+                vec2 px = (coords_curr_geo.xy - 0.5) * size_curr_geo.xy;
+                float mask = clamp(0.5 - rs_box(px, half_size, 12.0), 0.0, 1.0);
+                if (mask <= 0.0)
+                    return vec4(0.0);
+
+                float c = niri_clamped_progress;
+                float lens = 0.025 * sin(3.14159 * c);
+                vec2 d = px / half_size;
+                float r2 = clamp(dot(d, d) * 0.5, 0.0, 1.0);
+                vec3 uv = vec3(clamp(0.5 + d * 0.5 * (1.0 - lens * (1.0 - r2)), 0.0, 1.0), 1.0);
+
+                vec4 prev = texture2D(niri_tex_prev, (niri_geo_to_tex_prev * uv).st);
+                vec4 next = texture2D(niri_tex_next, (niri_geo_to_tex_next * uv).st);
+                return mix(prev, next, smoothstep(0.0, 0.6, c)) * mask;
+            }
+        "
     }
 
     window-open {
-        spring damping-ratio=0.72 stiffness=520 epsilon=0.0001
+        spring damping-ratio=0.82 stiffness=1000 epsilon=0.0001
         custom-shader r"
             // Signed distance to a rounded rectangle centred at 0 (negative inside).
             float lq_box(vec2 p, vec2 b, float r) {
@@ -66,7 +97,7 @@ animations {
     }
 
     window-close {
-        duration-ms 200
+        duration-ms 150
         curve "ease-out-cubic"
         custom-shader r"
             float lq_box(vec2 p, vec2 b, float r) {

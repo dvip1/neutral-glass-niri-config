@@ -20,10 +20,10 @@ radius_small = 7   # anything inside a pill or card: hovers, buttons, selections
 ring_width = 2     # focus ring around the active window, in px
 
 [motion]           # bar hover/press timing (waybar CSS transitions and the Quickshell bar)
-hover_in = 110     # ms to light up under the pointer: quick
-hover_out = 320    # ms to settle back after it leaves: slower, feels softer
-pill_ms = 420      # ms for the active-workspace pill to stretch / shrink
-spring = "cubic-bezier(0.34, 1.35, 0.64, 1)"   # slight overshoot, like a spring
+hover_in = 70      # ms to light up under the pointer: quick
+hover_out = 180    # ms to settle back after it leaves: a little softer
+pill_ms = 240      # ms for pills, highlights and panels to move / stretch
+spring = "cubic-bezier(0.3, 1.12, 0.6, 1)"   # a hint of overshoot, like a stiff spring
 
 [kitty]            # themes from kitty's own collection (run `kitten themes` to browse names)
 dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1

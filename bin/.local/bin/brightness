@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Usage: brightness up|down   (bound to the XF86MonBrightness* keys in niri)
+# Steps the backlight with brightnessctl and shows the Quickshell OSD.
+set -euo pipefail
+
+STEP=5
+
+case "${1:-}" in
+  up) brightnessctl -q set "$STEP%+" ;;
+  down) brightnessctl -q --min-value=1% set "$STEP%-" ;;   # never all the way to black
+  *) echo "usage: brightness up|down" >&2; exit 2 ;;
+esac
+
+pct=$(brightnessctl -m | cut -d, -f4 | tr -d %)
+qs ipc call osd brightness "$pct" >/dev/null 2>&1 || true

@@ -4,8 +4,8 @@
 layout {
     focus-ring {
         width 2
-        active-color "#ffffff66"
-        inactive-color "#ffffff1a"
+        active-color "#00000066"
+        inactive-color "#0000001a"
     }
 }
 
@@ -34,15 +34,21 @@ layer-rule {
     background-effect { blur true; }
     geometry-corner-radius 12
 }
-// The Quickshell bar; its tooltips and tray menus are popups of it.
+// The Quickshell bar. Its tooltips are not blurred: niri would show the blur box at once,
+// before the tooltip has faded in (they are nearly opaque anyway).
 layer-rule {
     match namespace="^bar$"
     background-effect { blur true; }
     geometry-corner-radius 12
-    popups {
-        geometry-corner-radius 10
-        background-effect { blur true; }
+}
+// Quickshell's volume/brightness OSD: the surface itself grows and shrinks, so the blur follows.
+layer-rule {
+    match namespace="^osd$"
+    background-effect {
+        blur true
+        xray false
     }
+    geometry-corner-radius 14
 }
 layer-rule {
     match namespace="^swaync-control-center$"
