@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Waybar audio visualizer: cava raw output -> ▁▂▃▄▅▆▇█ bars, one line per frame.
+# Waybar audio visualizer: cava raw output -> ▁▂▃▄▅▆ bars (capped below full height so it stays quiet), one line per frame.
 # Prints an empty line after ~1.5 s of silence so the module hides itself.
 #   media-viz [bars]   (default 10)
 set -u
@@ -21,7 +21,7 @@ source = auto
 method = raw
 raw_target = /dev/stdout
 data_format = ascii
-ascii_max_range = 7
+ascii_max_range = 5
 bar_delimiter = 59
 frame_delimiter = 10
 channels = mono
@@ -36,7 +36,7 @@ EOF
 trap 'kill 0' EXIT
 
 cava -p "$conf" | awk -F';' -v silence=45 '
-BEGIN { split("▁ ▂ ▃ ▄ ▅ ▆ ▇ █", g, " "); quiet = silence }
+BEGIN { split("▁ ▂ ▃ ▄ ▅ ▆", g, " "); quiet = silence }
 {
     s = ""; loud = 0
     for (i = 1; i <= NF; i++) {

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Reboot
+Comment=Restart the computer (asks first)
+Exec=/home/dvip/.local/bin/power reboot
+Icon=/home/dvip/.config/theme/out/icons/reboot.svg
+Terminal=false
+Categories=System;
+Keywords=reboot;restart;

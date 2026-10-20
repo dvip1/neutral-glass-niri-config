@@ -9,16 +9,15 @@
 }
 
 window#waybar {
-  /* Matches Fuzzel's 1c1c21 base with ~58% opacity */
-  background: rgba(28, 28, 33, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(242, 242, 242, 0.62);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 12px;
-  color: #e6e6e6;
+  color: #262626;
 }
 
-/* Right: status icons share ONE pill (#status group); each icon gets a soft hover. */
+/* Right: status icons and the tray share ONE pill (#status group); each icon gets a soft hover. */
 #status {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   margin: 5px 4px;
   padding: 0 4px;
@@ -30,7 +29,7 @@ window#waybar {
 #network,
 #battery {
   background: transparent;
-  color: #e6e6e6;
+  color: #262626;
   padding: 0 8px;
   margin: 3px 0;
   border-radius: 7px;
@@ -42,7 +41,7 @@ window#waybar {
 #bluetooth:hover,
 #network:hover,
 #battery:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 #battery {
@@ -51,8 +50,7 @@ window#waybar {
 }
 
 #tray {
-  padding: 0 10px 0 6px;
-  margin-right: 4px;
+  padding: 0 8px 0 6px;
 }
 
 /* Workspaces */
@@ -61,44 +59,45 @@ window#waybar {
   margin-left: 4px;
 }
 
+/* nowplaying's bar_x() places its popup from these sizes: keep them in sync */
 #workspaces button {
+  min-width: 16px;
   padding: 0 8px;
   margin: 5px 2px;
-  color: #8c8c8c;
+  color: #6e6e6e;
   background: transparent;
-  border-radius: 6px;
+  border-radius: 7px;
   transition: all 0.2s ease;
 }
 
 #workspaces button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #e6e6e6;
+  background: rgba(0, 0, 0, 0.08);
+  color: #262626;
 }
 
-/* Matches Fuzzel's selection-radius and selection alpha */
+/* Active workspace: the filled dot alone marks it, no background */
 #workspaces button.active {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.13);
-  font-weight: bold;
+  color: #000000;
+  background: transparent;
 }
 
 #workspaces button.urgent {
-  color: #f38ba8;
-  background: rgba(243, 139, 168, 0.15);
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.15);
 }
 
 /* Center clock: the quiet anchor (date dimmed in markup, time carries the weight) */
 #clock {
   font-feature-settings: "tnum";
-  color: #ffffff;
+  color: #000000;
   font-weight: 600;
   padding: 0 10px;
 }
 
-/* Left: media pill = album art + title; prev/play/next slide out on hover (drawer).
+/* Left: media pill = album art + title + play/pause; prev/next slide out on hover (drawer).
    Pill lives on the group, so it vanishes with the modules when nothing plays. */
 #media {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   margin: 5px 0 5px 8px;
 }
@@ -108,19 +107,19 @@ window#waybar {
 }
 
 #mpris {
-  color: #b8b8c0;
+  color: #464646;
   padding: 0 10px 0 4px;
 }
 
 #mpris.paused {
-  color: #8c8c8c;
+  color: #6e6e6e;
 }
 
 /* cava bars: the one moving thing on the bar, kept quiet in colour */
 #custom-media-viz {
   font-family: "Cascadia Code NF";
   font-size: 16px;
-  color: #b8b8c0;
+  color: #6e6e6e;
   letter-spacing: 2px;
   padding: 0 12px 0 2px;
 }
@@ -128,53 +127,52 @@ window#waybar {
 #custom-media-prev,
 #custom-media-toggle,
 #custom-media-next {
-  color: #e6e6e6;
+  color: #262626;
   padding: 0 7px;
   margin: 3px 0;
   border-radius: 7px;
   transition: background 0.2s ease;
 }
 
-#custom-media-next {
+/* play/pause stays visible after the title; prev/next slide out on hover */
+#custom-media-toggle {
   margin-right: 3px;
 }
 
 #custom-media-prev:hover,
 #custom-media-toggle:hover,
 #custom-media-next:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* States */
-#bluetooth.off, #bluetooth.disabled { color: #8c8c8c; }
+#bluetooth.off, #bluetooth.disabled { color: #6e6e6e; }
 #pulseaudio.muted {
-  color: #8c8c8c;
+  color: #6e6e6e;
 }
 
 #network.disconnected {
-  color: #f38ba8;
+  color: #c0392b;
 }
 
 #battery.warning {
-  color: #f9e2af;
+  color: #a86a00;
 }
 
 #battery.critical {
-  color: #f38ba8;
+  color: #c0392b;
 }
 
-#battery.charging {
-  color: #a6e3a1;
-}
+/* charging is shown by the bolt in the icon, not by colour */
 
-/* Frosted Tooltip to match Fuzzel */
+/* Frosted tooltip */
 tooltip {
-  background: rgba(28, 28, 33, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(246, 246, 246, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.14);
   border-radius: 10px;
 }
 
 tooltip label {
-  color: #e6e6e6;
+  color: #262626;
   padding: 6px;
 }

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Log Out
+Comment=Quit niri and end the session (asks first)
+Exec=/home/dvip/.local/bin/power logout
+Icon=/home/dvip/.config/theme/out/icons/log-out.svg
+Terminal=false
+Categories=System;
+Keywords=logout;log out;exit;quit;session;niri;

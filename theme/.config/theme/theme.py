@@ -67,6 +67,9 @@ def context(cfg, mode):
         'bar_font_size': cfg['font']['bar_size'],
         'radius': cfg['shape']['radius'],
         'radius_large': cfg['shape']['radius_large'],
+        'radius_pill': cfg['shape']['radius_pill'],
+        'radius_small': cfg['shape']['radius_small'],
+        'mode': mode,
         'ring_width': cfg['shape']['ring_width'],
     }
     colours = {k: parse_colour(v) for k, v in cfg[mode].items()}
@@ -156,12 +159,17 @@ def apply(mode=None, reload=True):
     cfg = load()
     mode = mode or current_mode()
     ctx, colours = context(cfg, mode)
-    rendered = {}
+    rendered = []
     for name, t in cfg['targets'].items():          # render everything first: all or nothing
         src = os.path.join(ROOT, t['src'])
-        rendered[name] = (path(t['dest']), render(open(src).read(), ctx, colours, t['src']))
+        if os.path.isdir(src):                      # a folder of templates -> a folder of files
+            for f in sorted(os.listdir(src)):
+                rendered.append((name, os.path.join(path(t['dest']), f),
+                                 render(open(os.path.join(src, f)).read(), ctx, colours, os.path.join(t['src'], f))))
+        else:
+            rendered.append((name, path(t['dest']), render(open(src).read(), ctx, colours, t['src'])))
     changed = set()
-    for name, (dest, text) in rendered.items():
+    for name, dest, text in rendered:
         old = open(dest).read() if os.path.exists(dest) else None
         if old != text:
             write_atomic(dest, text)

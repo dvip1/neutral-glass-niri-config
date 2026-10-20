@@ -9,7 +9,7 @@
   "spacing": 4,
   "modules-left": ["niri/workspaces", "group/media"],
   "modules-center": ["clock"],
-  "modules-right": ["group/status", "tray"],
+  "modules-right": ["group/status"],
 
   "niri/workspaces": {
   "format": "{icon}",
@@ -29,17 +29,17 @@
     "tooltip-format": "<tt>{calendar}</tt>"
   },
   "pulseaudio": {
-    "format": "{icon}", "tooltip-format": "Volume {volume}%  ·  {desc}", "format-icons": {"default": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"]},
-    "format-muted": "<span size='large'></span>",
+    "format": "{icon}", "tooltip-format": "Volume {volume}%  ·  {desc}", "format-icons": {"default": ["<span size='large'>󰕿</span>","<span size='large'>󰖀</span>","<span size='large'>󰕾</span>"]},
+    "format-muted": "<span size='large'>󰝟</span>",
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "bluetooth": {
-    "format": "<span size='large'>\uf294</span>",
-    "format-on": "<span size='large'>\uf294</span>",
-    "format-off": "<span size='large'>\uf294</span>",
-    "format-disabled": "<span size='large'>\uf294</span>",
-    "format-connected": "<span size='large'>\uf294</span>",
-    "format-connected-battery": "<span size='large'>\uf294</span>",
+    "format": "<span size='large'>󰂯</span>",
+    "format-on": "<span size='large'>󰂯</span>",
+    "format-off": "<span size='large'>󰂲</span>",
+    "format-disabled": "<span size='large'>󰂲</span>",
+    "format-connected": "<span size='large'>󰂱</span>",
+    "format-connected-battery": "<span size='large'>󰂱</span>",
     "tooltip-format": "{controller_alias}  ({status})",
     "tooltip-format-connected": "{controller_alias}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
@@ -48,25 +48,25 @@
     "max-length": 24
   },
   "network": {
-    "format-wifi": "<span size='large'></span>",
-    "format-ethernet": "<span size='large'></span>",
-    "format-disconnected": "<span size='large'></span>",
+    "format-wifi": "{icon}",
+    "format-icons": ["<span size='large'>󰤟</span>","<span size='large'>󰤢</span>","<span size='large'>󰤥</span>","<span size='large'>󰤨</span>"],
+    "format-ethernet": "<span size='large'>󰈀</span>",
+    "format-disconnected": "<span size='large'>󰤮</span>",
     "tooltip-format": "{ifname}  {ipaddr}\n{essid}  {signalStrength}%",
     "on-click": "$HOME/.local/bin/wifi-menu"
   },
   "battery": {
-    "format": "{icon} {capacity}%", "format-icons": ["<span size='large'></span>","<span size='large'></span>","<span size='large'></span>","<span size='large'></span>","<span size='large'></span>"],
-    "format-charging": "<span size='large'></span> {capacity}%",
+    "format": "{icon} {capacity}%", "format-icons": {"default": ["<span size='large'>󰁺</span>","<span size='large'>󰁼</span>","<span size='large'>󰁾</span>","<span size='large'>󰂀</span>","<span size='large'>󰁹</span>"], "charging": ["<span size='large'>󰢜</span>","<span size='large'>󰂇</span>","<span size='large'>󰢝</span>","<span size='large'>󰢞</span>","<span size='large'>󰂅</span>"], "plugged": ["<span size='large'>󰢜</span>","<span size='large'>󰂇</span>","<span size='large'>󰢝</span>","<span size='large'>󰢞</span>","<span size='large'>󰂅</span>"]},
     "states": { "warning": 25, "critical": 10 }
   },
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
     "format-icons": {
-      "notification": "\uf0f3<sup>\uf111</sup>",
-      "none": "\uf0f3",
-      "dnd-notification": "\uf1f6<sup>\uf111</sup>",
-      "dnd-none": "\uf1f6"
+      "notification": "󰂚<sup>\uf111</sup>",
+      "none": "󰂚",
+      "dnd-notification": "󰂛<sup>\uf111</sup>",
+      "dnd-none": "󰂛"
     },
     "return-type": "json",
     "exec": "swaync-client -swb",
@@ -76,16 +76,16 @@
   },
   "group/media": {
     "orientation": "horizontal",
-    "modules": ["image#media-art", "group/media-ctl", "custom/media-viz"]
+    "modules": ["image#media-art", "group/media-ctl", "custom/media-toggle", "custom/media-viz"]
   },
   "group/media-ctl": {
     "orientation": "horizontal",
     "drawer": { "transition-duration": 250, "transition-left-to-right": true, "children-class": "media-ctl" },
-    "modules": ["mpris", "custom/media-prev", "custom/media-toggle", "custom/media-next"]
+    "modules": ["mpris", "custom/media-prev", "custom/media-next"]
   },
   "group/status": {
     "orientation": "horizontal",
-    "modules": ["custom/notification", "pulseaudio", "bluetooth", "network", "battery"]
+    "modules": ["custom/notification", "pulseaudio", "bluetooth", "network", "battery", "tray"]
   },
   "image#media-art": {
     "exec": "$HOME/.local/bin/media art",
@@ -104,7 +104,7 @@
     "on-scroll-down": "playerctl position 5-"
   },
   "custom/media-viz": {
-    "exec": "$HOME/.local/bin/media-viz 12",
+    "exec": "$HOME/.local/bin/media-viz 8",
     "format": "{}",
     "tooltip": false,
     "on-click": "playerctl play-pause"

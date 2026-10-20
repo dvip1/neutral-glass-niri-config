@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Session / power actions, used by the launcher entries (Lock, Suspend, Log Out, Reboot, Shut Down).
+#   power lock | suspend | logout | reboot | shutdown
+#   power            pick one in fuzzel
+# Log out, reboot and shut down ask for confirmation in fuzzel first.
+set -uo pipefail
+
+confirm() {
+  local pick
+  pick=$(printf 'Cancel\n%s\n' "$1" | fuzzel --dmenu --lines 2 --width 24 -p "$1?  ") || return 1
+  [[ $pick == "$1" ]]
+}
+
+run() {
+  case "$1" in
+    lock)     swaylock -f ;;
+    suspend)  systemctl suspend ;;   # swayidle locks the screen before sleep
+    logout)   confirm "Log Out"   && niri msg action quit --skip-confirmation ;;
+    reboot)   confirm "Reboot"    && systemctl reboot ;;
+    shutdown) confirm "Shut Down" && systemctl poweroff ;;
+    *) echo "usage: power [lock|suspend|logout|reboot|shutdown]" >&2; return 1 ;;
+  esac
+}
+
+if [[ $# -ge 1 ]]; then
+  run "$1"
+  exit
+fi
+
+# same icons as the launcher entries (recoloured per mode by `theme apply`)
+icons="$HOME/.config/theme/out/icons"
+pick=$(printf '%s\t%s\0icon\x1f%s/%s.svg\n' \
+    lock 'Lock Screen' "$icons" lock-screen  suspend Suspend "$icons" suspend \
+    logout 'Log Out' "$icons" log-out  reboot Reboot "$icons" reboot  shutdown 'Shut Down' "$icons" shutdown |
+  fuzzel --dmenu --lines 5 --width 24 --nth-delimiter=$'\t' --with-nth=2 -p "power  ") || exit 0
+run "${pick%%$'\t'*}"

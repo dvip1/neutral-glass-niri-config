@@ -9,17 +9,16 @@
 }
 
 window#waybar {
-  /* Matches Fuzzel's 1c1c21 base with ~58% opacity */
   background: {{bar_bg}};
   border: 1px solid {{bar_border}};
   border-radius: {{radius}}px;
   color: {{fg}};
 }
 
-/* Right: status icons share ONE pill (#status group); each icon gets a soft hover. */
+/* Right: status icons and the tray share ONE pill (#status group); each icon gets a soft hover. */
 #status {
   background: {{pill_bg}};
-  border-radius: 10px;
+  border-radius: {{radius_pill}}px;
   margin: 5px 4px;
   padding: 0 4px;
 }
@@ -33,7 +32,7 @@ window#waybar {
   color: {{fg}};
   padding: 0 8px;
   margin: 3px 0;
-  border-radius: 7px;
+  border-radius: {{radius_small}}px;
   transition: background 0.2s ease;
 }
 
@@ -51,8 +50,7 @@ window#waybar {
 }
 
 #tray {
-  padding: 0 10px 0 6px;
-  margin-right: 4px;
+  padding: 0 8px 0 6px;
 }
 
 /* Workspaces */
@@ -61,12 +59,14 @@ window#waybar {
   margin-left: 4px;
 }
 
+/* nowplaying's bar_x() places its popup from these sizes: keep them in sync */
 #workspaces button {
+  min-width: 16px;
   padding: 0 8px;
   margin: 5px 2px;
   color: {{fg_muted}};
   background: transparent;
-  border-radius: 6px;
+  border-radius: {{radius_small}}px;
   transition: all 0.2s ease;
 }
 
@@ -75,11 +75,10 @@ window#waybar {
   color: {{fg}};
 }
 
-/* Matches Fuzzel's selection-radius and selection alpha */
+/* Active workspace: the filled dot alone marks it, no background */
 #workspaces button.active {
   color: {{fg_strong}};
-  background: {{ws_active_bg}};
-  font-weight: bold;
+  background: transparent;
 }
 
 #workspaces button.urgent {
@@ -95,11 +94,11 @@ window#waybar {
   padding: 0 10px;
 }
 
-/* Left: media pill = album art + title; prev/play/next slide out on hover (drawer).
+/* Left: media pill = album art + title + play/pause; prev/next slide out on hover (drawer).
    Pill lives on the group, so it vanishes with the modules when nothing plays. */
 #media {
   background: {{pill_bg}};
-  border-radius: 10px;
+  border-radius: {{radius_pill}}px;
   margin: 5px 0 5px 8px;
 }
 
@@ -120,7 +119,7 @@ window#waybar {
 #custom-media-viz {
   font-family: "{{icon_font}}";
   font-size: 16px;
-  color: {{fg_title}};
+  color: {{fg_muted}};
   letter-spacing: 2px;
   padding: 0 12px 0 2px;
 }
@@ -131,11 +130,12 @@ window#waybar {
   color: {{fg}};
   padding: 0 7px;
   margin: 3px 0;
-  border-radius: 7px;
+  border-radius: {{radius_small}}px;
   transition: background 0.2s ease;
 }
 
-#custom-media-next {
+/* play/pause stays visible after the title; prev/next slide out on hover */
+#custom-media-toggle {
   margin-right: 3px;
 }
 
@@ -163,15 +163,13 @@ window#waybar {
   color: {{c_crit}};
 }
 
-#battery.charging {
-  color: {{c_ok}};
-}
+/* charging is shown by the bolt in the icon, not by colour */
 
-/* Frosted Tooltip to match Fuzzel */
+/* Frosted tooltip */
 tooltip {
   background: {{tip_bg}};
   border: 1px solid {{tip_border}};
-  border-radius: 10px;
+  border-radius: {{radius_pill}}px;
 }
 
 tooltip label {

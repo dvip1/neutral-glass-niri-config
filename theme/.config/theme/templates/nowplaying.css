@@ -19,9 +19,9 @@ window.nowplaying {
   color: {{fg}};
 }
 
-/* Cards: inset 6 px, so 14 - 6 = 8 keeps the corners concentric with the sheet. */
+/* Cards: inset 6 px from the sheet, small radius keeps the corners roughly concentric. */
 .card {
-  border-radius: 8px;
+  border-radius: {{radius_small}}px;
   padding: 8px;
   background: transparent;
   transition: background 150ms ease, opacity 180ms ease-out, transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -49,7 +49,7 @@ window.nowplaying {
 }
 
 .art {
-  border-radius: 6px;
+  border-radius: {{radius_small}}px;
   background: {{pill_hover}};
 }
 
@@ -89,7 +89,7 @@ button.ctl {
   min-width: 30px;
   min-height: 26px;
   padding: 0;
-  border-radius: 7px;
+  border-radius: {{radius_small}}px;
   color: {{fg}};
   font-size: 15px;
   transition: background 150ms ease;

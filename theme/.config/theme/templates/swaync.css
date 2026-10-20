@@ -29,7 +29,7 @@
 .summary { font-weight: bold; color: {{sw_text}}; }
 .time    { color: {{sw_dim}}; font-size: 11px; }
 .body    { color: {{sw_body}}; }
-.image   { border-radius: 8px; }
+.image   { border-radius: {{radius_small}}px; }
 
 .close-button {
   background: {{sw_btn}};
@@ -45,7 +45,7 @@
 .notification-action {
   background: {{sw_btn_soft}};
   border: none;
-  border-radius: 8px;
+  border-radius: {{radius_small}}px;
   margin: 4px;
 }
 .notification-action:hover { background: {{sw_btn_hover}}; }
@@ -57,9 +57,6 @@
   border-radius: {{radius}}px;
   padding: 8px;
 }
-.control-center .notification-row .notification-background .notification {
-  background: {{sw_btn_soft}};
-}
 .control-center .notification-row .notification-background .notification:hover {
   background: {{sw_btn}};
 }
@@ -67,7 +64,7 @@
 .widget-title > button {
   background: {{sw_btn}};
   border: none;
-  border-radius: 8px;
+  border-radius: {{radius_small}}px;
   padding: 4px 12px;
 }
 .widget-title > button:hover { background: {{sw_btn_hover}}; }

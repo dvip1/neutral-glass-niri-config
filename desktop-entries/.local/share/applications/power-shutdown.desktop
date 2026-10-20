@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Shut Down
+Comment=Power off the computer (asks first)
+Exec=/home/dvip/.local/bin/power shutdown
+Icon=/home/dvip/.config/theme/out/icons/shutdown.svg
+Terminal=false
+Categories=System;
+Keywords=shutdown;shut down;power off;poweroff;halt;

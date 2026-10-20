@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Suspend
+Comment=Sleep; the screen locks first
+Exec=/home/dvip/.local/bin/power suspend
+Icon=/home/dvip/.config/theme/out/icons/suspend.svg
+Terminal=false
+Categories=System;
+Keywords=sleep;suspend;standby;

@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
 # Usage: setwall /path/to/picture   set wallpaper (fill mode) and remember it
 #        setwall                  restore the last wallpaper (used at login)
+# Also renders the lock-screen backgrounds (wallpaper blurred, dimmed for dark mode and
+# brightened for light mode) into ~/.cache/lockscreen/, which swaylock's config points at.
 set -euo pipefail
 
 STATE="$HOME/.config/niri/wallpaper"
-DEFAULT_COLOR="#1e1e2e"
+DEFAULT_COLOR="#1c1c1c"
+LOCKDIR="${XDG_CACHE_HOME:-$HOME/.cache}/lockscreen"
+
+lockscreen() {
+  # skip if already rendered from this picture
+  [[ "$LOCKDIR/dark.png" -nt "$1" && "$LOCKDIR/light.png" -nt "$1" && "$LOCKDIR/dark.png" -nt "$STATE" ]] && return
+  mkdir -p "$LOCKDIR"
+  python3 -I - "$1" "$LOCKDIR" <<'PY'
+import os, sys
+from PIL import Image, ImageFilter, ImageOps
+src, out = sys.argv[1], sys.argv[2]
+# blur a small copy (fast and smooth); swaylock scales it back up to fill the screen
+im = ImageOps.fit(Image.open(src).convert('RGB'), (480, 300), Image.LANCZOS)
+im = im.filter(ImageFilter.GaussianBlur(9))
+for mode, tint in (('dark', (16, 16, 16)), ('light', (245, 245, 245))):
+    tmp = os.path.join(out, f'.{mode}.png')
+    Image.blend(im, Image.new('RGB', im.size, tint), 0.55).save(tmp)
+    os.replace(tmp, os.path.join(out, f'{mode}.png'))
+PY
+}
 
 if [[ $# -ge 1 ]]; then
   img=$(realpath -- "$1" 2>/dev/null) || { echo "setwall: no such file: $1" >&2; exit 1; }
@@ -20,8 +41,10 @@ fi
 old=$(pgrep -x swaybg || true)
 if [[ -n "$img" && -f "$img" ]]; then
   setsid swaybg -i "$img" -m fill >/dev/null 2>&1 &
+  lockscreen "$img" || echo "setwall: could not render the lock-screen background" >&2
 else
   setsid swaybg -c "$DEFAULT_COLOR" >/dev/null 2>&1 &
+  rm -f "$LOCKDIR"/{dark,light}.png
 fi
 sleep 0.3
 [[ -n "$old" ]] && kill $old 2>/dev/null || true

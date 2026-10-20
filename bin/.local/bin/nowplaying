@@ -80,8 +80,10 @@ def bar_x():
         n = sum(1 for w in ws if w['output'] == out['name'])
     except Exception:
         n = 4
-    # measured from the bar: 34 px of margins/padding, then 36 px per workspace dot
-    return 34 + 36 * n
+    # waybar can't report where a module is, so this follows the bar's CSS
+    # (templates/waybar.css, keep in sync): 34 px of bar margin, #workspaces margin/padding,
+    # module spacing and #media margin; then per dot min-width 16 + padding 2*8 + margin 2*2 = 36
+    return 34 + (16 + 2 * 8 + 2 * 2) * n
 
 
 # ---------- active player (playerctld) ----------

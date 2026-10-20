@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Lock Screen
+Comment=Lock the session (swaylock)
+Exec=/home/dvip/.local/bin/power lock
+Icon=/home/dvip/.config/theme/out/icons/lock-screen.svg
+Terminal=false
+Categories=System;
+Keywords=lock;screen;swaylock;away;
