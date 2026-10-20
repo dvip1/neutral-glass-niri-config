@@ -34,8 +34,9 @@ noise_reduction = 70
 monstercat = 1
 EOF
 
-# stop cava when waybar goes away
-trap 'kill 0' EXIT
+# stop cava when the bar goes away. Only our own children: `kill 0` would hit the whole process
+# group, and under Quickshell that group is niri's, so it ended the session.
+trap 'pkill -P $$' EXIT
 
 cava -p "$conf" | awk -F';' -v silence=45 -v raw="$raw" '
 BEGIN { split("▁ ▂ ▃ ▄ ▅ ▆", g, " "); quiet = silence }
