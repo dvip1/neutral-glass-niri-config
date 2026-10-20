@@ -28,7 +28,9 @@ PanelWindow {
     implicitWidth: full
     implicitHeight: tall
     color: "transparent"
-    visible: grow.running || hold.running || shrink.running
+    // own flag: tying this to the timers unmapped the window on every key press (restart() stops first)
+    property bool shown: false
+    visible: shown
     WlrLayershell.namespace: "osd"
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -37,13 +39,13 @@ PanelWindow {
     function pop(icon, level, max, dim) {
         osd.icon = icon; osd.level = level; osd.max = max; osd.dim = dim
         shrink.stop()
-        if (!visible) open = 0
+        if (!shown) { open = 0; shown = true }
         if (open < 1 && !grow.running) grow.restart()
         hold.restart()
     }
 
     NumberAnimation { id: grow; target: osd; property: "open"; to: 1; duration: 120; easing.type: Easing.OutCubic }
-    NumberAnimation { id: shrink; target: osd; property: "open"; to: 0; duration: 110; easing.type: Easing.InCubic }
+    NumberAnimation { id: shrink; target: osd; property: "open"; to: 0; duration: 110; easing.type: Easing.InCubic; onFinished: osd.shown = false }
     Timer { id: hold; interval: 1100; onTriggered: shrink.restart() }
 
     // ---- volume: follow the default output ----
@@ -107,7 +109,7 @@ PanelWindow {
                     width: Math.max(height, parent.width * Math.min(1, osd.level / osd.max))
                     color: Theme.osdBar
                     opacity: osd.dim ? 0.4 : 1
-                    Behavior on width { NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
+                    Behavior on width { NumberAnimation { duration: 140; easing.type: Easing.OutCubic } }
                 }
                 Rectangle {
                     visible: osd.max > 1
