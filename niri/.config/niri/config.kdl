@@ -219,7 +219,8 @@ spawn-at-startup "swayosd-server"
 spawn-at-startup "playerctld" "daemon"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist -max-items 500 store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist -max-items 500 store"
-spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock -f" "timeout" "600" "niri msg action power-off-monitors" "resume" "niri msg action power-on-monitors" "before-sleep" "swaylock -f"
+// Idle lock / screen off / suspend and battery warnings: settings in ~/.config/power/power.conf
+spawn-at-startup "sh" "-c" "$HOME/.local/bin/idle"
 spawn-at-startup "sh" "-c" "$HOME/.local/bin/setwall"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -245,6 +246,13 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // You can also set this to null to disable saving screenshots to disk.
 // screenshot-path null
 
+// No hot corners (the top-left one opened the overview); use Mod+O instead.
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 // Animation settings.
 // The wiki explains how to configure individual animations:
 // https://niri-wm.github.io/niri/Configuration:-Animations
@@ -255,6 +263,9 @@ animations {
     // Slow down all animations by this factor. Values below 1 speed them up instead.
     // slowdown 3.0
 }
+
+// Liquid open/close shaders and soft springs.
+include "animations.kdl"
 
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
@@ -323,10 +334,11 @@ binds {
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
-    // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "raise"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "lower"; }
-    XF86AudioMute        allow-when-locked=true { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+    // Max volume (150%) is set in ~/.config/swayosd/config.toml; ~/.local/bin/volume shows a
+    // distinct OSD above 100%.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume down"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "$HOME/.local/bin/volume mute"; }
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
     // Example media keys mapping using playerctl.

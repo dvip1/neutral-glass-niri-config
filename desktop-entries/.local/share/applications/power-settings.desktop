@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Power Settings
+GenericName=Battery & Idle
+Comment=Idle timers, auto-suspend, lock, power profile per source and battery warnings (opens the config in nvim)
+Exec=/home/dvip/.local/bin/power-settings
+Icon=/home/dvip/.config/theme/out/icons/power-settings.svg
+Terminal=false
+Categories=Settings;
+Keywords=power;battery;idle;suspend;sleep;lock;timeout;screen;profile;saver;performance;

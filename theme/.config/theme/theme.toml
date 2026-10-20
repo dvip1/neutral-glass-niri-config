@@ -32,6 +32,7 @@ fuzzel  = { src = "templates/fuzzel.ini",  dest = "~/.config/fuzzel/fuzzel.ini" 
 swaylock = { src = "templates/swaylock.conf", dest = "~/.config/swaylock/config" }
 niri    = { src = "templates/niri.kdl",    dest = "~/.config/theme/out/niri.kdl" }
 nowplaying = { src = "templates/nowplaying.css", dest = "~/.config/theme/out/nowplaying.css" }
+powerpanel = { src = "templates/powerpanel.css", dest = "~/.config/theme/out/powerpanel.css" }
 icons   = { src = "templates/icons",       dest = "~/.config/theme/out/icons" }   # launcher icons (a folder: every file is rendered)
 
 [dark]

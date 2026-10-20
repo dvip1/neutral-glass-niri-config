@@ -170,9 +170,12 @@ tooltip {
   background: {{tip_bg}};
   border: 1px solid {{tip_border}};
   border-radius: {{radius_pill}}px;
+  text-shadow: none;
 }
 
+/* GTK3's Adwaita gives tooltip text a 1px black text-shadow (made for its dark tooltips): it reads as bold */
 tooltip label {
   color: {{fg}};
+  text-shadow: none;
   padding: 6px;
 }

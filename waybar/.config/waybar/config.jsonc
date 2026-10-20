@@ -29,8 +29,10 @@
     "tooltip-format": "<tt>{calendar}</tt>"
   },
   "pulseaudio": {
-    "format": "{icon}", "tooltip-format": "Volume {volume}%  ·  {desc}", "format-icons": {"default": ["<span size='large'>󰕿</span>","<span size='large'>󰖀</span>","<span size='large'>󰕾</span>"]},
+    // states match volume <= value here, so "normal" = up to 100%; the plain format is the >100% boost icon
+    "format": "<span size='large'>󰝝</span>", "states": {"normal": 100}, "format-normal": "{icon}", "tooltip-format": "Volume {volume}%  ·  {desc}", "format-icons": {"default": ["<span size='large'>󰕿</span>","<span size='large'>󰖀</span>","<span size='large'>󰕾</span>"]},
     "format-muted": "<span size='large'>󰝟</span>",
+    "max-volume": 150,
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "bluetooth": {
@@ -56,6 +58,8 @@
     "on-click": "$HOME/.local/bin/wifi-menu"
   },
   "battery": {
+    "on-click": "$HOME/.local/bin/powerpanel",
+    "tooltip": false,   // the powerpanel popup shows this
     "format": "{icon} {capacity}%", "format-icons": {"default": ["<span size='large'>󰁺</span>","<span size='large'>󰁼</span>","<span size='large'>󰁾</span>","<span size='large'>󰂀</span>","<span size='large'>󰁹</span>"], "charging": ["<span size='large'>󰢜</span>","<span size='large'>󰂇</span>","<span size='large'>󰢝</span>","<span size='large'>󰢞</span>","<span size='large'>󰂅</span>"], "plugged": ["<span size='large'>󰢜</span>","<span size='large'>󰂇</span>","<span size='large'>󰢝</span>","<span size='large'>󰢞</span>","<span size='large'>󰂅</span>"]},
     "states": { "warning": 25, "critical": 10 }
   },

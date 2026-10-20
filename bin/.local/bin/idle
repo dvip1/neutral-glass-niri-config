@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Idle / battery daemon, configured by ~/.config/power/power.conf (started by niri at login).
+# Runs swayidle with the battery or plugged-in timers and restarts it when you plug in/out or save
+# the config; optionally switches the power profile per source; notifies on low battery.
+#   idle           run (only one instance; a second one exits)
+#   idle --print   show the settings and swayidle command it would use right now, then exit
+set -uo pipefail
+
+CONF="$HOME/.config/power/power.conf"
+BAT=$(ls -d /sys/class/power_supply/BAT* 2>/dev/null | head -1)
+POLL=5   # seconds between checks of power source, config and battery level
+
+declare -A cfg
+
+load() {
+  cfg=([battery_lock]=5 [battery_screen_off]=6 [battery_suspend]=15 [battery_profile]=
+       [ac_lock]=10 [ac_screen_off]=15 [ac_suspend]=0 [ac_profile]=
+       [low_battery]=20 [critical_battery]=10)
+  local line key val bad=()
+  [[ -r $CONF ]] || return 0
+  while IFS= read -r line || [[ -n $line ]]; do
+    line=${line%%#*}
+    [[ $line == *=* ]] || continue
+    key=$(echo "${line%%=*}" | xargs); val=$(echo "${line#*=}" | xargs)
+    if [[ -z ${cfg[$key]+set} ]]; then bad+=("unknown setting '$key'"); continue; fi
+    case $key in
+      *_profile) [[ -z $val || $val =~ ^(power-saver|balanced|performance)$ ]] || { bad+=("$key: '$val'"); continue; } ;;
+      *) [[ $val =~ ^[0-9]+(\.[0-9]+)?$ ]] || { bad+=("$key: '$val' is not a number"); continue; } ;;
+    esac
+    cfg[$key]=$val
+  done < "$CONF"
+  ((${#bad[@]})) && notify-send -a power -u critical "Power settings" "Ignored: $(printf '%s; ' "${bad[@]}")"
+  return 0
+}
+
+source_now() {   # battery | ac
+  [[ -n $BAT && $(<"$BAT/status") == Discharging ]] && echo battery || echo ac
+}
+
+secs() { awk -v m="$1" 'BEGIN { printf "%d", m * 60 }'; }
+
+swayidle_args() {   # $1 = battery | ac
+  local s args=(-w)
+  s=$(secs "${cfg[${1}_lock]}");       ((s > 0)) && args+=(timeout "$s" 'swaylock -f')
+  s=$(secs "${cfg[${1}_screen_off]}"); ((s > 0)) && args+=(timeout "$s" 'niri msg action power-off-monitors'
+                                                           resume 'niri msg action power-on-monitors')
+  s=$(secs "${cfg[${1}_suspend]}");    ((s > 0)) && args+=(timeout "$s" 'systemctl suspend')
+  args+=(before-sleep 'swaylock -f' lock 'swaylock -f')
+  printf '%s\n' "${args[@]}"
+}
+
+set_profile() {
+  [[ -n $1 ]] || return 0
+  gdbus call --system --dest net.hadess.PowerProfiles --object-path /net/hadess/PowerProfiles \
+    --method org.freedesktop.DBus.Properties.Set net.hadess.PowerProfiles ActiveProfile "<'$1'>" >/dev/null
+}
+
+if [[ ${1:-} == --print ]]; then
+  load; src=$(source_now)
+  echo "power source: $src"
+  for k in "${!cfg[@]}"; do echo "  $k = ${cfg[$k]}"; done | sort
+  mapfile -t a < <(swayidle_args "$src"); printf 'swayidle'; printf ' %q' "${a[@]}"; echo
+  exit 0
+fi
+
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/idle.lock"
+flock -n 9 || { echo "idle: already running" >&2; exit 0; }
+
+pid=
+trap '[[ -n $pid ]] && kill $pid 2>/dev/null' EXIT
+trap 'exit 0' INT TERM
+
+start() {
+  [[ -n $pid ]] && kill "$pid" 2>/dev/null && wait "$pid" 2>/dev/null
+  mapfile -t a < <(swayidle_args "$1")
+  swayidle "${a[@]}" &
+  pid=$!
+}
+
+src= mtime= warned=
+while true; do
+  now=$(source_now); m=$(stat -L -c %Y "$CONF" 2>/dev/null || echo none)
+  if [[ $m != "$mtime" ]]; then
+    load
+    [[ -n $mtime ]] && notify-send -a power "Power settings applied" "Using the $now timers"
+    mtime=$m; src=   # restart swayidle with the new timers (without touching the profile)
+  fi
+  if [[ $now != "$src" ]]; then
+    [[ -n $src ]] && set_profile "${cfg[${now}_profile]}"
+    src=$now
+    start "$now"
+  elif ! kill -0 "$pid" 2>/dev/null; then
+    start "$now"   # swayidle died: bring it back
+  fi
+
+  # low-battery warnings, once per level per discharge
+  if [[ -n $BAT && $now == battery ]]; then
+    cap=$(<"$BAT/capacity")
+    crit=${cfg[critical_battery]%.*} low=${cfg[low_battery]%.*}
+    if ((crit > 0 && cap <= crit)) && [[ $warned != critical ]]; then
+      notify-send -a power -u critical "Battery critical: $cap%" "Plug in now."; warned=critical
+    elif ((low > 0 && cap <= low && cap > crit)) && [[ -z $warned ]]; then
+      notify-send -a power "Battery low: $cap%" "Consider plugging in."; warned=low
+    fi
+  else
+    warned=
+  fi
+  sleep "$POLL" & wait $!
+done

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Open ~/.config/power/power.conf in a glass kitty window (launcher entry and waybar battery click).
+# nvim --clean + notermguicolors: kitty's own palette and no background, so the glass shows
+# through and it follows dark/light mode. The idle daemon applies the file when you save.
+exec kitty -o hide_window_decorations=yes --title "Power Settings" \
+  nvim --clean -c 'set notermguicolors nonumber laststatus=1 shortmess+=I' \
+  "$HOME/.config/power/power.conf"

@@ -1,0 +1,3 @@
+[server]
+# allow boosting past 100% with the volume keys (OSD bar scales to this)
+max_volume = 150
