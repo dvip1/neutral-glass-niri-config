@@ -1,6 +1,7 @@
-// Now playing: a glass sheet under the bar's media pill, one card per player with
-// prev / play / next and a seek bar. Clicking a card hands the bar to that player (it becomes
-// playerctld's active player). Open/close behaviour comes from Sheet.qml.
+// Now playing: a glass sheet under the bar's media pill, one card per player, built from the
+// same pieces as quick settings and the date menu (round buttons, the shared Slider for
+// seeking). Clicking a card hands the bar to that player (it becomes playerctld's active
+// player; that card is lifted). Open/close behaviour comes from Sheet.qml.
 // (Replaces ~/.local/bin/nowplaying, the GTK4 version.)
 import QtQuick
 import Quickshell
@@ -13,7 +14,8 @@ Sheet {
     property var order: []            // playerctld's order (instance names); first = the bar's player
 
     namespace: "nowplaying"
-    full: 360
+    full: 380
+    pad: 12
 
     readonly property string ctld: "org.mpris.MediaPlayer2.playerctld"
     readonly property var players: Mpris.players.values
@@ -32,7 +34,11 @@ Sheet {
                   "com.github.altdesktop.playerctld", "PlayerNames"]
         stdout: StdioCollector {
             onStreamFinished: {
-                try { np.order = JSON.parse(text).data.map(n => n.replace("org.mpris.MediaPlayer2.", "")) } catch (e) {}
+                try {
+                    const o = JSON.parse(text).data.map(n => n.replace("org.mpris.MediaPlayer2.", ""))
+                    // only on a real change: a new array rebuilds every card (and eats clicks)
+                    if (JSON.stringify(o) !== JSON.stringify(np.order)) np.order = o
+                } catch (e) {}
             }
         }
     }
@@ -60,47 +66,54 @@ Sheet {
     readonly property var icons: ({ spotify: "󰓇", firefox: "󰈹", chromium: "", chrome: "", brave: "", mpv: "", vlc: "󰕼" })
     function appName(p) { return inst(p).split(".")[0] }
 
+    Text {
+        x: 4
+        topPadding: 2
+        bottomPadding: 4
+        text: "Now playing"
+        color: Theme.fg
+        font { family: Theme.font; pointSize: Theme.fontPx * 0.75; weight: Font.DemiBold }
+    }
+
     Repeater {
         model: np.players
-        delegate: card
+        delegate: Card {}
     }
 
     component Card: Rectangle {
         id: c
         required property var modelData
-        required property int index
         readonly property var p: modelData
         readonly property bool active: np.rank(p) === 0
-        readonly property bool hot: mouse.containsMouse
         readonly property real len: p.lengthSupported ? p.length : 0
+        readonly property color ink: Qt.rgba(Theme.barBg.r, Theme.barBg.g, Theme.barBg.b, 1)
 
         width: np.inner
-        implicitHeight: body.implicitHeight + 16
-        radius: Theme.radiusSmall
-        color: active ? Theme.wsActiveBg : hot ? Theme.wsHover : Theme.clear(Theme.wsHover)
-        Behavior on color { ColorAnimation { duration: c.hot ? Theme.hoverIn : Theme.hoverOut } }
+        implicitHeight: body.implicitHeight + 28
+        radius: Theme.radiusLarge
+        color: active || hover.hovered ? Theme.pillHover : Theme.pillBg
+        Behavior on color { ColorAnimation { duration: hover.hovered ? Theme.hoverIn : Theme.hoverOut } }
 
+        HoverHandler { id: hover }
         MouseArea {
-            id: mouse
             anchors.fill: parent
-            hoverEnabled: true
             onClicked: np.pick(c.p)
         }
 
         Column {
             id: body
-            x: 8; y: 8
-            width: parent.width - 16
-            spacing: 6
+            x: 14; y: 14
+            width: parent.width - 28
+            spacing: 12
 
             Row {
-                spacing: 12
                 width: parent.width
+                spacing: 14
 
                 // cover, or the player's icon on a tile
                 ClippingRectangle {
                     width: 64; height: 64
-                    radius: Theme.radiusSmall
+                    radius: Theme.radiusSmall + 3
                     color: Theme.pillHover
                     Text {
                         anchors.centerIn: parent
@@ -120,127 +133,114 @@ Sheet {
                 }
 
                 Column {
-                    width: parent.width - 64 - 12
+                    width: parent.width - 64 - 14
                     anchors.verticalCenter: parent.verticalCenter
-
+                    spacing: 2
                     Text {
                         width: parent.width
                         elide: Text.ElideRight
                         text: c.p.trackTitle || c.p.identity
-                        color: c.p.isPlaying ? Theme.fgStrong : Theme.fg
+                        color: Theme.fgStrong
                         font { family: Theme.font; pointSize: Theme.fontPx * 0.75; weight: Font.DemiBold }
                     }
                     Text {
                         width: parent.width
                         visible: text !== ""
-                        topPadding: 1
                         elide: Text.ElideRight
                         text: c.p.trackArtist || ""
                         color: Theme.fgTitle
                         font { family: Theme.font; pointSize: 13 * 0.75 }
                     }
-                    Item {
-                        width: parent.width
-                        height: 30
-                        Text {
+                    Row {
+                        topPadding: 4
+                        spacing: 6
+                        Rectangle {   // the player the bar follows
+                            visible: c.active
+                            width: 6; height: 6; radius: 3
                             anchors.verticalCenter: parent.verticalCenter
+                            color: Theme.fgTitle
+                        }
+                        Text {
                             text: (np.icons[np.appName(c.p)] || "󰝚") + "  " + c.p.identity
                             color: Theme.fgMuted
-                            font { family: Theme.font; pointSize: 12 * 0.75 }
-                        }
-                        Row {
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            spacing: 2
-                            Btn {
-                                implicitHeight: 26; padding: 8
-                                enabled: c.p.canGoPrevious; opacity: enabled ? 1 : 0.4
-                                onClicked: c.p.previous()
-                                Icon { text: "󰒮"; color: Theme.fg; pointSize: 15 * 0.75 }
-                            }
-                            Btn {
-                                implicitHeight: 26; padding: 8
-                                enabled: c.p.canTogglePlaying; opacity: enabled ? 1 : 0.4
-                                onClicked: c.p.togglePlaying()
-                                Icon { text: c.p.isPlaying ? "󰏤" : "󰐊"; color: Theme.fg; pointSize: 15 * 0.75 }
-                            }
-                            Btn {
-                                implicitHeight: 26; padding: 8
-                                enabled: c.p.canGoNext; opacity: enabled ? 1 : 0.4
-                                onClicked: c.p.next()
-                                Icon { text: "󰒭"; color: Theme.fg; pointSize: 15 * 0.75 }
-                            }
+                            font { family: Theme.font; pointSize: 11.5 * 0.75 }
                         }
                     }
                 }
             }
 
-            // seek bar: a hairline that thickens and shows its knob when you reach for it
-            Row {
+            // seek bar (the shared slider) with the times under it
+            Column {
                 visible: c.len > 0
                 width: parent.width
-                spacing: 8
-
-                Text {
-                    width: 34
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: np.fmt(seek.dragging ? seek.dragFrac * c.len : c.p.position)
-                    color: Theme.fgMuted
-                    font { family: Theme.font; pointSize: 11 * 0.75; features: { "tnum": 1 } }
+                Slider {
+                    id: seek
+                    width: parent.width
+                    implicitHeight: 22
+                    enabled: c.p.canSeek
+                    value: c.len > 0 ? c.p.position / c.len : 0
+                    onReleased: v => c.p.position = v * c.len
                 }
                 Item {
-                    id: seek
-                    width: parent.width - 2 * (34 + 8)
-                    height: 16
-                    anchors.verticalCenter: parent.verticalCenter
-                    readonly property bool hot: seekMouse.containsMouse || seekMouse.pressed
-                    property bool dragging: false
-                    property real dragFrac: 0
-                    readonly property real frac: dragging ? dragFrac : c.len > 0 ? Math.min(1, c.p.position / c.len) : 0
-
-                    Rectangle {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width
-                        height: seek.hot ? 5 : 3
-                        radius: height / 2
-                        color: Theme.pillHover
-                        Behavior on height { NumberAnimation { duration: 150 } }
-                        Rectangle {
-                            height: parent.height
-                            radius: height / 2
-                            width: parent.width * seek.frac
-                            color: c.p.canSeek ? Theme.fgTitle : Theme.fgMuted
-                        }
+                    width: parent.width
+                    height: 14
+                    Text {
+                        x: 9
+                        text: np.fmt(seek.dragging ? seek.dragValue * c.len : c.p.position)
+                        color: Theme.fgMuted
+                        font { family: Theme.font; pointSize: 11 * 0.75; features: { "tnum": 1 } }
                     }
-                    Rectangle {
-                        property real size: seek.hot && c.p.canSeek ? 11 : 0
-                        width: size; height: size; radius: size / 2
-                        x: parent.width * seek.frac - size / 2
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: Theme.fgStrong
-                        Behavior on size { NumberAnimation { duration: 150; easing.type: Easing.OutBack } }
-                    }
-                    MouseArea {
-                        id: seekMouse
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        enabled: c.p.canSeek
-                        function at(mx) { return Math.max(0, Math.min(1, mx / width)) }
-                        onPressed: m => { seek.dragging = true; seek.dragFrac = at(m.x) }
-                        onPositionChanged: m => { if (pressed) seek.dragFrac = at(m.x) }
-                        onReleased: { c.p.position = seek.dragFrac * c.len; seek.dragging = false }
+                    Text {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 9
+                        text: np.fmt(c.len)
+                        color: Theme.fgMuted
+                        font { family: Theme.font; pointSize: 11 * 0.75; features: { "tnum": 1 } }
                     }
                 }
-                Text {
-                    width: 34
-                    horizontalAlignment: Text.AlignRight
+            }
+
+            // controls: round buttons, play / pause filled like an "on" tile
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 18
+                RoundBtn {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: np.fmt(c.len)
-                    color: Theme.fgMuted
-                    font { family: Theme.font; pointSize: 11 * 0.75; features: { "tnum": 1 } }
+                    icon: "󰒮"
+                    enabled: c.p.canGoPrevious
+                    opacity: enabled ? 1 : 0.4
+                    onClicked: c.p.previous()
+                }
+                Rectangle {
+                    id: play
+                    width: 46; height: 46; radius: 23
+                    color: Theme.wsPill
+                    opacity: playMouse.containsMouse ? 0.88 : 1
+                    scale: playMouse.pressed ? 0.92 : 1
+                    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutCubic } }
+                    Text {
+                        anchors.centerIn: parent
+                        text: c.p.isPlaying ? "󰏤" : "󰐊"
+                        color: c.ink
+                        font { family: Theme.iconFont; pixelSize: 22 }
+                    }
+                    MouseArea {
+                        id: playMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        enabled: c.p.canTogglePlaying
+                        onClicked: c.p.togglePlaying()
+                        onDoubleClicked: c.p.togglePlaying()
+                    }
+                }
+                RoundBtn {
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon: "󰒭"
+                    enabled: c.p.canGoNext
+                    opacity: enabled ? 1 : 0.4
+                    onClicked: c.p.next()
                 }
             }
         }
     }
-    Component { id: card; Card {} }
 }

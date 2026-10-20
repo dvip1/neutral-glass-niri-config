@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+"""background-apps - what GNOME calls "Background apps", for Quickshell's quick settings.
+
+Prints JSON: {"tray": {"<tray item id>": "<flatpak app id or ''>"},
+              "flatpak": [{"app": ..., "name": ..., "icon": ...}]}
+`flatpak` lists Flatpak apps that are running but have no window (and no tray item); a window
+counts if niri's app_id is the app id, or the desktop file's StartupWMClass or Name.
+    background-apps          print the JSON
+"""
+import configparser
+import json
+import os
+import re
+import subprocess
+
+
+def run(*cmd):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=3).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return ''
+
+
+def flatpak_of(pid):
+    try:
+        for line in open(f'/proc/{pid}/root/.flatpak-info'):
+            if line.startswith('name='):
+                return line.split('=', 1)[1].strip()
+    except OSError:
+        pass
+    return ''
+
+
+def tray():
+    out = {}
+    items = re.findall(r'"([^"]+)"', run('busctl', '--user', 'get-property', 'org.kde.StatusNotifierWatcher',
+                                          '/StatusNotifierWatcher', 'org.kde.StatusNotifierWatcher',
+                                          'RegisteredStatusNotifierItems'))
+    for entry in items:
+        svc, _, path = entry.partition('/')
+        path = '/' + path if path else '/StatusNotifierItem'
+        m = re.search(r'"(.*)"', run('busctl', '--user', 'get-property', svc, path, 'org.kde.StatusNotifierItem', 'Id'))
+        pid = run('busctl', '--user', 'call', 'org.freedesktop.DBus', '/org/freedesktop/DBus',
+                  'org.freedesktop.DBus', 'GetConnectionUnixProcessID', 's', svc).split()
+        if m:
+            out[m.group(1)] = flatpak_of(pid[1]) if len(pid) > 1 else ''
+    return out
+
+
+def desktop(app):
+    for base in ('~/.local/share/flatpak/exports/share/applications', '/var/lib/flatpak/exports/share/applications'):
+        path = os.path.expanduser(f'{base}/{app}.desktop')
+        if os.path.exists(path):
+            cp = configparser.ConfigParser(interpolation=None, strict=False)
+            try:
+                cp.read(path)
+                return cp['Desktop Entry'] if 'Desktop Entry' in cp else {}
+            except configparser.Error:
+                return {}
+    return {}
+
+
+def main():
+    t = tray()
+    try:
+        wins = {w.get('app_id', '').lower() for w in json.loads(run('niri', 'msg', '--json', 'windows') or '[]')}
+    except json.JSONDecodeError:
+        wins = set()
+    apps = sorted({l.strip() for l in run('flatpak', 'ps', '--columns=application').splitlines() if l.strip()})
+    bg = []
+    for app in apps:
+        if app in t.values():
+            continue
+        d = desktop(app)
+        names = {app.lower(), d.get('StartupWMClass', '').lower(), d.get('Name', '').lower()} - {''}
+        if names & wins:
+            continue
+        bg.append({'app': app, 'name': d.get('Name', app.split('.')[-1]), 'icon': d.get('Icon', app)})
+    print(json.dumps({'tray': t, 'flatpak': bg}))
+
+
+if __name__ == '__main__':
+    main()

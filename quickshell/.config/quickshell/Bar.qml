@@ -1,6 +1,6 @@
-// One glass bar per screen: workspaces + media | clock | status pill.
-// Geometry follows the old waybar (36 px tall, 8 px from the top, 10 px from the sides) so
-// nowplaying / powerpanel popups still line up. niri blurs it via the "bar" layer-rule.
+// One glass bar per screen: workspaces + media | clock | status pill. Like GNOME's top bar it
+// spans the whole top edge (no gap, no rounded corners) with a hairline along its bottom.
+// niri blurs it via the "bar" layer-rule.
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -21,36 +21,38 @@ PanelWindow {
     NumberAnimation { id: slideIn; target: bar; property: "slide"; to: 0; duration: Theme.pillMs; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring }
 
     anchors { top: true; left: true; right: true }
-    margins { top: 8 - slide * 48; left: 10; right: 10 }
-    implicitHeight: 36
-    exclusiveZone: 36 + 4
+    margins { top: -slide * implicitHeight }
+    implicitHeight: 34
+    exclusiveZone: implicitHeight
     color: "transparent"
 
     WlrLayershell.namespace: "bar"
 
-    // ---- popovers: at most one of the media sheet, the power sheet and swaync's notification
-    // centre is open. Click its pill to open, again to close; a click anywhere else closes it. ----
-    property string popover: ""       // "media" | "power" | "notif" | ""
+    // ---- popovers: at most one of the media sheet, quick settings and the date menu
+    // (notifications + calendar) is open. Click its pill to open, again to close; a click anywhere else closes it. ----
+    property string popover: ""       // "media" | "quick" | "notif" | ""
     function toggle(name) {
         if (name === "media" && nowPlaying.players.length === 0) name = ""
         popover = popover === name ? "" : name
-    }
-    onPopoverChanged: {
-        if (popover === "notif") Quickshell.execDetached(["swaync-client", "-op", "-sw"])
-        else if (status.ccOpen) Quickshell.execDetached(["swaync-client", "-cp", "-sw"])
     }
     IpcHandler {
         target: "nowplaying"
         function toggle(): void { bar.toggle("media") }
     }
     IpcHandler {
-        target: "powerpanel"
-        function toggle(): void { bar.toggle("power") }
+        target: "quicksettings"
+        function toggle(): void { bar.toggle("quick") }
+    }
+    IpcHandler {
+        target: "notifications"
+        function toggle(): void { bar.toggle("notif") }
+        function clear(): void { Notifs.clear() }
+        function clearApp(app: string): void { Notifs.clearApp(app) }
+        function dnd(): void { Notifs.dnd = !Notifs.dnd }
     }
 
     // The catcher: an invisible layer over everything below the bar (it keeps out of the bar's
-    // exclusive zone, so the pills stay clickable). Sheets and swaync's centre sit above it
-    // on the overlay layer. The click that closes a popover is not passed on.
+    // exclusive zone, so the pills stay clickable). The sheets sit above it on the overlay layer. The click that closes a popover is not passed on.
     PanelWindow {
         screen: bar.screen
         visible: bar.popover !== ""
@@ -71,14 +73,17 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: Theme.barBg
-        border.color: Theme.barBorder
-        border.width: 1
-        radius: Theme.radius
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: Theme.barBorder
+        }
     }
 
     Row {
         id: left
-        x: 8
+        x: 10
         height: parent.height
         spacing: 16
 
@@ -105,26 +110,27 @@ PanelWindow {
     Clock {
         anchors.centerIn: parent
         window: bar
+        onOpen: bar.toggle("notif")
+    }
+
+    DateMenu {
+        screen: bar.screen
+        want: bar.popover === "notif"
+        onDismiss: bar.popover = ""
     }
 
     Status {
         id: status
-        onBatteryClicked: bar.toggle("power")
-        onBellClicked: bar.toggle("notif")
-        onCcOpenChanged: {
-            if (ccOpen) bar.popover = "notif"
-            else if (bar.popover === "notif") bar.popover = ""
-        }
+        onOpened: bar.toggle("quick")
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 8
         anchors.verticalCenter: parent.verticalCenter
         window: bar
     }
 
-    PowerPanel {
-        id: power
+    QuickSettings {
         screen: bar.screen
-        want: bar.popover === "power"
+        want: bar.popover === "quick"
         onDismiss: bar.popover = ""
     }
 }

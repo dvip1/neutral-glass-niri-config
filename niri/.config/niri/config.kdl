@@ -214,7 +214,6 @@ layout {
 
 // The bar: Quickshell (~/.config/quickshell). waybar's config is still in the repo if needed.
 spawn-at-startup "qs"
-spawn-at-startup "swaync"
 spawn-at-startup "playerctld" "daemon"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist -max-items 500 store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist -max-items 500 store"
@@ -355,10 +354,10 @@ binds {
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
-    // Notifications (swaync): control centre, clear all, close newest popup, do-not-disturb.
-    Mod+N hotkey-overlay-title="Notification Center" { spawn "swaync-client" "-t" "-sw"; }
-    Mod+Shift+N hotkey-overlay-title="Clear All Notifications" { spawn "swaync-client" "-C" "-sw"; }
-    Mod+Ctrl+N hotkey-overlay-title="Toggle Do Not Disturb" { spawn "swaync-client" "-d" "-sw"; }
+    // Notifications (Quickshell): date menu with the list, clear all, do-not-disturb.
+    Mod+N hotkey-overlay-title="Notification Center" { spawn "qs" "ipc" "call" "notifications" "toggle"; }
+    Mod+Shift+N hotkey-overlay-title="Clear All Notifications" { spawn "qs" "ipc" "call" "notifications" "clear"; }
+    Mod+Ctrl+N hotkey-overlay-title="Toggle Do Not Disturb" { spawn "qs" "ipc" "call" "notifications" "dnd"; }
 
     Mod+B hotkey-overlay-title="Bluetooth Menu" { spawn-sh "$HOME/.local/bin/bt-menu"; }
     Mod+P hotkey-overlay-title="Media Players" { spawn "qs" "ipc" "call" "nowplaying" "toggle"; }

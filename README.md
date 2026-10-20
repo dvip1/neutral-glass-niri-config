@@ -23,7 +23,8 @@ then `./install.sh <tool>`.
 
 | Package | What |
 |---|---|
-| niri, waybar, fuzzel, swaync, swayosd, swaylock | the desktop |
+| niri, quickshell, fuzzel, swaylock | the desktop. **quickshell** is the bar, quick settings, date menu + notifications (it is the notification daemon), OSD, media sheet and polkit prompt |
+| waybar, swaync, swayosd | the previous bar / notifications / OSD, kept but no longer started |
 | theme | central theming (`theme.toml`, templates, the `theme` engine): see `theme/.config/theme/README.md` |
 | kitty, alacritty, tmux | terminals and multiplexer |
 | nvim | **its own git repo** (`dvip1/nvim-config`), only linked here, not tracked by this repo |

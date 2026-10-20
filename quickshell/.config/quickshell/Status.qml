@@ -1,213 +1,108 @@
-// Right: notifications, volume, microphone, bluetooth, network, battery and the tray share ONE pill,
-// with one highlight gliding between whatever is hovered. Clicks open the same scripts the
-// waybar modules did.
+// Right: GNOME-style status button. A few icons in ONE pill that highlights as a whole; a click
+// anywhere on it opens quick settings, scrolling changes the volume. Shown: microphone (only
+// while an app records), do not disturb (when on), Bluetooth (when a device is connected),
+// network, volume, battery. Tray apps live in quick settings ("Background apps").
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import Quickshell.Bluetooth
 import Quickshell.Networking
 import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
-import Quickshell.Services.SystemTray
-import Quickshell.Widgets
 
 Rectangle {
     id: root
     property var window
-    signal batteryClicked()       // open / close the power sheet
-    signal bellClicked()          // open / close swaync's notification centre
-    property bool ccOpen: false   // swaync reports its control centre as open
-    readonly property string bin: Quickshell.env("HOME") + "/.local/bin/"
+    signal opened()               // clicked: open / close quick settings
 
-    implicitWidth: row.implicitWidth + 8
+    implicitWidth: row.implicitWidth + 24
     implicitHeight: 26
     radius: Theme.radiusPill
-    color: Theme.pillBg
+    color: mouse.pressed ? Theme.pillPress : mouse.containsMouse ? Theme.pillHover : Theme.pillBg
+    Behavior on color { ColorAnimation { duration: mouse.containsMouse ? Theme.hoverIn : Theme.hoverOut; easing.type: Easing.OutCubic } }
+    scale: mouse.pressed ? 0.96 : 1
+    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutCubic } }
+    Behavior on implicitWidth { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutCubic } }
 
-    function sh(cmd) { Quickshell.execDetached(["sh", "-c", cmd]) }
-    // icon colour: dim at rest, bright on hover; state colours (muted, warning) win
-    function tone(btn, state) { return state !== undefined ? state : btn.hovered ? Theme.fgStrong : Theme.fgTitle }
+    readonly property color ink: mouse.containsMouse ? Theme.fgStrong : Theme.fgTitle
 
-    Glide { id: hoverGlide }
+    // ---- state ----
+    readonly property var sink: Pipewire.defaultAudioSink
+    readonly property real level: sink && sink.audio ? sink.audio.volume : 0
+    readonly property bool muted: sink && sink.audio ? sink.audio.muted : false
+    // apps recording from a microphone (not cava & co., which capture a speaker's monitor)
+    readonly property var streams: Pipewire.nodes.values.filter(n => n.isStream)
+    PwObjectTracker { objects: [root.sink].concat(root.streams) }
+    readonly property bool recording: streams.some(n => n.properties["media.class"] === "Stream/Input/Audio"
+        && n.properties["stream.capture.sink"] !== "true")
+
+    readonly property var adapter: Bluetooth.defaultAdapter
+    readonly property bool btConnected: adapter !== null && adapter.enabled && adapter.devices.values.some(d => d.connected)
+
+    readonly property var dev: {
+        const all = Networking.devices.values.filter(d => d.connected)
+        return all.find(d => d.type === DeviceType.Wifi) || all[0] || null
+    }
+    readonly property bool wifi: dev !== null && dev.type === DeviceType.Wifi
+    readonly property var network: wifi ? dev.networks.values.find(n => n.connected) || null : null
+    readonly property real strength: network ? network.signalStrength : 0
+
+    readonly property var bat: UPower.displayDevice
+    readonly property real pct: bat ? Math.round(bat.percentage > 1 ? bat.percentage : bat.percentage * 100) : 0
+    readonly property bool charging: bat !== null && (bat.state === UPowerDeviceState.Charging
+        || bat.state === UPowerDeviceState.FullyCharged || bat.state === UPowerDeviceState.PendingCharge)
+    readonly property var batState: pct <= 10 ? Theme.crit : pct <= 25 ? Theme.warn : undefined
 
     Row {
         id: row
-        x: 4
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
+        spacing: 14
 
-        // ---- notifications (swaync) ----
-        Btn {
-            id: notif
-            window: root.window
-            glide: hoverGlide
-            property string alt: "none"
-            onClicked: m => m.button === Qt.RightButton ? root.sh("swaync-client -d -sw") : root.bellClicked()
-            Icon {
-                text: notif.alt.startsWith("dnd") ? "󰂛" : "󰂚"
-                color: root.tone(notif)
-                Rectangle {   // the unread dot pops in (waybar drew it as a superscript)
-                    width: 5; height: 5; radius: 2.5
-                    x: parent.width - 2; y: 2
-                    color: parent.color
-                    scale: notif.alt.endsWith("notification") ? 1 : 0
-                    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutBack; easing.overshoot: 3 } }
-                }
-            }
-            Process {
-                running: true
-                command: ["swaync-client", "-swb"]
-                stdout: SplitParser {
-                    onRead: line => {
-                        try {
-                            const j = JSON.parse(line)
-                            notif.alt = j.alt
-                            root.ccOpen = [].concat(j.class).includes("cc-open")
-                        } catch (e) {}
-                    }
-                }
-            }
+        Icon {
+            visible: root.recording
+            text: "󰍬"
+            color: Theme.warn
         }
-
-        // ---- volume (PipeWire); up to 150 % like the volume keys ----
-        Btn {
-            id: vol
-            window: root.window
-            glide: hoverGlide
-            readonly property var sink: Pipewire.defaultAudioSink
-            readonly property real level: sink && sink.audio ? sink.audio.volume : 0
-            readonly property bool muted: sink && sink.audio ? sink.audio.muted : false
-            PwObjectTracker { objects: [vol.sink] }
-            tip: sink ? "Volume " + Math.round(level * 100) + "%  ·  " + (sink.description || sink.name) : ""
-            onClicked: root.sh("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
-            onWheel: w => root.sh("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ " + (w.angleDelta.y > 0 ? "1%+" : "1%-"))
-            Icon {
-                text: vol.muted ? "󰝟" : vol.level > 1.005 ? "󰝝" : vol.level < 0.34 ? "󰕿" : vol.level < 0.67 ? "󰖀" : "󰕾"
-                color: root.tone(vol, vol.muted ? Theme.fgMuted : undefined)
-            }
+        Icon {
+            visible: Notifs.dnd
+            text: "󰂛"
+            color: root.ink
         }
-
-        // ---- microphone (default input): click mutes / unmutes, like the Fn mic key ----
-        Btn {
-            id: mic
-            window: root.window
-            glide: hoverGlide
-            readonly property var source: Pipewire.defaultAudioSource
-            readonly property real level: source && source.audio ? source.audio.volume : 0
-            readonly property bool muted: source && source.audio ? source.audio.muted : false
-            visible: source !== null
-            PwObjectTracker { objects: [mic.source] }
-            tip: source ? (muted ? "Microphone off" : "Microphone " + Math.round(level * 100) + "%") + "  ·  " + (source.description || source.name) : ""
-            onClicked: root.sh("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")
-            onWheel: w => root.sh("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ " + (w.angleDelta.y > 0 ? "2%+" : "2%-"))
-            Icon {
-                text: mic.muted ? "󰍭" : "󰍬"
-                color: root.tone(mic, mic.muted ? Theme.fgMuted : undefined)
-            }
+        Icon {
+            visible: root.btConnected
+            text: "󰂱"
+            color: root.ink
         }
-
-        // ---- bluetooth ----
-        Btn {
-            id: bt
-            window: root.window
-            glide: hoverGlide
-            readonly property var adapter: Bluetooth.defaultAdapter
-            readonly property bool on: adapter !== null && adapter.enabled
-            readonly property var connected: adapter ? adapter.devices.values.filter(d => d.connected) : []
-            tip: !adapter ? "" : !on ? adapter.name + "  (off)"
-                : connected.length === 0 ? adapter.name + "  (on)"
-                : adapter.name + "\n" + connected.map(d => d.name + (d.batteryAvailable ? "  " + Math.round(d.battery * 100) + "%" : "")).join("\n")
-            onClicked: Quickshell.execDetached([root.bin + "bt-menu"])
-            Icon {
-                text: !bt.on ? "󰂲" : bt.connected.length > 0 ? "󰂱" : "󰂯"
-                color: root.tone(bt, bt.on ? undefined : Theme.fgMuted)
-            }
+        Icon {
+            text: !root.dev ? "󰤮" : !root.wifi ? "󰈀" : ["󰤟", "󰤢", "󰤥", "󰤨"][Math.min(3, Math.floor(root.strength * 4))]
+            color: root.dev ? root.ink : Theme.crit
         }
-
-        // ---- network ----
-        Btn {
-            id: net
-            window: root.window
-            glide: hoverGlide
-            readonly property var dev: {
-                const all = Networking.devices.values.filter(d => d.connected)
-                return all.find(d => d.type === DeviceType.Wifi) || all[0] || null
-            }
-            readonly property bool wifi: dev !== null && dev.type === DeviceType.Wifi
-            readonly property var network: wifi ? dev.networks.values.find(n => n.connected) || null : null
-            readonly property real strength: network ? network.signalStrength : 0
-            property string ip: ""
-            tip: !dev ? "Disconnected"
-                : dev.name + (ip ? "  " + ip : "") + (network ? "\n" + network.name + "  " + Math.round(strength * 100) + "%" : "")
-            onHoveredChanged: if (hovered && dev) { ipProc.command = ["nmcli", "-g", "IP4.ADDRESS", "device", "show", dev.name]; ipProc.running = true }
-            onClicked: Quickshell.execDetached([root.bin + "wifi-menu"])
-            Icon {
-                text: !net.dev ? "󰤮" : !net.wifi ? "󰈀"
-                    : ["󰤟", "󰤢", "󰤥", "󰤨"][Math.min(3, Math.floor(net.strength * 4))]
-                color: root.tone(net, net.dev ? undefined : Theme.crit)
-            }
-            Process {
-                id: ipProc
-                stdout: StdioCollector { onStreamFinished: net.ip = text.split("\n")[0].trim() }
-            }
+        Icon {
+            text: root.muted ? "󰝟" : root.level > 1.005 ? "󰝝" : root.level < 0.34 ? "󰕿" : root.level < 0.67 ? "󰖀" : "󰕾"
+            color: root.muted ? Theme.fgMuted : root.ink
         }
-
-        // ---- battery (click: powerpanel); the percentage rolls when it changes ----
-        Btn {
-            id: bat
-            window: root.window
-            glide: hoverGlide
-            readonly property var dev: UPower.displayDevice
-            readonly property real pct: dev ? Math.round(dev.percentage > 1 ? dev.percentage : dev.percentage * 100) : 0
-            readonly property bool charging: dev !== null && (dev.state === UPowerDeviceState.Charging
-                || dev.state === UPowerDeviceState.FullyCharged || dev.state === UPowerDeviceState.PendingCharge)
-            readonly property var state: pct <= 10 ? Theme.crit : pct <= 25 ? Theme.warn : undefined
-            visible: dev !== null && dev.isPresent
-            padding: 9
-            onClicked: root.batteryClicked()
+        Row {
+            visible: root.bat !== null && root.bat.isPresent
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 5
             Icon {
-                text: (bat.charging ? ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"] : ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"])[Math.min(4, Math.floor(bat.pct / 20))]
-                color: root.tone(bat, bat.state)
+                text: (root.charging ? ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"] : ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"])[Math.min(4, Math.floor(root.pct / 20))]
+                color: root.batState !== undefined ? root.batState : root.ink
             }
             Swap {
-                text: bat.pct + "%"
+                text: root.pct + "%"
                 tnum: true
                 slide: 7
-                color: root.tone(bat, bat.state)
+                color: root.batState !== undefined ? root.batState : root.ink
             }
         }
+    }
 
-        // ---- tray (passive items hidden, like waybar) ----
-        Row {
-            anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 2
-            rightPadding: 4
-            Repeater {
-                model: SystemTray.items
-                Btn {
-                    id: trayBtn
-                    required property var modelData
-                    visible: modelData.status !== Status.Passive
-                    window: root.window
-                    glide: hoverGlide
-                    padding: 4
-                    onClicked: m => {
-                        const item = modelData
-                        if (m.button === Qt.MiddleButton) item.secondaryActivate()
-                        else if (m.button === Qt.RightButton || item.onlyMenu) {
-                            if (item.hasMenu) {
-                                const p = trayBtn.mapToItem(null, 0, trayBtn.height + 10)
-                                item.display(root.window, p.x, p.y)
-                            }
-                        } else item.activate()
-                    }
-                    onWheel: w => modelData.scroll(w.angleDelta.y / 120, false)
-                    IconImage {
-                        implicitSize: 16
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: trayBtn.modelData.icon
-                    }
-                }
-            }
-        }
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: root.opened()
+        onDoubleClicked: root.opened()
+        onWheel: w => Quickshell.execDetached(["wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SINK@", w.angleDelta.y > 0 ? "2%+" : "2%-"])
     }
 }

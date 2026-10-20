@@ -3,7 +3,7 @@
 // resize costs a compositor round trip per frame: it stutters and runs late). Instead the glass
 // tint comes up quickly over niri's blur and the contents fade in with a small drop.
 // It is a popover: `want` is driven by the bar (click the pill to open, again to close; a
-// click anywhere else closes it via the bar's catcher). Esc asks to close with dismiss().
+// click anywhere else closes it via the bar's catcher). dismiss() asks the bar to close it.
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
@@ -14,6 +14,8 @@ PanelWindow {
     property real open: 0             // 0 = hidden, 1 = fully shown
     property int full: 360            // width
     property bool right: false        // hang from the right screen edge instead of the left
+    property bool center: false       // or centred under the bar (edge is ignored)
+    property bool keyboard: false     // take the keyboard (only while a text field is shown)
     property real edge: 0             // distance from that edge
     property int pad: 6
     property string namespace: "sheet"
@@ -21,8 +23,8 @@ PanelWindow {
     default property alias content: col.data
     readonly property real inner: full - 2 * pad
 
-    anchors { top: true; left: !right; right: right }
-    margins { top: 6; left: right ? 0 : edge; right: right ? edge : 0 }
+    anchors { top: true; left: !center && !right; right: !center && right }
+    margins { top: 6; left: center || right ? 0 : edge; right: !center && right ? edge : 0 }
     exclusionMode: ExclusionMode.Normal
     exclusiveZone: 0
     implicitWidth: full
@@ -31,7 +33,9 @@ PanelWindow {
     visible: want || shut.running
     WlrLayershell.namespace: namespace
     WlrLayershell.layer: WlrLayer.Overlay   // above the bar's click catcher (Top)
-    WlrLayershell.keyboardFocus: want ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    // no keyboard focus: while a sheet held it, the first click on the bar was eaten handing
+    // focus back, so clicking the pill again did not close it
+    WlrLayershell.keyboardFocus: keyboard ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     onWantChanged: {
         if (want) { shut.stop(); open = 0; grow.restart() }
@@ -48,8 +52,6 @@ PanelWindow {
         border.width: 1
         // the blur behind is there from the first frame, so the tint starts part-way up
         opacity: 0.4 + 0.6 * sheet.open
-        focus: true
-        Keys.onEscapePressed: sheet.dismiss()
     }
 
     Column {

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Close a background (tray) app: find its StatusNotifierItem by Id, look up the process that
+# owns it on the session bus and ask it to exit (SIGTERM). A Flatpak's item is owned by its
+# xdg-dbus-proxy, so for those the whole app is stopped with `flatpak kill` instead.
+# Used by Quickshell's quick settings when the app's own menu has no Quit entry.
+#   tray-quit <id>      close the app whose tray item has this Id
+#   tray-quit --list    print  id | status | pid | process  for every tray item
+set -euo pipefail
+
+items() {
+  busctl --user get-property org.kde.StatusNotifierWatcher /StatusNotifierWatcher \
+    org.kde.StatusNotifierWatcher RegisteredStatusNotifierItems | grep -o '"[^"]*"' | tr -d '"'
+}
+prop() { busctl --user get-property "$1" "$2" org.kde.StatusNotifierItem "$3" 2>/dev/null | cut -d'"' -f2; }
+owner_pid() {
+  busctl --user call org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus \
+    GetConnectionUnixProcessID s "$1" | awk '{print $2}'
+}
+
+want=${1:?usage: tray-quit <id> | --list}
+while read -r entry; do
+  svc=${entry%%/*}
+  path=/${entry#*/}
+  [ "$path" = "/$svc" ] && path=/StatusNotifierItem   # registered by bus name only
+  id=$(prop "$svc" "$path" Id)
+  pid=$(owner_pid "$svc")
+  if [ "$want" = --list ]; then
+    app=$(grep -m1 '^name=' "/proc/$pid/root/.flatpak-info" 2>/dev/null | cut -d= -f2 || true)
+    echo "$id | $(prop "$svc" "$path" Status) | $pid | ${app:-$(ps -o comm= -p "$pid")}"
+  elif [ "$id" = "$want" ]; then
+    app=$(grep -m1 '^name=' "/proc/$pid/root/.flatpak-info" 2>/dev/null | cut -d= -f2 || true)
+    if [ -n "$app" ]; then flatpak kill "$app"; else kill -TERM "$pid"; fi
+    exit 0
+  fi
+done < <(items)
+[ "$want" = --list ] || { echo "tray-quit: no tray item with id '$want'" >&2; exit 1; }

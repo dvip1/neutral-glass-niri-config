@@ -99,6 +99,7 @@ Rectangle {
                         else if (m.button === Qt.RightButton) root.run("next")
                         else root.run("previous")
                     }
+                    onDoubleClicked: m => clicked(m)
                     onWheel: w => root.run("position", w.angleDelta.y > 0 ? "5+" : "5-")
                 }
             }

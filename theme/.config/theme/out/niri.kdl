@@ -34,12 +34,30 @@ layer-rule {
     background-effect { blur true; }
     geometry-corner-radius 12
 }
-// The Quickshell bar. Its tooltips are not blurred: niri would show the blur box at once,
+// The Quickshell bar (square: it spans the top edge). Its tooltips are not blurred: niri would show the blur box at once,
 // before the tooltip has faded in (they are nearly opaque anyway).
 layer-rule {
     match namespace="^bar$"
     background-effect { blur true; }
-    geometry-corner-radius 12
+}
+// Quickshell's date menu (notifications + calendar) and notification popups.
+layer-rule {
+    match namespace="^datemenu$"
+    match namespace="^quicksettings$"
+    match namespace="^notification$"
+    background-effect {
+        blur true
+        xray false
+    }
+    geometry-corner-radius 14
+}
+// Quickshell's polkit prompt: the whole screen behind it is blurred (and dimmed by the prompt).
+layer-rule {
+    match namespace="^polkit$"
+    background-effect {
+        blur true
+        xray false
+    }
 }
 // Quickshell's volume/brightness OSD: the surface itself grows and shrinks, so the blur follows.
 layer-rule {

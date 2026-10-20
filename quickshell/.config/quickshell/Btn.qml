@@ -45,6 +45,7 @@ Rectangle {
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
         onClicked: m => root.clicked(m)
+        onDoubleClicked: m => root.clicked(m)   // a quick second click (e.g. open, then close) counts too
         onWheel: w => root.wheel(w)
     }
 

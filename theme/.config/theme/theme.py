@@ -195,8 +195,7 @@ def apply(mode=None, reload=True):
 
 def set_mode(mode):
     sh('gsettings', 'set', SCHEMA, 'color-scheme', f'prefer-{mode}')
-    apply(mode)
-    sh('notify-send', '-a', 'theme', f'{mode.capitalize()} mode', f'Switched to {mode} glass')
+    apply(mode)   # no notification: the quick-settings tile shows the mode
 
 
 def main(argv):
