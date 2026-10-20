@@ -1,5 +1,6 @@
-// Right: notifications, volume, bluetooth, network, battery and the tray share ONE pill.
-// Clicks open the same scripts the waybar modules did.
+// Right: notifications, volume, bluetooth, network, battery and the tray share ONE pill,
+// with one highlight gliding between whatever is hovered. Clicks open the same scripts the
+// waybar modules did.
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -24,6 +25,8 @@ Rectangle {
     // icon colour: dim at rest, bright on hover; state colours (muted, warning) win
     function tone(btn, state) { return state !== undefined ? state : btn.hovered ? Theme.fgStrong : Theme.fgTitle }
 
+    Glide { id: hoverGlide }
+
     Row {
         id: row
         x: 4
@@ -33,17 +36,18 @@ Rectangle {
         Btn {
             id: notif
             window: root.window
+            glide: hoverGlide
             property string alt: "none"
             onClicked: m => root.sh(m.button === Qt.RightButton ? "swaync-client -d -sw" : "swaync-client -t -sw")
             Icon {
-                id: bell
                 text: notif.alt.startsWith("dnd") ? "󰂛" : "󰂚"
                 color: root.tone(notif)
-                Rectangle {   // the unread dot (waybar drew it as a superscript)
-                    visible: notif.alt.endsWith("notification")
+                Rectangle {   // the unread dot pops in (waybar drew it as a superscript)
                     width: 5; height: 5; radius: 2.5
                     x: parent.width - 2; y: 2
                     color: parent.color
+                    scale: notif.alt.endsWith("notification") ? 1 : 0
+                    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutBack; easing.overshoot: 3 } }
                 }
             }
             Process {
@@ -59,6 +63,7 @@ Rectangle {
         Btn {
             id: vol
             window: root.window
+            glide: hoverGlide
             readonly property var sink: Pipewire.defaultAudioSink
             readonly property real level: sink && sink.audio ? sink.audio.volume : 0
             readonly property bool muted: sink && sink.audio ? sink.audio.muted : false
@@ -76,6 +81,7 @@ Rectangle {
         Btn {
             id: bt
             window: root.window
+            glide: hoverGlide
             readonly property var adapter: Bluetooth.defaultAdapter
             readonly property bool on: adapter !== null && adapter.enabled
             readonly property var connected: adapter ? adapter.devices.values.filter(d => d.connected) : []
@@ -93,6 +99,7 @@ Rectangle {
         Btn {
             id: net
             window: root.window
+            glide: hoverGlide
             readonly property var dev: {
                 const all = Networking.devices.values.filter(d => d.connected)
                 return all.find(d => d.type === DeviceType.Wifi) || all[0] || null
@@ -116,62 +123,60 @@ Rectangle {
             }
         }
 
-        // ---- battery (click: powerpanel) ----
+        // ---- battery (click: powerpanel); the percentage rolls when it changes ----
         Btn {
             id: bat
             window: root.window
+            glide: hoverGlide
             readonly property var dev: UPower.displayDevice
             readonly property real pct: dev ? Math.round(dev.percentage > 1 ? dev.percentage : dev.percentage * 100) : 0
             readonly property bool charging: dev !== null && (dev.state === UPowerDeviceState.Charging
                 || dev.state === UPowerDeviceState.FullyCharged || dev.state === UPowerDeviceState.PendingCharge)
+            readonly property var state: pct <= 10 ? Theme.crit : pct <= 25 ? Theme.warn : undefined
             visible: dev !== null && dev.isPresent
             padding: 9
             onClicked: Quickshell.execDetached([root.bin + "powerpanel"])
             Icon {
                 text: (bat.charging ? ["󰢜", "󰂇", "󰢝", "󰢞", "󰂅"] : ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"])[Math.min(4, Math.floor(bat.pct / 20))]
-                color: root.tone(bat, bat.pct <= 10 ? Theme.crit : bat.pct <= 25 ? Theme.warn : undefined)
+                color: root.tone(bat, bat.state)
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
+            Swap {
                 text: bat.pct + "%"
-                color: root.tone(bat, bat.pct <= 10 ? Theme.crit : bat.pct <= 25 ? Theme.warn : undefined)
-                font { family: Theme.font; pointSize: Theme.fontPx * 0.75; features: { "tnum": 1 } }
+                tnum: true
+                slide: 7
+                color: root.tone(bat, bat.state)
             }
         }
 
-        // ---- tray ----
+        // ---- tray (passive items hidden, like waybar) ----
         Row {
             anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 6
-            rightPadding: 8
-            spacing: 8
+            leftPadding: 2
+            rightPadding: 4
             Repeater {
                 model: SystemTray.items
-                IconImage {
-                    id: trayIcon
+                Btn {
+                    id: trayBtn
                     required property var modelData
-                    visible: modelData.status !== Status.Passive   // like waybar: hide passive items
-                    implicitSize: 16
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: modelData.icon
-                    scale: trayMouse.pressed ? 0.85 : trayMouse.containsMouse ? 1.12 : 1
-                    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
-                    MouseArea {
-                        id: trayMouse
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
-                        onClicked: m => {
-                            const item = trayIcon.modelData
-                            if (m.button === Qt.MiddleButton) item.secondaryActivate()
-                            else if (m.button === Qt.RightButton || item.onlyMenu) {
-                                if (item.hasMenu) {
-                                    const p = trayIcon.mapToItem(null, 0, trayIcon.height + 10)
-                                    item.display(root.window, p.x, p.y)
-                                }
-                            } else item.activate()
-                        }
-                        onWheel: w => trayIcon.modelData.scroll(w.angleDelta.y / 120, false)
+                    visible: modelData.status !== Status.Passive
+                    window: root.window
+                    glide: hoverGlide
+                    padding: 4
+                    onClicked: m => {
+                        const item = modelData
+                        if (m.button === Qt.MiddleButton) item.secondaryActivate()
+                        else if (m.button === Qt.RightButton || item.onlyMenu) {
+                            if (item.hasMenu) {
+                                const p = trayBtn.mapToItem(null, 0, trayBtn.height + 10)
+                                item.display(root.window, p.x, p.y)
+                            }
+                        } else item.activate()
+                    }
+                    onWheel: w => modelData.scroll(w.angleDelta.y / 120, false)
+                    IconImage {
+                        implicitSize: 16
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: trayBtn.modelData.icon
                     }
                 }
             }

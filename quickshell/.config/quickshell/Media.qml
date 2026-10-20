@@ -1,6 +1,6 @@
 // Media pill = album art + title + play/pause + cava bars; prev/next slide out next to the title
 // on hover. Follows playerctld (the most recently active player), like the playerctl bindings.
-// Hidden while nothing is playing or paused.
+// Fades in/out with playback; its width springs when the title changes.
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -17,21 +17,30 @@ Rectangle {
     }
     readonly property bool active: player !== null && player.trackTitle !== ""
         && player.playbackState !== MprisPlaybackState.Stopped
-    property string viz: ""
+    property var levels: []       // cava, 0-12 per bar; empty while silent
 
-    visible: active
+    visible: opacity > 0
+    opacity: active ? 1 : 0
+    scale: active ? 1 : 0.92
+    Behavior on opacity { NumberAnimation { duration: Theme.hoverOut; easing.type: Easing.OutCubic } }
+    Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
+
     implicitWidth: row.implicitWidth
     implicitHeight: 26
+    Behavior on implicitWidth { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
+    clip: true
     radius: Theme.radiusPill
     color: Theme.pillBg
 
     function run(...args) { Quickshell.execDetached(["playerctl", ...args]) }
 
+    Glide { id: hoverGlide }
+
     Row {
         id: row
         height: parent.height
 
-        // album art (click: play/pause)
+        // album art (click: play/pause); the new cover fades in
         Item {
             visible: art.status === Image.Ready
             width: visible ? 22 + 10 : 0
@@ -49,6 +58,8 @@ Rectangle {
                     sourceSize: Qt.size(66, 66)
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
+                    onStatusChanged: if (status === Image.Ready) fadeIn.restart()
+                    NumberAnimation on opacity { id: fadeIn; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
                 }
             }
             MouseArea { anchors.fill: parent; onClicked: root.run("play-pause") }
@@ -58,25 +69,25 @@ Rectangle {
         Item {
             id: drawer
             readonly property bool open: titleMouse.containsMouse || prev.hovered || next.hovered
-            width: title.width + (open ? buttons.implicitWidth : 0)
+            width: titleBox.width + (open ? buttons.implicitWidth : 0)
             height: parent.height
             clip: true
             Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
 
-            Text {
-                id: title
-                x: 0
-                rightPadding: 10
-                leftPadding: 4
-                anchors.verticalCenter: parent.verticalCenter
-                text: {
-                    const t = root.player ? root.player.trackTitle : ""
-                    return t.length > 26 ? t.slice(0, 25) + "…" : t
+            Item {
+                id: titleBox
+                width: title.implicitWidth + 4 + 10
+                height: parent.height
+                Swap {
+                    id: title
+                    x: 4
+                    text: {
+                        const t = root.player ? root.player.trackTitle : ""
+                        return t.length > 26 ? t.slice(0, 25) + "…" : t
+                    }
+                    color: root.player && root.player.isPlaying ? Theme.fgTitle : Theme.fgMuted
+                    Behavior on color { ColorAnimation { duration: Theme.hoverOut } }
                 }
-                color: root.player && root.player.isPlaying ? Theme.fgTitle : Theme.fgMuted
-                font { family: Theme.font; pointSize: Theme.fontPx * 0.75 }
-                Behavior on color { ColorAnimation { duration: Theme.hoverOut } }
-
                 MouseArea {
                     id: titleMouse
                     anchors.fill: parent
@@ -93,19 +104,21 @@ Rectangle {
 
             Row {
                 id: buttons
-                x: title.width
+                x: titleBox.width
                 anchors.verticalCenter: parent.verticalCenter
                 opacity: drawer.open ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 200 } }
 
                 Btn {
                     id: prev
+                    glide: hoverGlide
                     padding: 7
                     onClicked: root.run("previous")
                     Icon { text: "󰒮"; color: prev.hovered ? Theme.fgStrong : Theme.fgTitle }
                 }
                 Btn {
                     id: next
+                    glide: hoverGlide
                     padding: 7
                     onClicked: root.run("next")
                     Icon { text: "󰒭"; color: next.hovered ? Theme.fgStrong : Theme.fgTitle }
@@ -115,6 +128,7 @@ Rectangle {
 
         Btn {
             id: toggle
+            glide: hoverGlide
             padding: 7
             anchors.verticalCenter: parent.verticalCenter
             onClicked: root.run("play-pause")
@@ -124,24 +138,44 @@ Rectangle {
             }
         }
 
-        // cava bars: the one moving thing on the bar, kept quiet in colour
-        Text {
-            visible: root.viz !== ""
-            anchors.verticalCenter: parent.verticalCenter
-            leftPadding: 5
-            rightPadding: 12
-            text: root.viz
-            color: Theme.fgMuted
-            font { family: Theme.iconFont; pixelSize: 16; letterSpacing: 2 }
+        // cava: small rounded bars, the one moving thing on the bar, kept quiet in colour
+        Item {
+            id: viz
+            readonly property bool on: root.levels.length > 0
+            width: on ? bars.implicitWidth + 5 + 12 : 3
+            height: parent.height
+            Behavior on width { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.OutCubic } }
+
+            Row {
+                id: bars
+                x: 5
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 2
+                opacity: viz.on ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: Theme.hoverOut } }
+                Repeater {
+                    model: 8
+                    Rectangle {
+                        required property int index
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 3
+                        radius: 1.5
+                        height: 3 + 11 * Math.min(1, (root.levels[index] || 0) / 12)
+                        color: Theme.fgMuted
+                        Behavior on height { NumberAnimation { duration: 60 } }
+                    }
+                }
+            }
             MouseArea { anchors.fill: parent; onClicked: root.run("play-pause") }
         }
-        Item { width: 3; height: 1; visible: root.viz === "" }
     }
 
     Process {
         running: root.active
-        command: [Quickshell.env("HOME") + "/.local/bin/media-viz", "8"]
-        stdout: SplitParser { onRead: line => root.viz = line }
-        onRunningChanged: if (!running) root.viz = ""
+        command: [Quickshell.env("HOME") + "/.local/bin/media-viz", "8", "raw"]
+        stdout: SplitParser {
+            onRead: line => root.levels = line === "" ? [] : line.split(";").map(Number)
+        }
+        onRunningChanged: if (!running) root.levels = []
     }
 }

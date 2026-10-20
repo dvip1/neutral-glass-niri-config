@@ -1,5 +1,6 @@
 // A clickable item on the bar: soft background that lights up quickly on hover and settles
 // slowly, a small press-in, and an optional tooltip. Put the content (Icon / Text) inside.
+// With `glide` set, the pill's shared Glide highlight is used instead of its own background.
 import QtQuick
 
 Rectangle {
@@ -8,6 +9,7 @@ Rectangle {
     property string tip: ""
     property bool tipMono: false
     property var window
+    property Glide glide: null
     readonly property alias hovered: mouse.containsMouse
     readonly property alias pressed: mouse.pressed
     default property alias content: row.data
@@ -18,11 +20,18 @@ Rectangle {
     implicitHeight: 20
     radius: Theme.radiusSmall
 
-    color: pressed ? Theme.pillPress : hovered ? Theme.pillHover : Theme.clear(Theme.pillHover)
+    color: glide ? "transparent" : pressed ? Theme.pillPress : hovered ? Theme.pillHover : Theme.clear(Theme.pillHover)
     Behavior on color { ColorAnimation { duration: root.hovered ? Theme.hoverIn : Theme.hoverOut; easing.type: Easing.OutCubic } }
 
     scale: pressed ? 0.92 : 1
     Behavior on scale { NumberAnimation { duration: Theme.pillMs; easing.type: Easing.BezierSpline; easing.bezierCurve: Theme.spring } }
+
+    onHoveredChanged: {
+        if (!glide) return
+        if (hovered) glide.target = root
+        else if (glide.target === root) glide.target = null
+    }
+    onPressedChanged: if (glide && glide.target === root) glide.pressed = pressed
 
     Row {
         id: row

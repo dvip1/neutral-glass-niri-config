@@ -1,8 +1,7 @@
-// A Nerd Font glyph at waybar's "large" icon size.
+// A Nerd Font glyph at waybar's "large" icon size; crossfades when it changes.
 import QtQuick
 
-Text {
-    font.family: Theme.iconFont
-    font.pointSize: Theme.iconPx * 0.75
-    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+Swap {
+    family: Theme.iconFont
+    pointSize: Theme.iconPx * 0.75
 }
