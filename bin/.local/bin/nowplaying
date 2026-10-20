@@ -69,7 +69,7 @@ def fmt_time(us):
 
 
 def bar_x():
-    """Logical x of the media pill: it sits right after the workspace dots in waybar."""
+    """Logical x of the media pill: it sits right after the workspace dots on the bar."""
     try:
         import json
         import subprocess
@@ -80,10 +80,10 @@ def bar_x():
         n = sum(1 for w in ws if w['output'] == out['name'])
     except Exception:
         n = 4
-    # waybar can't report where a module is, so this follows the bar's CSS
-    # (templates/waybar.css, keep in sync): 34 px of bar margin, #workspaces margin/padding,
-    # module spacing and #media margin; then per dot min-width 16 + padding 2*8 + margin 2*2 = 36
-    return 34 + (16 + 2 * 8 + 2 * 2) * n
+    # the bar can't report where a module is, so this follows its layout (Quickshell Bar.qml /
+    # Workspaces.qml, keep in sync): 10 px bar margin + 8 px in + 16 px gap to the media pill;
+    # per workspace a dot 8 + 2*3 padding, and the active pill is 32 instead of 8
+    return 34 + (8 + 2 * 3) * n + (32 - 8)
 
 
 # ---------- active player (playerctld) ----------

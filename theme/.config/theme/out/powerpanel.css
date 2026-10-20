@@ -12,11 +12,11 @@ window.powerpanel {
 
 /* One glass sheet; niri blurs it (layer-rule "powerpanel"), so radius must match radius_large. */
 .panel {
-  background: rgba(242, 242, 242, 0.62);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(28, 28, 28, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 14px;
   padding: 12px;
-  color: #262626;
+  color: #e6e6e6;
 }
 
 /* ---- battery ---- */
@@ -27,29 +27,29 @@ window.powerpanel {
 .bat-icon {
   font-family: "Cascadia Code NF";
   font-size: 26px;
-  color: #464646;
+  color: #b8b8b8;
 }
 
 .pct {
-  color: #262626;
+  color: #e6e6e6;
   font-size: 18px;
   font-weight: 500;
   font-feature-settings: "tnum";
 }
 
 .status {
-  color: #464646;
+  color: #b8b8b8;
 }
 
 .detail {
-  color: #6e6e6e;
+  color: #8c8c8c;
   font-size: 12px;
   margin-top: 1px;
 }
 
 /* ---- power profile: one pill, the active segment lifted ---- */
 .profiles {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   padding: 3px;
 }
@@ -60,19 +60,19 @@ button.profile {
   box-shadow: none;
   border-radius: 7px;
   padding: 6px 0 5px 0;
-  color: #6e6e6e;
+  color: #8c8c8c;
   transition: background 150ms ease, color 150ms ease;
 }
 
 button.profile:hover {
-  background: rgba(0, 0, 0, 0.1);
-  color: #262626;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e6e6e6;
 }
 
 button.profile.active,
 button.profile.active:hover {
-  background: rgba(0, 0, 0, 0.12);
-  color: #000000;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
 }
 
 button.profile:disabled {
@@ -95,31 +95,31 @@ button.settings {
   box-shadow: none;
   border-radius: 7px;
   padding: 6px 6px;
-  color: #262626;
+  color: #e6e6e6;
   transition: background 150ms ease;
 }
 
 button.settings:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .settings-icon,
 .chevron {
   font-family: "Cascadia Code NF";
   font-size: 16px;
-  color: #464646;
+  color: #b8b8b8;
 }
 
 .settings-title {
-  color: #262626;
+  color: #e6e6e6;
 }
 
 .settings-sub {
-  color: #6e6e6e;
+  color: #8c8c8c;
   font-size: 12px;
 }
 
 button:focus-visible {
-  outline: 1px solid #6e6e6e;
+  outline: 1px solid #8c8c8c;
   outline-offset: -1px;
 }

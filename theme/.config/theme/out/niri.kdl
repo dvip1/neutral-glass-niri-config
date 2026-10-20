@@ -4,8 +4,8 @@
 layout {
     focus-ring {
         width 2
-        active-color "#00000066"
-        inactive-color "#0000001a"
+        active-color "#ffffff66"
+        inactive-color "#ffffff1a"
     }
 }
 
@@ -33,6 +33,16 @@ layer-rule {
     match namespace="^waybar$"
     background-effect { blur true; }
     geometry-corner-radius 12
+}
+// The Quickshell bar; its tooltips and tray menus are popups of it.
+layer-rule {
+    match namespace="^bar$"
+    background-effect { blur true; }
+    geometry-corner-radius 12
+    popups {
+        geometry-corner-radius 10
+        background-effect { blur true; }
+    }
 }
 layer-rule {
     match namespace="^swaync-control-center$"

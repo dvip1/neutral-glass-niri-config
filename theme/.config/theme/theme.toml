@@ -19,6 +19,12 @@ radius_pill = 10   # pills on the bar, tooltips
 radius_small = 7   # anything inside a pill or card: hovers, buttons, selections, thumbnails
 ring_width = 2     # focus ring around the active window, in px
 
+[motion]           # bar hover/press timing (waybar CSS transitions and the Quickshell bar)
+hover_in = 110     # ms to light up under the pointer: quick
+hover_out = 320    # ms to settle back after it leaves: slower, feels softer
+pill_ms = 420      # ms for the active-workspace pill to stretch / shrink
+spring = "cubic-bezier(0.34, 1.35, 0.64, 1)"   # slight overshoot, like a spring
+
 [kitty]            # themes from kitty's own collection (run `kitten themes` to browse names)
 dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1
 light = "Modus Operandi"    # white/black, text 21:1, every colour >= 7:1
@@ -33,6 +39,7 @@ swaylock = { src = "templates/swaylock.conf", dest = "~/.config/swaylock/config"
 niri    = { src = "templates/niri.kdl",    dest = "~/.config/theme/out/niri.kdl" }
 nowplaying = { src = "templates/nowplaying.css", dest = "~/.config/theme/out/nowplaying.css" }
 powerpanel = { src = "templates/powerpanel.css", dest = "~/.config/theme/out/powerpanel.css" }
+quickshell = { src = "templates/quickshell.qml", dest = "~/.config/quickshell/Theme.qml" }   # Quickshell reloads by itself
 icons   = { src = "templates/icons",       dest = "~/.config/theme/out/icons" }   # launcher icons (a folder: every file is rendered)
 
 [dark]
@@ -47,6 +54,10 @@ pill_bg      = "rgba(255, 255, 255, 0.04)"
 pill_hover   = "rgba(255, 255, 255, 0.10)"
 ws_hover     = "rgba(255, 255, 255, 0.08)"
 ws_active_bg = "rgba(255, 255, 255, 0.13)"
+ws_dot       = "rgba(255, 255, 255, 0.32)"   # GNOME-style workspace dots; the active one is a pill
+ws_dot_hover = "rgba(255, 255, 255, 0.62)"
+ws_pill      = "#e6e6e6"
+pill_press   = "rgba(255, 255, 255, 0.16)"   # pressed button on the Quickshell bar
 ws_urgent_bg = "rgba(240, 138, 128, 0.15)"
 c_crit       = "#f08a80"
 c_warn       = "#e8c170"
@@ -115,6 +126,10 @@ pill_bg      = "rgba(0, 0, 0, 0.05)"
 pill_hover   = "rgba(0, 0, 0, 0.10)"
 ws_hover     = "rgba(0, 0, 0, 0.08)"
 ws_active_bg = "rgba(0, 0, 0, 0.12)"
+ws_dot       = "rgba(0, 0, 0, 0.26)"
+ws_dot_hover = "rgba(0, 0, 0, 0.55)"
+ws_pill      = "#262626"
+pill_press   = "rgba(0, 0, 0, 0.16)"
 ws_urgent_bg = "rgba(192, 57, 43, 0.15)"
 c_crit       = "#c0392b"
 c_warn       = "#a86a00"

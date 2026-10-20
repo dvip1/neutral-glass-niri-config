@@ -45,6 +45,8 @@ def fmt_colour(c, how):
         return f'{r:02x}{g:02x}{b:02x}'
     if how == 'hash8':    # #rrggbbaa  (niri)
         return f'#{r:02x}{g:02x}{b:02x}{a8:02x}'
+    if how == 'qml':      # #aarrggbb  (quickshell / Qt)
+        return f'#{a8:02x}{r:02x}{g:02x}{b:02x}'
     raise ValueError(f'unknown colour filter: {how}')
 
 
@@ -71,7 +73,12 @@ def context(cfg, mode):
         'radius_small': cfg['shape']['radius_small'],
         'mode': mode,
         'ring_width': cfg['shape']['ring_width'],
+        **cfg.get('motion', {}),
     }
+    # the same spring for Qt: cubic-bezier(a, b, c, d) -> "a, b, c, d" (QML wants [a, b, c, d, 1, 1])
+    m = re.fullmatch(r'cubic-bezier\((.*)\)', str(ctx.get('spring', '')))
+    if m:
+        ctx['spring_points'] = m.group(1)
     colours = {k: parse_colour(v) for k, v in cfg[mode].items()}
     return ctx, colours
 

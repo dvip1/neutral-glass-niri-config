@@ -29,6 +29,27 @@ window#waybar {
 #network,
 #battery {
   background: transparent;
+  color: {{fg_title}};
+  padding: 0 8px;
+  margin: 3px 0;
+  border-radius: {{radius_small}}px;
+  /* settle back slowly once the pointer leaves */
+  transition: background-color {{hover_out}}ms ease-out, color {{hover_out}}ms ease-out;
+}
+
+/* light up quickly: the icon brightens together with the soft background */
+#custom-notification:hover,
+#pulseaudio:hover,
+#bluetooth:hover,
+#network:hover,
+#battery:hover {
+  background: {{pill_hover}};
+  color: {{fg_strong}};
+  transition: background-color {{hover_in}}ms ease-out, color {{hover_in}}ms ease-out;
+}
+
+#battery {
+  background: transparent;
   color: {{fg}};
   padding: 0 8px;
   margin: 3px 0;
@@ -59,31 +80,44 @@ window#waybar {
   margin-left: 4px;
 }
 
-/* nowplaying's bar_x() places its popup from these sizes: keep them in sync */
+/* GNOME-style workspaces: a dot per workspace, the active one stretched into a pill.
+   The button is the (tall, invisible) hit area; its empty label is the dot.
+   nowplaying's bar_x() places its popup from these sizes: keep them in sync. */
 #workspaces button {
-  min-width: 16px;
-  padding: 0 8px;
-  margin: 5px 2px;
-  color: {{fg_muted}};
+  min-width: 0;
+  padding: 0 3px;
+  margin: 0;
   background: transparent;
-  border-radius: {{radius_small}}px;
-  transition: all 0.2s ease;
+  background-image: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
-#workspaces button:hover {
-  background: {{ws_hover}};
-  color: {{fg}};
+#workspaces button label {
+  font-size: 1px;   /* an empty label still reserves a text line: shrink it so min-height rules */
+  min-width: 8px;
+  min-height: 8px;
+  margin: 13px 0;
+  padding: 0;
+  border-radius: 4px;
+  background: {{ws_dot}};
+  transition: min-width {{pill_ms}}ms {{spring}},
+              background-color {{hover_out}}ms ease-out;
 }
 
-/* Active workspace: the filled dot alone marks it, no background */
-#workspaces button.active {
-  color: {{fg_strong}};
-  background: transparent;
+#workspaces button:hover label {
+  background: {{ws_dot_hover}};
+  transition: min-width {{pill_ms}}ms {{spring}},
+              background-color {{hover_in}}ms ease-out;
 }
 
-#workspaces button.urgent {
-  color: {{c_crit}};
-  background: {{ws_urgent_bg}};
+#workspaces button.active label {
+  min-width: 26px;
+  background: {{ws_pill}};
+}
+
+#workspaces button.urgent label {
+  background: {{c_crit}};
 }
 
 /* Center clock: the quiet anchor (date dimmed in markup, time carries the weight) */
@@ -127,11 +161,11 @@ window#waybar {
 #custom-media-prev,
 #custom-media-toggle,
 #custom-media-next {
-  color: {{fg}};
+  color: {{fg_title}};
   padding: 0 7px;
   margin: 3px 0;
   border-radius: {{radius_small}}px;
-  transition: background 0.2s ease;
+  transition: background-color {{hover_out}}ms ease-out, color {{hover_out}}ms ease-out;
 }
 
 /* play/pause stays visible after the title; prev/next slide out on hover */
@@ -143,6 +177,8 @@ window#waybar {
 #custom-media-toggle:hover,
 #custom-media-next:hover {
   background: {{pill_hover}};
+  color: {{fg_strong}};
+  transition: background-color {{hover_in}}ms ease-out, color {{hover_in}}ms ease-out;
 }
 
 /* States */

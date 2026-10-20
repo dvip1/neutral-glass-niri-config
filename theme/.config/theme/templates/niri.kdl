@@ -34,6 +34,16 @@ layer-rule {
     background-effect { blur true; }
     geometry-corner-radius {{radius}}
 }
+// The Quickshell bar; its tooltips and tray menus are popups of it.
+layer-rule {
+    match namespace="^bar$"
+    background-effect { blur true; }
+    geometry-corner-radius {{radius}}
+    popups {
+        geometry-corner-radius {{radius_pill}}
+        background-effect { blur true; }
+    }
+}
 layer-rule {
     match namespace="^swaync-control-center$"
     background-effect {

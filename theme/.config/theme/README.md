@@ -12,7 +12,8 @@ colour in dark and light) lives in **`theme.toml`**. Change it, run one command:
 
 | App | Generated file |
 |---|---|
-| waybar | `~/.config/waybar/style.css` |
+| bar (Quickshell) | `~/.config/quickshell/Theme.qml` (colours as `#aarrggbb` via the `|qml` filter; Quickshell reloads by itself) |
+| waybar (old bar) | `~/.config/waybar/style.css` |
 | notifications (swaync) | `~/.config/swaync/style.css` |
 | volume popup (swayosd) | `~/.config/swayosd/style.css` |
 | launcher + menus (fuzzel) | `~/.config/fuzzel/fuzzel.ini` |
@@ -22,7 +23,7 @@ colour in dark and light) lives in **`theme.toml`**. Change it, run one command:
 
 Each one is rendered from a template in `templates/`. To change *layout* (padding,
 which element has a pill, etc.) edit the template; to change *colours, fonts or
-radii* edit `theme.toml`.
+radii* edit `theme.toml`. Hover/press timings and the spring curve are in `[motion]`.
 
 ## Template syntax
 

@@ -12,8 +12,7 @@
   "modules-right": ["group/status"],
 
   "niri/workspaces": {
-  "format": "{icon}",
-  "format-icons": { "active": "●", "default": "○" }
+  "format": ""
 },
 "niri/window": {
     "format": "{title}",

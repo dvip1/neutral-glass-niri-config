@@ -9,15 +9,15 @@
 }
 
 window#waybar {
-  background: rgba(242, 242, 242, 0.62);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(28, 28, 28, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 12px;
-  color: #262626;
+  color: #e6e6e6;
 }
 
 /* Right: status icons and the tray share ONE pill (#status group); each icon gets a soft hover. */
 #status {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   margin: 5px 4px;
   padding: 0 4px;
@@ -29,7 +29,28 @@ window#waybar {
 #network,
 #battery {
   background: transparent;
-  color: #262626;
+  color: #b8b8b8;
+  padding: 0 8px;
+  margin: 3px 0;
+  border-radius: 7px;
+  /* settle back slowly once the pointer leaves */
+  transition: background-color 320ms ease-out, color 320ms ease-out;
+}
+
+/* light up quickly: the icon brightens together with the soft background */
+#custom-notification:hover,
+#pulseaudio:hover,
+#bluetooth:hover,
+#network:hover,
+#battery:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: background-color 110ms ease-out, color 110ms ease-out;
+}
+
+#battery {
+  background: transparent;
+  color: #e6e6e6;
   padding: 0 8px;
   margin: 3px 0;
   border-radius: 7px;
@@ -41,7 +62,7 @@ window#waybar {
 #bluetooth:hover,
 #network:hover,
 #battery:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 #battery {
@@ -59,37 +80,50 @@ window#waybar {
   margin-left: 4px;
 }
 
-/* nowplaying's bar_x() places its popup from these sizes: keep them in sync */
+/* GNOME-style workspaces: a dot per workspace, the active one stretched into a pill.
+   The button is the (tall, invisible) hit area; its empty label is the dot.
+   nowplaying's bar_x() places its popup from these sizes: keep them in sync. */
 #workspaces button {
-  min-width: 16px;
-  padding: 0 8px;
-  margin: 5px 2px;
-  color: #6e6e6e;
+  min-width: 0;
+  padding: 0 3px;
+  margin: 0;
   background: transparent;
-  border-radius: 7px;
-  transition: all 0.2s ease;
+  background-image: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
-#workspaces button:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: #262626;
+#workspaces button label {
+  font-size: 1px;   /* an empty label still reserves a text line: shrink it so min-height rules */
+  min-width: 8px;
+  min-height: 8px;
+  margin: 13px 0;
+  padding: 0;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.32);
+  transition: min-width 420ms cubic-bezier(0.34, 1.35, 0.64, 1),
+              background-color 320ms ease-out;
 }
 
-/* Active workspace: the filled dot alone marks it, no background */
-#workspaces button.active {
-  color: #000000;
-  background: transparent;
+#workspaces button:hover label {
+  background: rgba(255, 255, 255, 0.62);
+  transition: min-width 420ms cubic-bezier(0.34, 1.35, 0.64, 1),
+              background-color 110ms ease-out;
 }
 
-#workspaces button.urgent {
-  color: #c0392b;
-  background: rgba(192, 57, 43, 0.15);
+#workspaces button.active label {
+  min-width: 26px;
+  background: #e6e6e6;
+}
+
+#workspaces button.urgent label {
+  background: #f08a80;
 }
 
 /* Center clock: the quiet anchor (date dimmed in markup, time carries the weight) */
 #clock {
   font-feature-settings: "tnum";
-  color: #000000;
+  color: #ffffff;
   font-weight: 600;
   padding: 0 10px;
 }
@@ -97,7 +131,7 @@ window#waybar {
 /* Left: media pill = album art + title + play/pause; prev/next slide out on hover (drawer).
    Pill lives on the group, so it vanishes with the modules when nothing plays. */
 #media {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   margin: 5px 0 5px 8px;
 }
@@ -107,19 +141,19 @@ window#waybar {
 }
 
 #mpris {
-  color: #464646;
+  color: #b8b8b8;
   padding: 0 10px 0 4px;
 }
 
 #mpris.paused {
-  color: #6e6e6e;
+  color: #8c8c8c;
 }
 
 /* cava bars: the one moving thing on the bar, kept quiet in colour */
 #custom-media-viz {
   font-family: "Cascadia Code NF";
   font-size: 16px;
-  color: #6e6e6e;
+  color: #8c8c8c;
   letter-spacing: 2px;
   padding: 0 12px 0 2px;
 }
@@ -127,11 +161,11 @@ window#waybar {
 #custom-media-prev,
 #custom-media-toggle,
 #custom-media-next {
-  color: #262626;
+  color: #b8b8b8;
   padding: 0 7px;
   margin: 3px 0;
   border-radius: 7px;
-  transition: background 0.2s ease;
+  transition: background-color 320ms ease-out, color 320ms ease-out;
 }
 
 /* play/pause stays visible after the title; prev/next slide out on hover */
@@ -142,40 +176,42 @@ window#waybar {
 #custom-media-prev:hover,
 #custom-media-toggle:hover,
 #custom-media-next:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: background-color 110ms ease-out, color 110ms ease-out;
 }
 
 /* States */
-#bluetooth.off, #bluetooth.disabled { color: #6e6e6e; }
+#bluetooth.off, #bluetooth.disabled { color: #8c8c8c; }
 #pulseaudio.muted {
-  color: #6e6e6e;
+  color: #8c8c8c;
 }
 
 #network.disconnected {
-  color: #c0392b;
+  color: #f08a80;
 }
 
 #battery.warning {
-  color: #a86a00;
+  color: #e8c170;
 }
 
 #battery.critical {
-  color: #c0392b;
+  color: #f08a80;
 }
 
 /* charging is shown by the bolt in the icon, not by colour */
 
 /* Frosted tooltip */
 tooltip {
-  background: rgba(246, 246, 246, 0.92);
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(28, 28, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
   text-shadow: none;
 }
 
 /* GTK3's Adwaita gives tooltip text a 1px black text-shadow (made for its dark tooltips): it reads as bold */
 tooltip label {
-  color: #262626;
+  color: #e6e6e6;
   text-shadow: none;
   padding: 6px;
 }
