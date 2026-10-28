@@ -1,0 +1,109 @@
+#!/usr/bin/env -S python3 -I
+"""Open browser tabs, for the launcher. Firefox-family browsers (Zen, Firefox, Floorp, LibreWolf)
+write every window and tab to sessionstore-backups/recovery.jsonlz4 about every 15 s; this decodes
+that (Mozilla's LZ4 block format, no lz4 module needed) for each browser that is running.
+
+  browser-tabs                         JSON list: [{browser, app_id, title, url, pinned, last}], most recently used first
+  browser-tabs --activate APP_ID TITLE switch to that tab: focus the browser window, then type
+                                       "% TITLE" in its address bar (Firefox's "open tabs" search) and Enter
+"""
+import glob, json, os, subprocess, sys, time
+
+HOME = os.path.expanduser("~")
+# name, niri app_id, process to look for, profile folders
+BROWSERS = [
+    ("Zen", "app.zen_browser.zen", "/app/zen/zen", ["~/.var/app/app.zen_browser.zen/.zen", "~/.zen"]),
+    ("Firefox", "org.mozilla.firefox", "firefox", ["~/.mozilla/firefox", "~/.var/app/org.mozilla.firefox/.mozilla/firefox"]),
+    ("Floorp", "one.ablaze.floorp", "floorp", ["~/.floorp", "~/.var/app/one.ablaze.floorp/.floorp"]),
+    ("LibreWolf", "io.gitlab.librewolf-community", "librewolf", ["~/.librewolf", "~/.var/app/io.gitlab.librewolf-community/.librewolf"]),
+]
+
+
+def mozlz4(path):
+    b = open(path, "rb").read()
+    if b[:8] != b"mozLz40\0":
+        raise ValueError("not a mozlz4 file")
+    size, src, out, i = int.from_bytes(b[8:12], "little"), b[12:], bytearray(), 0
+    while i < len(src):
+        tok = src[i]; i += 1
+        n = tok >> 4
+        if n == 15:
+            while True:
+                x = src[i]; i += 1; n += x
+                if x != 255:
+                    break
+        out += src[i:i + n]; i += n
+        if i >= len(src):
+            break
+        off = src[i] | src[i + 1] << 8; i += 2
+        m = tok & 15
+        if m == 15:
+            while True:
+                x = src[i]; i += 1; m += x
+                if x != 255:
+                    break
+        for _ in range(m + 4):
+            out.append(out[-off])
+    return json.loads(out[:size])
+
+
+def running():
+    procs = subprocess.run(["ps", "-eo", "args="], capture_output=True, text=True).stdout.splitlines()
+    return {b[0] for b in BROWSERS if any(p.split(" ")[0].endswith(b[2]) for p in procs)}
+
+
+def tabs():
+    out, live = [], running()
+    for name, app_id, _, roots in BROWSERS:
+        if name not in live:
+            continue
+        for root in roots:
+            for f in glob.glob(os.path.join(os.path.expanduser(root), "*", "sessionstore-backups", "recovery.jsonlz4")):
+                try:
+                    d = mozlz4(f)
+                except (OSError, ValueError, IndexError):
+                    continue
+                for w in d.get("windows", []):
+                    for t in w.get("tabs", []):
+                        if not t.get("entries"):
+                            continue
+                        e = t["entries"][min(t.get("index", 1), len(t["entries"])) - 1]
+                        url = e.get("url", "")
+                        if not url or url.startswith(("about:", "chrome:", "moz-extension:")):
+                            continue
+                        out.append({"browser": name, "app_id": app_id, "title": (e.get("title") or url).replace("💤 ", ""),
+                                    "url": url, "pinned": bool(t.get("pinned")), "last": t.get("lastAccessed", 0)})
+    return sorted(out, key=lambda t: -t["last"])
+
+
+def activate(app_id, title):
+    wins = json.loads(subprocess.run(["niri", "msg", "--json", "windows"], capture_output=True, text=True).stdout or "[]")
+    win = max((w for w in wins if w.get("app_id") == app_id), key=lambda w: (w.get("focus_timestamp") or {}).get("secs", 0), default=None)
+    if not win:
+        return 1
+    subprocess.run(["niri", "msg", "action", "focus-window", "--id", str(win["id"])])
+    # only what ydotool can type on any layout: plain ASCII words, enough of them to be unique
+    words = "".join(c if c.isascii() and (c.isalnum() or c in " -.") else " " for c in title).split()
+    query = " ".join(words)[:60]
+    env = dict(os.environ, YDOTOOL_SOCKET=os.environ.get("YDOTOOL_SOCKET", "/tmp/.ydotool_socket"))
+    time.sleep(0.25)
+    # make sure the browser really has focus before typing into it
+    focused = json.loads(subprocess.run(["niri", "msg", "--json", "focused-window"], capture_output=True, text=True).stdout or "null")
+    if not focused or focused.get("id") != win["id"]:
+        return 1
+    run = lambda *a: subprocess.run(["ydotool", *a], env=env, capture_output=True)
+    run("key", "29:1", "38:1", "38:0", "29:0")          # Ctrl+L: address bar
+    time.sleep(0.1)
+    run("type", "-d", "4", "% " + query)
+    time.sleep(0.45)                                     # let the tab results appear
+    if app_id == "app.zen_browser.zen":                  # Zen does not pre-select the first result in tab mode
+        run("key", "108:1", "108:0")                     # Down
+        time.sleep(0.1)
+    run("key", "28:1", "28:0")                           # Enter: switch to that tab
+    return 0
+
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 4 and sys.argv[1] == "--activate":
+        sys.exit(activate(sys.argv[2], sys.argv[3]))
+    print(json.dumps(tabs(), ensure_ascii=False))

@@ -20,6 +20,7 @@ Scope {
     property var keyHash: ({})            // item key -> [{ h: md5(text), adj }] (an item may have several texts)
     property bool available: true         // false after a failed request, until the next index()
     property bool busy: false
+    property var again: null              // docs that came in while busy: indexed right after
     readonly property string file: Quickshell.env("HOME") + "/.cache/quickshell/launcher-vectors.json"
 
     // everything is lower-cased: the model is case-sensitive, and "Fullscreen window" scored 0.73
@@ -59,11 +60,15 @@ Scope {
             if (!vecs[h] && !seen[h]) { seen[h] = true; todo.push({ h: h, text: d.text }) }
         }
         keyHash = kh
-        if (busy) return
+        if (busy) { again = docs; return }
         if (!todo.length) { post([queryPrefix + "warm up"], () => {}); return }
         busy = true
         const step = i => {
-            if (i >= todo.length || !available) { busy = false; save(); return }
+            if (i >= todo.length || !available) {
+                busy = false; save()
+                if (again) { const d = again; again = null; sem.index(d) }
+                return
+            }
             const batch = todo.slice(i, i + 32)
             post(batch.map(t => t.text), embs => {
                 if (embs) batch.forEach((t, n) => sem.vecs[t.h] = embs[n])

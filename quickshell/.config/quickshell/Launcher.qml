@@ -1,6 +1,6 @@
 // The launcher (Mod+D / Alt+Space; replaces fuzzel as the app launcher, fuzzel stays for the
 // dmenu-style menus). Ideas borrowed from Spotlight (Tahoe), Raycast and Alfred:
-//   - one list for apps (and their desktop actions), open windows, actions, files and clipboard,
+//   - one list for apps (and their desktop actions), open windows and browser tabs, actions, files and clipboard,
 //     ranked live while typing, with frequently/recently used things first
 //   - sections like Spotlight's Cmd+1..4: Ctrl+1..6 = All, Apps, Windows, Files, Actions, Clipboard
 //     (Tab / Shift+Tab cycle them)
@@ -35,7 +35,7 @@ Scope {
     readonly property string bin: home + "/.local/bin/"
     readonly property string webSearch: "https://duckduckgo.com/?q="
     readonly property var sections: [
-        { id: "all", label: "All" }, { id: "apps", label: "Apps" }, { id: "windows", label: "Windows" },
+        { id: "all", label: "All" }, { id: "apps", label: "Apps" }, { id: "windows", label: "Windows & Tabs" },
         { id: "files", label: "Files" }, { id: "actions", label: "Actions" }, { id: "clipboard", label: "Clipboard" }
     ]
     property int section: 0
@@ -46,6 +46,7 @@ Scope {
 
     // live data, refreshed each time the launcher opens
     property var windows: []
+    property var browserTabs: []      // open browser tabs (browser-tabs: Zen, Firefox, Floorp, LibreWolf)
     property var clips: []
     property var recentFiles: []
     property var foundFiles: []       // plocate results for the current query
@@ -71,6 +72,7 @@ Scope {
         semHits = {}; semFor = ""
         winProc.running = true
         clipProc.running = true
+        tabProc.running = true
         recentView.reload()
         want = true
         refresh()
@@ -198,6 +200,11 @@ Scope {
         for (const e of extra || []) {
             const x = match(q, e)
             if (x && x.score >= 450 && (!best || x.score * 0.7 > best.score)) best = { score: x.score * 0.7, hits: m ? m.hits : [] }
+        }
+        // several words spread over the title and the extras ("chatgpt qt languages": site + tab title)
+        if (!best && q.includes(" ")) {
+            const all = [title].concat(extra || []).join(" ").toLowerCase()
+            if (q.split(/\s+/).every(w => all.includes(w))) best = { score: 430, hits: m ? m.hits : [] }
         }
         // one mistyped word ("fierfox", "termnial"): close to a word of the title or of the extras
         if (!best && q.length >= 4 && !q.includes(" ")) {
@@ -500,6 +507,17 @@ Scope {
                      run: () => Quickshell.execDetached(["niri", "msg", "action", "focus-window", "--id", String(w.id)]) }
         }).sort((a, b) => b.ts - a.ts)
     }
+    // Enter: switch to the open tab (browser-tabs --activate: focuses the browser, types "% title" in its
+    // address bar, Firefox's open-tab search); Ctrl+Enter: open the address again
+    function tabItem(t) {
+        const host = (t.url.match(/^[a-z]+:\/\/(?:www\.)?([^\/:?#]+)/) || [, t.url])[1]
+        const e = DesktopEntries.heuristicLookup(t.app_id)
+        return { key: "", skey: "tab:" + Qt.md5(t.url), kind: "tab", title: t.title, sub: host + "  ·  " + t.browser + (t.pinned ? "  ·  pinned" : ""),
+                 image: e ? e.icon : "", glyph: "󰖟", hint: "Switch", alt: "Open again", tag: "Tab", extra: [host, t.browser],
+                 doc: sem.docText(host, t.title),
+                 run: () => Quickshell.execDetached([root.bin + "browser-tabs", "--activate", t.app_id, t.title]),
+                 runAlt: () => Quickshell.execDetached(["xdg-open", t.url]) }
+    }
     function fileItem(path) {
         const name = path.split("/").pop()
         const dir = path.slice(0, path.length - name.length - 1)
@@ -524,6 +542,13 @@ Scope {
         command: ["niri", "msg", "--json", "windows"]
         stdout: StdioCollector {
             onStreamFinished: { try { root.windows = JSON.parse(text) } catch (e) { root.windows = [] } root.refresh() }
+        }
+    }
+    Process {
+        id: tabProc
+        command: [root.bin + "browser-tabs"]
+        stdout: StdioCollector {
+            onStreamFinished: { try { root.browserTabs = JSON.parse(text) } catch (e) { root.browserTabs = [] } root.refresh(); root.indexAll() }
         }
     }
     Process {
@@ -592,7 +617,7 @@ Scope {
     Semantic { id: sem }
     // embed whatever is new (first run: ~300 things, ~10 s in the background; later only changes)
     function indexAll() {
-        const docs = apps().map(appItem).concat(actions(), shortcutItems(), clips.slice(0, 100).map(clipItem))
+        const docs = apps().map(appItem).concat(actions(), shortcutItems(), clips.slice(0, 100).map(clipItem), browserTabs.map(tabItem))
             .filter(d => d.skey && d.doc).map(d => ({ key: d.skey, text: d.doc }))
         // each example phrase of an action on its own: short query vs short phrase matches far
         // better than against the whole description. Short phrases also match noise a bit more
@@ -609,7 +634,7 @@ Scope {
     function semEligible(raw, sec) {
         // a phrase, or one longer word: on a short single word ("frfx") the nearest meanings are noise
         return (raw.includes(" ") ? raw.length >= 4 : raw.length >= 5) && !/^[=>?\/~]/.test(raw) && calc(raw) === null && ruleItems(raw.toLowerCase()).length === 0
-            && (sec === "all" || sec === "apps" || sec === "actions" || sec === "clipboard")
+            && (sec === "all" || sec === "apps" || sec === "actions" || sec === "clipboard" || sec === "windows")
     }
     // keep the close calls only: above the noise floor and near the best
     function semFilter(res, raw) {
@@ -696,6 +721,7 @@ Scope {
                 let mixed = scored(apps().map(appItem), 0)
                     .concat(scored(actions(), -20))
                     .concat(scored(windowItems(), -40))
+                    .concat(scored(browserTabs.map(tabItem), -50))
                     .concat(scored(shortcutItems(), -60))
                     .concat(scored(appActs, -120))
                 mixed.sort((a, b) => b.score - a.score)
@@ -712,7 +738,8 @@ Scope {
             out = q ? scored(apps().map(appItem), 0).concat(scored(desktopActions(), -120)).sort((a, b) => b.score - a.score)
                     : scored(apps().map(appItem), 0).sort((a, b) => (b.score - a.score) || a.title.localeCompare(b.title))
         } else if (sec === "windows") {
-            out = q ? scored(windowItems(), 0) : windowItems()
+            out = q ? scored(windowItems(), 0).concat(scored(browserTabs.map(tabItem), -10)).sort((a, b) => b.score - a.score)
+                    : windowItems().concat(browserTabs.map(tabItem))
         } else if (sec === "actions") {
             out = ruleItems(q).concat(q ? scored(actions(), 0).concat(scored(shortcutItems(), -60)).sort((a, b) => b.score - a.score)
                                         : actions().concat(shortcutItems()))
