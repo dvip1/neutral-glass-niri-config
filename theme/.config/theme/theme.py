@@ -7,10 +7,13 @@
   theme list           the themes in themes/ (the current one is marked)
   theme set NAME       switch to another theme (keeps the dark/light mode)
   theme next | prev    cycle through the themes
+  theme json           themes, swatches and tunables as JSON (for the settings app)
+  theme setkey K V     set one tunable (e.g. shape.gaps 12) in the current theme; theme unset K drops it
   theme gtk3           (niri startup) point GTK at the generated GTK3 + icon themes
   theme status [-v]    show the current theme + mode and what gets generated
   theme edit [NAME]    open a theme file (default: the current one) in $EDITOR
 """
+import json
 import os
 import re
 import subprocess
@@ -380,6 +383,72 @@ def set_mode(mode):
     apply(mode)   # no notification: the quick-settings tile shows the mode
 
 
+# ---------- for the settings app (niri-settings) ----------
+TUNABLE = ['effects.blur', 'effects.kitty_opacity', 'shape.radius', 'shape.radius_large', 'shape.radius_pill',
+           'shape.radius_small', 'shape.ring_width', 'shape.gaps', 'font.family', 'font.size', 'font.bar_size',
+           'opacity.alpha_bar', 'opacity.alpha_panel', 'opacity.alpha_card', 'opacity.alpha_osd',
+           'motion.hover_in', 'motion.hover_out', 'motion.pill_ms']
+
+
+def as_json():
+    """Everything the settings app shows: the themes with colour swatches, and the current theme's tunables."""
+    out = {'current': current_theme(), 'mode': current_mode(), 'themes': [], 'values': {}}
+    for n in themes():
+        cfg, sw = load(n), {}
+        for mode in ('dark', 'light'):
+            _, colours = context(cfg, mode)
+            sw[mode] = [fmt_colour(colours[c][:3] + (1.0,), 'hash6') for c in ('bg', 'surface', 'fg', 'accent')]
+        out['themes'].append({'name': n, 'description': describe(n), 'swatches': sw})
+    cfg = load()
+    with open(os.path.join(THEMES, cfg['name'] + '.toml'), 'rb') as f:
+        own = tomllib.load(f)
+    for key in TUNABLE:
+        sec, k = key.split('.')
+        if k in cfg.get(sec, {}):
+            out['values'][key] = {'value': cfg[sec][k], 'own': k in own.get(sec, {})}
+    return out
+
+
+def toml_value(s):
+    """A value typed on the command line, as TOML: true/false, numbers as they are, anything else quoted."""
+    if s in ('true', 'false') or re.fullmatch(r'-?\d+(\.\d+)?', s):
+        return s
+    return json.dumps(s)
+
+
+def set_key(key, value, name=None):
+    """Set (value) or remove (None) one `section.key` in a theme file, editing only that line so comments stay."""
+    name = name or current_theme()
+    sec, k = key.split('.')
+    if key not in TUNABLE:
+        raise ValueError(f'{key} is not something the settings app may change')
+    f = os.path.join(THEMES, name + '.toml')
+    lines = open(f).read().split('\n')
+    start = next((i for i, l in enumerate(lines) if l.strip() == f'[{sec}]'), None)
+    if start is None:
+        if value is None:
+            return
+        while lines and not lines[-1].strip():
+            lines.pop()
+        lines += ['', f'[{sec}]', f'{k} = {toml_value(value)}', '']
+    else:
+        end = next((i for i in range(start + 1, len(lines)) if lines[i].lstrip().startswith('[')), len(lines))
+        at = next((i for i in range(start + 1, end) if re.match(rf'\s*{k}\s*=', lines[i])), None)
+        if value is None:
+            if at is not None:
+                del lines[at]
+        elif at is not None:
+            m = re.match(rf'(\s*{k}\s*=\s*)("[^"]*"|[^#]*?)(\s*#.*)?$', lines[at])
+            lines[at] = m.group(1) + toml_value(value) + (m.group(3) or '')
+        else:
+            last = max([i for i in range(start + 1, end) if lines[i].strip() and not lines[i].lstrip().startswith('#')],
+                       default=start)
+            lines.insert(last + 1, f'{k} = {toml_value(value)}')
+    text = '\n'.join(lines)
+    tomllib.loads(text)                             # never write a file that no longer parses
+    write_atomic(f, text)
+
+
 def describe(name):
     try:
         with open(os.path.join(THEMES, name + '.toml'), 'rb') as f:
@@ -413,6 +482,14 @@ def main(argv):
         all_, cur = themes(), current_theme()
         i = all_.index(cur) if cur in all_ else 0
         apply(name=all_[(i + (1 if cmd == 'next' else -1)) % len(all_)])
+    elif cmd == 'json':
+        print(json.dumps(as_json()))
+    elif cmd in ('setkey', 'unset'):                # setkey section.key value / unset section.key
+        if len(argv) < (4 if cmd == 'setkey' else 3):
+            print(f'usage: theme {cmd} section.key' + (' value' if cmd == 'setkey' else ''), file=sys.stderr)
+            return 1
+        set_key(argv[2], argv[3] if cmd == 'setkey' else None)
+        apply()
     elif cmd == 'gtk3':                             # niri startup: switch GTK to the generated themes
         session_themes(set())
     elif cmd == 'status':

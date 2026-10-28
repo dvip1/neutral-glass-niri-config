@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Niri Settings
+GenericName=Desktop Settings
+Comment=Theme, dark style, wallpaper, power & idle, theme details, shortcuts
+Exec=/home/dvip/.local/lib/niri-settings/niri-settings
+Icon=/home/dvip/.config/theme/out/icons/settings.svg
+Terminal=false
+Categories=Settings;
+Keywords=settings;preferences;theme;dark;light;wallpaper;power;idle;battery;font;blur;shortcuts;keys;
+StartupWMClass=niri-settings

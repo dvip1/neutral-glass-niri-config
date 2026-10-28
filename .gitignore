@@ -9,3 +9,5 @@ alacritty/.config/alacritty/themes/
 nvim/
 # local context notes for the next AI session (not pushed)
 CLAUDE.md
+# compiled apps (apps/*/build.sh)
+apps/*/build/

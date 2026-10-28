@@ -130,6 +130,20 @@ gtk_ok_bg       = "c_ok @ 1"
 gtk_ok_fg       = "on(gtk_ok_bg)"
 gtk_warn_bg     = "c_warn @ 1"
 gtk_warn_fg     = "on(gtk_warn_bg)"
+# Settings app (niri-settings, Qt)
+set_bg          = "bg @ alpha_panel"
+set_side        = "fg @ 0.03"
+set_card        = "fg @ 0.045"
+set_line        = "fg @ 0.08"
+set_line_strong = "fg @ 0.3"
+set_field       = "fg @ 0.08"
+set_field_hover = "fg @ 0.13"
+set_sel         = "accent @ 0.2"
+set_focus       = "accent @ 0.6"
+set_track       = "fg @ 0.2"
+set_knob        = "fg_strong"
+set_popup       = "mix(bg, surface, 0.5) @ 0.98"
+set_accent_fg   = "on(accent)"
 # Folder + home/desktop icons (Files etc., niri only): Adwaita's blues, remade from one colour
 folder          = "accent @ 1"
 folder_dark     = "mix(folder, #000000, 0.14)"
@@ -155,4 +169,5 @@ quickshell = { src = "templates/quickshell.qml", dest = "~/.config/quickshell/Th
 gtk3    = { src = "templates/gtk3.css",    dest = "~/.config/theme/out/gtk/Niri/gtk-3.0/gtk.css" }   # GTK3 theme "Niri", used under niri only
 folders = { src = "templates/folders",    dest = "~/.config/theme/out/icon-theme/Niri/scalable/places" }   # icon theme "Niri", niri only
 folders_index = { src = "templates/icon-theme.index", dest = "~/.config/theme/out/icon-theme/Niri/index.theme" }
+settings = { src = "templates/settings.qss", dest = "~/.config/theme/out/settings.qss" }   # niri-settings reloads it by itself
 icons   = { src = "templates/icons",       dest = "~/.config/theme/out/icons" }   # launcher icons (a folder: every file is rendered)

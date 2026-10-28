@@ -283,7 +283,7 @@ Sheet {
             Row {
                 anchors.right: parent.right
                 spacing: 8
-                RoundBtn { icon: "󰒓"; onClicked: { qs.run([qs.bin + "power-settings"]); qs.dismiss() } }
+                RoundBtn { icon: "󰒓"; onClicked: { qs.run([qs.bin + "niri-settings", "power"]); qs.dismiss() } }
                 RoundBtn { icon: "󰌾"; onClicked: { qs.dismiss(); qs.run([qs.bin + "power", "lock"]) } }
                 RoundBtn { icon: "󰐥"; on: qs.sub === "power"; onClicked: qs.toggleSub("power") }
             }

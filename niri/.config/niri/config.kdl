@@ -323,6 +323,7 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty" "-o" "hide_window_decorations=yes"; }
     Mod+D hotkey-overlay-title="Launcher" { spawn "qs" "ipc" "call" "launcher" "toggle"; }
+    Mod+S hotkey-overlay-title="Settings" { spawn "/home/dvip/.local/bin/niri-settings"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen (face unlock)" { spawn "/home/dvip/.local/bin/lockscreen"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.

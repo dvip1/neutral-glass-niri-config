@@ -6,5 +6,5 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 pkgs=("$@")
-[[ ${#pkgs[@]} -eq 0 ]] && mapfile -t pkgs < <(find . -maxdepth 1 -mindepth 1 -type d -not -name '.*' -printf '%f\n' | sort)
+[[ ${#pkgs[@]} -eq 0 ]] && mapfile -t pkgs < <(find . -maxdepth 1 -mindepth 1 -type d -not -name '.*' -not -name apps -printf '%f\n' | sort)
 stow -t "$HOME" -R -v "${pkgs[@]}"

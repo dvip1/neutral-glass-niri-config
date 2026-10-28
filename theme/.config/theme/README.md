@@ -81,3 +81,5 @@ Unknown names stop `theme apply` before anything is written.
   icons recoloured (`templates/folders/`, copied from Adwaita 50 with the blues replaced by `folder*` tokens; `folder`
   defaults to the accent, glass and mono set a grey). Same niri-only switching as GTK3 (gsettings `icon-theme`).
 - **Wallpaper** is separate (`setwall`).
+- **Settings app** (`niri-settings`, `~/.dotfiles/apps/niri-settings`): styled by `templates/settings.qss`; changes
+  single tunables with `theme setkey section.key value` / `theme unset section.key` and reads `theme json`.
