@@ -1,0 +1,42 @@
+#!/usr/bin/env -S python3 -I
+"""Open a URL in its default app and bring that app's window to the front.
+xdg-open alone leaves the browser behind: niri only lets a window take focus with an activation
+token, and a launcher's xdg-open passes none. So after opening, focus the handler's window.
+
+  open-url URL
+"""
+import json, os, subprocess, sys, time
+
+url = sys.argv[1] if len(sys.argv) > 1 else ""
+if not url:
+    sys.exit(2)
+subprocess.Popen(["xdg-open", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+
+scheme = url.split(":", 1)[0] if "://" in url else "https"
+desktop = subprocess.run(["xdg-mime", "query", "default", f"x-scheme-handler/{scheme}"], capture_output=True, text=True).stdout.strip()
+want = desktop.removesuffix(".desktop").lower()          # app.zen_browser.zen, firefox, org.mozilla.firefox...
+if not want:
+    sys.exit(0)
+
+
+def windows():
+    out = subprocess.run(["niri", "msg", "--json", "windows"], capture_output=True, text=True).stdout
+    return json.loads(out or "[]")
+
+
+def matches(w):
+    a = (w.get("app_id") or "").lower()
+    return a and (a == want or a.endswith("." + want) or want.endswith("." + a))
+
+
+# the tab opens in an existing window, or the browser starts: wait briefly for a window to exist
+for _ in range(30):
+    ws = [w for w in windows() if matches(w)]
+    if ws:
+        break
+    time.sleep(0.1)
+else:
+    sys.exit(0)
+time.sleep(0.15)
+win = max(ws, key=lambda w: ((w.get("focus_timestamp") or {}).get("secs", 0), (w.get("focus_timestamp") or {}).get("nanos", 0)))
+subprocess.run(["niri", "msg", "action", "focus-window", "--id", str(win["id"])])

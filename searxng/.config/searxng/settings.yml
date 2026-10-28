@@ -1,0 +1,32 @@
+# SearXNG for the launcher (Quickshell): local only, JSON output on, no rate limiter (one user).
+# Runs as a rootless Podman container: ~/.config/containers/systemd/searxng.container (package `containers`).
+# The secret key comes from secret.env (SEARXNG_SECRET, git-ignored).
+use_default_settings: true
+general:
+  instance_name: "local"
+server:
+  limiter: false
+  image_proxy: false
+  public_instance: false
+search:
+  formats: [html, json]
+  safe_search: 0
+  autocomplete: ""
+# Tested 2026-10-29 from this machine: brave, google cse, bing and wikipedia/wikidata (infobox) answer;
+# these refuse a self-hosted instance ("access denied", or nothing) and only cost time
+engines:
+  - name: duckduckgo
+    disabled: true
+  - name: google
+    disabled: true
+  - name: qwant
+    disabled: true
+  - name: startpage
+    disabled: true
+  - name: bing
+    disabled: false
+  # Tor-only engines: fail to load without Tor
+  - name: ahmia
+    disabled: true
+  - name: torch
+    disabled: true

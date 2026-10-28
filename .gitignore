@@ -11,3 +11,5 @@ nvim/
 CLAUDE.md
 # compiled apps (apps/*/build.sh)
 apps/*/build/
+# SearXNG secret key (SEARXNG_SECRET), generated locally
+searxng/.config/searxng/secret.env

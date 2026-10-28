@@ -1,0 +1,177 @@
+[
+ {
+  "q": "100 inr to usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "inr to usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "$50 in inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "€20 to inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "₹500 in usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "50 dollars to rupees",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "10k inr in usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "2 lakh inr in eur",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "1 crore inr to usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "100 usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "500 rs",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "20 eur to gbp",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "100 aed to inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "1000 jpy to inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "100 pounds in inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "50 euros in dollars",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "250 usd to eur",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "1 btc to usd",
+  "expect": [
+   "none"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "how much is 100 usd in inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "5000 inr in aud",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "10 sgd to inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "100 cad in usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "3.5k inr to usd",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "1,000 usd to inr",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ },
+ {
+  "q": "100 yen in rupees",
+  "expect": [
+   "calc"
+  ],
+  "cat": "currency"
+ }
+]

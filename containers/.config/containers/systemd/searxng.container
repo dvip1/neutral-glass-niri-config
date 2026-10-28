@@ -1,0 +1,20 @@
+# Podman quadlet: systemd turns this into searxng.service (user). Local metasearch for the launcher,
+# reachable only from this machine on http://127.0.0.1:8888. Config: ~/.config/searxng/settings.yml.
+#   systemctl --user daemon-reload && systemctl --user start searxng
+[Unit]
+Description=SearXNG (local metasearch for the launcher)
+
+[Container]
+Image=docker.io/searxng/searxng:latest
+ContainerName=searxng
+PublishPort=127.0.0.1:8888:8080
+# only the settings file, read-only: mounting the folder let the container take it over
+Volume=%h/.config/searxng/settings.yml:/etc/searxng/settings.yml:ro,Z
+EnvironmentFile=%h/.config/searxng/secret.env
+AutoUpdate=registry
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

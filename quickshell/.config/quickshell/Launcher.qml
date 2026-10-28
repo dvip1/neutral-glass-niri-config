@@ -8,7 +8,9 @@
 //   - quick keys for actions ("dm" dark mode, "lk" lock, ...)
 //   - calculator and unit conversion inline ("2^10", "sqrt(2)*3", "5 km in mi", "100 f to c")
 //   - prefixes: "=" calculator, "/" or "~" files, ">" shell command, "?" web search
-//   - the last row searches the web for what you typed
+//   - the last row searches the web for what you typed; questions ("who is…", "what is…", "…?", or
+//     the "?" prefix) are asked of a local SearXNG and answered inline: a Wikipedia/Wikidata card
+//     and the top web results (searxng package; nothing happens if it is not running)
 //   - keyboard shortcuts from niri's config are searchable and runnable ("fullscreen" -> Mod+Shift+F)
 //   - "brightness 40", "volume 30" set them directly
 //   - search by meaning (Semantic.qml, a local embedding model through Ollama): "edit a photo" finds
@@ -46,6 +48,8 @@ Scope {
 
     // live data, refreshed each time the launcher opens
     property var windows: []
+    property var answers: ({})        // question -> [answer card, web results] from SearXNG (this session)
+    property string asking: ""        // question being fetched
     property var browserTabs: []      // open browser tabs (browser-tabs: Zen, Firefox, Floorp, LibreWolf)
     property var clips: []
     property var recentFiles: []
@@ -70,6 +74,7 @@ Scope {
         lastPointer = null
         foundFiles = []; foundFor = ""
         semHits = {}; semFor = ""
+        fxRefresh()
         winProc.running = true
         clipProc.running = true
         tabProc.running = true
@@ -281,10 +286,9 @@ Scope {
         const pct = t.match(/^(-?[\d.]+)\s*(?:%|percent)\s+of\s+(-?[\d.]+)$/)
         if (pct) return fmt(parseFloat(pct[1]) / 100 * parseFloat(pct[2]))
         const raw = t.match(/^(-?[\d.]+(?:e-?\d+)?)\s*°?\s*([a-z]+)\s+(?:to|in|into|as|=)\s+°?\s*([a-z]+)$/)
-        if (!raw) return null
-        const m = [raw[0], raw[1], unitOf(raw[2]), unitOf(raw[3])]
-        const v = parseFloat(m[1]), a = units[m[2]], b = units[m[3]]
-        if (isNaN(v) || !a || !b || a[0] !== b[0]) return null
+        const m = raw ? [raw[0], raw[1], unitOf(raw[2]), unitOf(raw[3])] : []
+        const v = raw ? parseFloat(m[1]) : NaN, a = units[m[2]], b = units[m[3]]
+        if (isNaN(v) || !a || !b || a[0] !== b[0]) return money(t)
         let r
         if (a[0] === "temp") {
             const c = m[2] === "c" ? v : m[2] === "f" ? (v - 32) * 5 / 9 : v - 273.15
@@ -292,6 +296,72 @@ Scope {
         } else r = v * a[1] / b[1]
         const s = fmt(Number(r.toPrecision(6)))
         return s === null ? null : s + " " + m[3]
+    }
+    // ---- currencies: rates from open.er-api.com (free, no key; ~166 currencies, updated daily),
+    // fetched at most twice a day when the launcher opens and cached, so converting is offline and instant
+    readonly property string homeCurrency: "INR"   // what "100 usd" converts to (and "100 inr" to USD)
+    property var fx: ({ rates: {}, date: "", fetched: 0 })
+    FileView {
+        id: fxFile
+        path: root.home + "/.cache/quickshell/fx-rates.json"
+        atomicWrites: true
+        printErrors: false
+        onLoaded: { try { root.fx = JSON.parse(text()) } catch (e) {} }
+    }
+    function fxRefresh() {
+        if (Date.now() - (fx.fetched || 0) < 12 * 3600 * 1000) return
+        const xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE || xhr.status !== 200) return
+            try {
+                const d = JSON.parse(xhr.responseText)
+                if (d.result !== "success") return
+                const r = {}
+                for (const c in d.rates) r[c.toLowerCase()] = d.rates[c]    // units per 1 USD
+                root.fx = { rates: r, date: (d.time_last_update_utc || "").slice(5, 16), fetched: Date.now() }
+                fxFile.setText(JSON.stringify(root.fx))
+            } catch (e) {}
+        }
+        xhr.open("GET", "https://open.er-api.com/v6/latest/USD")
+        xhr.send()
+    }
+    // symbols and names people type -> ISO code; any 3-letter code the rates know also works
+    readonly property var moneyNames: ({
+        "$": "usd", "us$": "usd", "dollar": "usd", "dollars": "usd", "bucks": "usd", "usd": "usd",
+        "€": "eur", "euro": "eur", "euros": "eur", "£": "gbp", "pound": "gbp", "pounds": "gbp", "quid": "gbp",
+        "₹": "inr", "rs": "inr", "rs.": "inr", "rupee": "inr", "rupees": "inr", "rupay": "inr", "rupaye": "inr",
+        "¥": "jpy", "yen": "jpy", "yuan": "cny", "rmb": "cny", "renminbi": "cny", "won": "krw", "ruble": "rub", "rubles": "rub",
+        "dirham": "aed", "dirhams": "aed", "riyal": "sar", "riyals": "sar", "franc": "chf", "francs": "chf", "baht": "thb",
+        "ringgit": "myr", "taka": "bdt", "lira": "try", "rand": "zar", "real": "brl", "reais": "brl",
+        "canadian dollar": "cad", "canadian dollars": "cad", "australian dollar": "aud", "australian dollars": "aud",
+        "singapore dollar": "sgd", "singapore dollars": "sgd", "hong kong dollar": "hkd", "nepali rupee": "npr",
+        "pakistani rupee": "pkr", "sri lankan rupee": "lkr", "bitcoin": "", "btc": ""
+    })
+    function moneyOf(w) {
+        w = (w || "").trim()
+        if (w in moneyNames) return moneyNames[w] || null
+        return /^[a-z]{3}$/.test(w) && fx.rates[w] ? w : null
+    }
+    // "100 inr to usd", "$50 in inr", "inr to usd", "10k rupees in dollars", "2 lakh inr", "100 usd"
+    function money(t) {
+        if (!fx.rates || !fx.rates.usd) return null
+        const parts = t.replace(/,/g, "").split(/\s+(?:to|in|into|as|=)\s+/)
+        if (parts.length > 2) return null
+        const left = parts[0].match(/^([$€£₹¥]|rs\.?|us\$)?\s*(-?[\d.]+)?\s*(k|m|bn|lakh|lakhs|lac|crore|crores|cr)?\s*([$€£₹¥]|[a-z][a-z .]*)?$/)
+        if (!left) return null
+        const m = left.concat([parts.length === 2 ? parts[1].trim() : undefined])
+        if (!m[2] && !m[1] && !m[5]) return null
+        const from = moneyOf(m[1] || m[4]) , to0 = m[5] ? moneyOf(m[5]) : null
+        if (!from || (m[5] && !to0) || (!m[2] && !m[5])) return null
+        if (m[1] && m[4] && moneyOf(m[4]) !== from) return null
+        const to = to0 || (from === homeCurrency.toLowerCase() ? "usd" : homeCurrency.toLowerCase())
+        if (from === to) return null
+        const mult = { k: 1e3, m: 1e6, bn: 1e9, lakh: 1e5, lakhs: 1e5, lac: 1e5, crore: 1e7, crores: 1e7, cr: 1e7 }[m[3]] || 1
+        const v = (m[2] ? parseFloat(m[2]) : 1) * mult
+        if (isNaN(v)) return null
+        const r = v / fx.rates[from] * fx.rates[to]
+        const digits = Math.abs(r) >= 100 ? 2 : Math.abs(r) >= 1 ? 2 : 4
+        return r.toLocaleString(Qt.locale("en_US"), "f", digits) + " " + to.toUpperCase()
     }
     readonly property var mathNames: ["sqrt", "cbrt", "sin", "cos", "tan", "asin", "acos", "atan", "log", "ln", "log2", "log10",
         "exp", "abs", "round", "floor", "ceil", "min", "max", "pow", "pi", "e"]
@@ -516,7 +586,7 @@ Scope {
                  image: e ? e.icon : "", glyph: "󰖟", hint: "Switch", alt: "Open again", tag: "Tab", extra: [host, t.browser],
                  doc: sem.docText(host, t.title),
                  run: () => Quickshell.execDetached([root.bin + "browser-tabs", "--activate", t.app_id, t.title]),
-                 runAlt: () => Quickshell.execDetached(["xdg-open", t.url]) }
+                 runAlt: () => Quickshell.execDetached([root.bin + "open-url", t.url]) }
     }
     function fileItem(path) {
         const name = path.split("/").pop()
@@ -613,6 +683,77 @@ Scope {
         return sections[section].id === "files" || (sections[section].id === "all" && q.length >= 3) ? q : ""
     }
 
+    // ---- answers from the web: a local SearXNG (127.0.0.1:8888, JSON) ----
+    readonly property string searx: "http://127.0.0.1:8888/search"
+    function isQuestion(raw) {
+        return raw.length >= 6 && (raw.startsWith("?") || /\?$/.test(raw)
+            || /^(who|what|whats|what's|when|where|why|how|which|define|meaning of|tell me about)\b/i.test(raw))
+    }
+    // the thing being asked about: Wikipedia gives a card only when the query names an article
+    function subjectOf(raw) {
+        return raw.replace(/^\?\s*/, "").replace(/\?+$/, "").trim()
+            .replace(/^(?:who|what|where|when)(?:'s|\s+is|\s+are|\s+was|\s+were)\s+/i, "")
+            .replace(/^(?:whats|define|meaning of|tell me about|what does)\s+/i, "").replace(/\s+mean$/i, "")
+    }
+    Timer {
+        id: askDelay
+        interval: 450                 // only once typing pauses: each question costs a 1-2 s web search
+        onTriggered: root.ask(root.query.trim())
+    }
+    function ask(raw) {
+        if (!isQuestion(raw) || answers[raw] || asking === raw) return
+        asking = raw
+        const subject = subjectOf(raw)
+        const xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return
+            if (root.asking === raw) root.asking = ""
+            let d = null
+            if (xhr.status === 200) { try { d = JSON.parse(xhr.responseText) } catch (e) {} }
+            const a = Object.assign({}, root.answers)
+            a[raw] = d ? root.answerItems(d, subject) : []
+            root.answers = a
+            if (root.query.trim() === raw) root.refresh()
+        }
+        xhr.open("GET", searx + "?format=json&q=" + encodeURIComponent(subject))
+        xhr.send()
+    }
+    function answerItems(d, subject) {
+        const out = []
+        const host = u => (u.match(/^[a-z]+:\/\/(?:www\.)?([^\/:?#]+)/) || [, u])[1]
+        const ib = (d.infoboxes || [])[0]
+        const results = (d.results || []).filter(r => r.url && r.title)
+        if (ib && (ib.content || "").length > 20) {
+            const url = (ib.urls || []).map(u => u.url).find(u => /wikipedia\.org/.test(u)) || ((ib.urls || [])[0] || {}).url || ib.id || ""
+            const facts = (ib.attributes || []).filter(x => x.label && typeof x.value === "string" && x.value.length < 40 && !/^Q\d+/.test(x.value))
+                .slice(0, 3).map(x => x.label + ": " + x.value.replace(/^\w+day, /, "")).join("   ·   ")
+            out.push({ key: "", kind: "answer", title: ib.infobox, sub: ib.content.replace(/\s+/g, " "), facts: facts, url: url,
+                       remote: ib.img_src || "", glyph: "󰖟", hint: "Read more", alt: "Copy", tag: host(url) || "Wikipedia", score: 950,
+                       run: () => { if (url) Quickshell.execDetached([root.bin + "open-url", url]) },
+                       runAlt: () => Quickshell.execDetached(["wl-copy", "--", ib.infobox + ": " + ib.content]) })
+        } else {
+            // no card: the best snippet, Wikipedia first
+            const r = results.find(r => /wikipedia\.org/.test(r.url) && (r.content || "").length > 40) || results.find(r => (r.content || "").length > 60)
+            if (r) out.push({ key: "", kind: "answer", title: r.title, sub: r.content.replace(/\s+/g, " "), facts: "", remote: "", url: r.url,
+                              glyph: "󰖟", hint: "Open", alt: "Copy", tag: host(r.url), score: 950,
+                              run: () => Quickshell.execDetached([root.bin + "open-url", r.url]),
+                              runAlt: () => Quickshell.execDetached(["wl-copy", "--", r.content]) })
+        }
+        // the card's page again (mobile or not) is not worth a row
+        const same = u => u.toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/^([a-z]{2})\.m\./, "$1.")
+            .replace(/^m\./, "").replace(/[#?].*$/, "").replace(/\/$/, "")
+        for (const r of results.filter(r => !out.length || same(r.url) !== same(out[0].url || "")).slice(0, 4))
+            out.push({ key: "", kind: "result", title: r.title, sub: host(r.url) + "   ·   " + (r.content || "").replace(/\s+/g, " "),
+                       glyph: "󰖟", hint: "Open", alt: "Copy link", tag: host(r.url), score: 0,
+                       run: () => Quickshell.execDetached([root.bin + "open-url", r.url]),
+                       runAlt: () => Quickshell.execDetached(["wl-copy", "--", r.url]) })
+        return out
+    }
+    function answerRows(raw) {
+        if (answers[raw]) return answers[raw]
+        return isQuestion(raw) ? [{ key: "", kind: "hint", title: "Looking it up…", sub: "", glyph: "󰖟", tag: "" }] : []
+    }
+
     // ---- search by meaning ----
     Semantic { id: sem }
     // embed whatever is new (first run: ~300 things, ~10 s in the background; later only changes)
@@ -662,7 +803,7 @@ Scope {
     function semScore(c) { return Math.min(850, 400 + (c - 0.68) * 2500) }
 
     // ---- building the list ----
-    onQueryChanged: { current = 0; findDelay.restart(); semHits = {}; semDelay.restart(); refresh() }
+    onQueryChanged: { current = 0; findDelay.restart(); semHits = {}; semDelay.restart(); askDelay.restart(); refresh() }
     function refresh() {
         if (!want) return
         const raw = query.trim()
@@ -687,7 +828,7 @@ Scope {
                             runAlt: () => Quickshell.execDetached(["sh", "-c", cmd]) }]
                        : [{ key: "", kind: "hint", title: "Type a shell command", sub: "", glyph: "", tag: "" }]
         }
-        if (raw.startsWith("?")) return [webItem(raw.slice(1).trim())]
+        if (raw.startsWith("?")) return (neutral ? [] : answerRows(raw)).concat([webItem(raw.slice(1).trim())])
         if (raw.startsWith("=")) return [calcItem(raw, calc(raw))]
         if (/^[\/~]/.test(raw)) { sec = "files"; q = fileQuery().toLowerCase() }
 
@@ -753,6 +894,11 @@ Scope {
             if (q) out = scored(out, 0)
         }
 
+        if (raw && sec === "all" && !neutral && isQuestion(raw)) {
+            const rows = answerRows(raw)
+            const strong = out.length && (out[0].score || 0) >= 900
+            out = strong ? out.concat(rows) : rows.slice(0, 1).concat(out, rows.slice(1))
+        }
         if (raw && (sec === "all" || sec === "apps")) out.push(webItem(raw))
         if (!out.length) out = [{ key: "", kind: "hint", title: sec === "clipboard" ? "Clipboard history is empty" : "Nothing found", sub: "", glyph: "󰍉", tag: "" }]
         return out
@@ -784,14 +930,16 @@ Scope {
         return out
     }
     function calcItem(raw, r) {
-        return { key: "", kind: "calc", title: r === null ? "…" : r, sub: raw.replace(/^=/, "").trim() || "Type an expression, or e.g. 5 km in mi",
-                 glyph: "󰃬", hint: "Copy", tag: "Calculator",
-                 run: () => { if (r !== null) Quickshell.execDetached(["wl-copy", "--", r.replace(/ [a-z]+$/, "")]) } }
+        const cur = r !== null && / [A-Z]{3}$/.test(r)
+        return { key: "", kind: "calc", title: r === null ? "…" : r,
+                 sub: (raw.replace(/^=/, "").trim() || "Type an expression, or e.g. 5 km in mi") + (cur ? "   ·   rates of " + fx.date + ", ExchangeRate-API" : ""),
+                 glyph: cur ? "󰆿" : "󰃬", hint: "Copy", tag: cur ? "Currency" : "Calculator",
+                 run: () => { if (r !== null) Quickshell.execDetached(["wl-copy", "--", r.replace(/ [a-zA-Z]+$/, "").replace(/,/g, "")]) } }
     }
     function webItem(s) {
         return { key: "", kind: "web", title: s ? "Search the web for “" + s + "”" : "Type to search the web", sub: s ? "DuckDuckGo" : "",
                  glyph: "󰖟", hint: "Search", tag: "Web",
-                 run: () => { if (s) Quickshell.execDetached(["xdg-open", root.webSearch + encodeURIComponent(s)]) } }
+                 run: () => { if (s) Quickshell.execDetached([root.bin + "open-url", root.webSearch + encodeURIComponent(s)]) } }
     }
 
     function activate(i, alt) {
@@ -980,8 +1128,9 @@ Scope {
                     required property var modelData
                     required property int index
                     readonly property bool sel: index === root.current
+                    readonly property bool big: modelData.kind === "answer"
                     width: list.width
-                    height: win.rowH
+                    height: big ? Math.max(win.rowH, card.implicitHeight + 20) : win.rowH
                     radius: Theme.radiusSmall
                     color: sel ? Theme.pillHover : Theme.clear(Theme.pillHover)
 
@@ -989,15 +1138,15 @@ Scope {
                     Item {
                         id: ico
                         x: 8
-                        width: 28; height: 28
-                        anchors.verticalCenter: parent.verticalCenter
-                        readonly property string src: row.modelData.thumb ? row.modelData.thumb
+                        width: row.big && row.modelData.remote ? 64 : 28; height: width
+                        y: row.big ? 10 : (row.height - height) / 2
+                        readonly property string src: row.modelData.remote ? row.modelData.remote : row.modelData.thumb ? row.modelData.thumb
                             : row.modelData.image ? (row.modelData.image.startsWith("/") ? "file://" + row.modelData.image : Quickshell.iconPath(row.modelData.image, true)) : ""
                         Image {
                             id: img
                             anchors.fill: parent
                             source: ico.src
-                            sourceSize: Qt.size(56, 56)
+                            sourceSize: Qt.size(128, 128)
                             fillMode: Image.PreserveAspectFit
                             asynchronous: true
                             visible: status === Image.Ready
@@ -1011,23 +1160,35 @@ Scope {
                         }
                     }
                     Column {
-                        x: 46
+                        id: card
+                        x: ico.x + ico.width + 10
                         width: parent.width - x - tail.width - 20
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 1
+                        y: row.big ? 10 : (row.height - height) / 2
+                        spacing: row.big ? 4 : 1
                         Text {
                             width: parent.width
                             elide: Text.ElideRight
                             textFormat: Text.StyledText
                             text: root.marked((row.modelData.title || "").replace(/\s+/g, " "), row.modelData.hits)
                             color: row.modelData.kind === "hint" ? Theme.fgMuted : Theme.fg
-                            font { family: Theme.font; pointSize: (row.modelData.kind === "calc" ? 15 : 13) * 0.75; weight: row.modelData.kind === "calc" ? Font.DemiBold : Font.Normal }
+                            font { family: Theme.font; pointSize: (row.modelData.kind === "calc" || row.big ? 15 : 13) * 0.75
+                                   weight: row.modelData.kind === "calc" || row.big ? Font.DemiBold : Font.Normal }
                         }
                         Text {
                             width: parent.width
                             visible: text !== ""
-                            elide: Text.ElideMiddle
+                            elide: row.big || row.modelData.kind === "result" ? Text.ElideRight : Text.ElideMiddle
+                            wrapMode: row.big ? Text.WordWrap : Text.NoWrap
+                            maximumLineCount: row.big ? 4 : 1
                             text: row.modelData.sub || ""
+                            color: row.big ? Theme.fg : Theme.fgMuted
+                            font { family: Theme.font; pointSize: (row.big ? 12 : 11) * 0.75 }
+                        }
+                        Text {
+                            width: parent.width
+                            visible: row.big && text !== ""
+                            elide: Text.ElideRight
+                            text: row.modelData.facts || ""
                             color: Theme.fgMuted
                             font { family: Theme.font; pointSize: 11 * 0.75 }
                         }
@@ -1035,7 +1196,9 @@ Scope {
                     // what kind of thing it is; on the selected row, what Enter does
                     Text {
                         id: tail
-                        anchors { right: parent.right; rightMargin: 12; verticalCenter: parent.verticalCenter }
+                        anchors.right: parent.right
+                        anchors.rightMargin: 12
+                        y: row.big ? 12 : (row.height - height) / 2
                         text: row.sel && row.modelData.hint ? row.modelData.hint + (row.modelData.alt ? "  ·  Ctrl ↵ " + row.modelData.alt : "  ↵") : (row.modelData.tag || "")
                         color: row.sel ? Theme.fgTitle : Theme.fgMuted
                         font { family: Theme.font; pointSize: 11 * 0.75 }
