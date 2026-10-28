@@ -9,6 +9,11 @@
 //   - calculator and unit conversion inline ("2^10", "sqrt(2)*3", "5 km in mi", "100 f to c")
 //   - prefixes: "=" calculator, "/" or "~" files, ">" shell command, "?" web search
 //   - the last row searches the web for what you typed
+//   - keyboard shortcuts from niri's config are searchable and runnable ("fullscreen" -> Mod+Shift+F)
+//   - "brightness 40", "volume 30" set them directly
+//   - search by meaning (Semantic.qml, a local embedding model through Ollama): "edit a photo" finds
+//     an image editor, "I'm stepping away" finds Lock. Those matches arrive ~50 ms after the normal
+//     ones and are mixed in; without Ollama the launcher works as before.
 // Enter = the default action, Ctrl+Enter = the alternative where there is one (file: open its
 // folder; "> command": run it without a terminal).
 // The surface is fixed-size (never resized while animating, see Sheet.qml); niri blurs it via
@@ -44,6 +49,15 @@ Scope {
     property var clips: []
     property var recentFiles: []
     property var foundFiles: []       // plocate results for the current query
+    property var binds: []            // keyboard shortcuts parsed from niri's config
+    property var semHits: ({})        // semantic key -> cosine, for the current query
+    property string semFor: ""
+    property bool debug: false        // `qs ipc call launcher debug`: log each result's scores
+    // semantic tuning (measured with the headless harness, see rankJson); `qs ipc call launcher tune` changes them live
+    property real semMin: 0.76        // cosine below this is noise (tuned on ~1500 test queries)
+    property real semMin1: 0.82       // the same for a one-word query: little meaning, so noise scores high
+    property real semWindow: 0.06     // and only matches this close to the best one
+    property real phraseAdj: -0.08    // short example phrases match noise more readily
     property string foundFor: ""
 
     // ---- open / close ----
@@ -54,6 +68,7 @@ Scope {
         current = 0
         lastPointer = null
         foundFiles = []; foundFor = ""
+        semHits = {}; semFor = ""
         winProc.running = true
         clipProc.running = true
         recentView.reload()
@@ -66,6 +81,14 @@ Scope {
     IpcHandler {
         target: "launcher"
         function toggle(): void { root.toggle() }
+        function debug(): void { root.debug = !root.debug; console.warn("launcher debug", root.debug) }
+        // headless testing
+        function rank(q: string, vec: string): string { return root.rankJson(q, "all", vec) }
+        function rankIn(q: string, sec: string, vec: string): string { return root.rankJson(q, sec, vec) }
+        function catalog(): string { return root.catalogJson() }
+        function reindex(): void { root.indexAll() }
+        function indexing(): bool { return sem.busy }
+        function tune(min: real, min1: real, win: real, adj: real): void { root.semMin = min; root.semMin1 = min1; root.semWindow = win; root.phraseAdj = adj; root.indexAll() }
         function section(name: string): void {
             const i = root.sections.findIndex(s => s.id === name)
             if (root.want && root.section === i) root.hide()
@@ -133,7 +156,7 @@ Scope {
         if (!s) return null
         const l = s.toLowerCase()
         if (l === q) return { score: 1000, hits: range(0, q.length) }
-        if (l.startsWith(q)) return { score: 900 - (l.length - q.length), hits: range(0, q.length) }
+        if (l.startsWith(q)) return { score: 900 - (l.length - q.length) + (/[\s\-_.\/]/.test(l[q.length]) ? 40 : 0), hits: range(0, q.length) }
         // at the start of a word
         const re = /[\s\-_.\/]/
         let i = l.indexOf(q)
@@ -153,8 +176,9 @@ Scope {
             words.forEach(w => { const p = l.indexOf(w); hits = hits.concat(range(p, p + w.length)) })
             return { score: 450, hits: hits }
         }
-        // subsequence, penalised by the gaps (not for one or two letters: too many false hits)
-        if (q.length < 3) return null
+        // subsequence, penalised by the gaps (only for one short word: "frfx" -> Firefox; on
+        // phrases it matches nearly anything, the semantic search covers those)
+        if (q.length < 3 || q.includes(" ")) return null
         let hits = [], p = 0, gaps = 0
         for (const c of q) {
             if (c === " ") continue
@@ -163,7 +187,7 @@ Scope {
             if (hits.length) gaps += f - p
             hits.push(f); p = f + 1
         }
-        if (gaps > 3 * q.length + 6) return null
+        if (gaps > 2 * q.length + 4) return null
         return { score: 300 - gaps * 4, hits: hits }
     }
     function range(a, b) { const r = []; for (let i = a; i < b; i++) r.push(i); return r }
@@ -175,7 +199,33 @@ Scope {
             const x = match(q, e)
             if (x && x.score >= 450 && (!best || x.score * 0.7 > best.score)) best = { score: x.score * 0.7, hits: m ? m.hits : [] }
         }
+        // one mistyped word ("fierfox", "termnial"): close to a word of the title or of the extras
+        if (!best && q.length >= 4 && !q.includes(" ")) {
+            const limit = q.length >= 7 ? 2 : 1
+            let d = 9
+            for (const w of [title].concat(extra || []).join(" ").toLowerCase().split(/[\s\-_.\/]+/))
+                if (w.length >= 3 && Math.abs(w.length - q.length) <= limit) d = Math.min(d, typoDist(q, w, limit))
+            if (d <= limit) best = { score: 420 - 80 * d, hits: [] }
+        }
         return best
+    }
+    // edit distance counting a swap of two neighbours as one edit; gives up past `limit`
+    function typoDist(a, b, limit) {
+        const n = a.length, m = b.length
+        let prev2 = null, prev = range(0, m + 1)
+        for (let i = 1; i <= n; i++) {
+            const cur = [i]
+            let low = i
+            for (let j = 1; j <= m; j++) {
+                let v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
+                if (prev2 && i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) v = Math.min(v, prev2[j - 2] + 1)
+                cur.push(v)
+                low = Math.min(low, v)
+            }
+            if (low > limit) return limit + 1
+            prev2 = prev; prev = cur
+        }
+        return prev[m]
     }
 
     // ---- calculator and unit conversion ----
@@ -197,14 +247,35 @@ Scope {
         // temperature: special-cased
         c: ["temp", 0], f: ["temp", 0], k: ["temp", 0]
     })
+    // spelled-out names -> the short ones above
+    readonly property var unitNames: ({
+        millimeter: "mm", millimetre: "mm", centimeter: "cm", centimetre: "cm", meter: "m", metre: "m", kilometer: "km", kilometre: "km",
+        inches: "in", yard: "yd", yards: "yd", milligram: "mg", gram: "g", grams: "g", kilogram: "kg", kilo: "kg", kilos: "kg",
+        ton: "t", tonne: "t", ounce: "oz", ounces: "oz", pound: "lb", pounds: "lb", milliliter: "ml", millilitre: "ml", liter: "l",
+        litre: "l", gallon: "gal", gallons: "gal", cups: "cup", byte: "b", bytes: "b", kilobyte: "kb", megabyte: "mb", gigabyte: "gb",
+        terabyte: "tb", second: "s", seconds: "s", secs: "s", minute: "min", minutes: "min", mins: "min", hour: "h", hours: "h",
+        hrs: "h", celsius: "c", centigrade: "c", fahrenheit: "f", kelvin: "k", kph: "kmh", knots: "kn"
+    })
+    function unitOf(w) {
+        if (units[w]) return w
+        if (unitNames[w]) return unitNames[w]
+        const one = w.replace(/e?s$/, "")          // meters, kilometres, terabytes
+        return unitNames[one] || (units[one] ? one : null)
+    }
     function fmt(x) {
         if (!isFinite(x)) return null
         if (Math.abs(x) >= 1e15 || (Math.abs(x) < 1e-6 && x !== 0)) return x.toExponential(6).replace(/\.?0+e/, "e")
         return String(Math.round(x * 1e10) / 1e10)
     }
     function convert(text) {
-        const m = text.trim().toLowerCase().match(/^(-?[\d.]+(?:e-?\d+)?)\s*°?([a-z]+)\s+(?:to|in|as|=)\s+°?([a-z]+)$/)
-        if (!m) return null
+        const t = text.trim().toLowerCase()
+            .replace(/^(?:what(?:'s| is)|how much is|calculate|calc)\s+/, "").replace(/\s*\?$/, "")
+            .replace(/^tip\s+([\d.]+)\s*%\s+(?:on|of)\s+/, "$1% of ")
+        const pct = t.match(/^(-?[\d.]+)\s*(?:%|percent)\s+of\s+(-?[\d.]+)$/)
+        if (pct) return fmt(parseFloat(pct[1]) / 100 * parseFloat(pct[2]))
+        const raw = t.match(/^(-?[\d.]+(?:e-?\d+)?)\s*°?\s*([a-z]+)\s+(?:to|in|into|as|=)\s+°?\s*([a-z]+)$/)
+        if (!raw) return null
+        const m = [raw[0], raw[1], unitOf(raw[2]), unitOf(raw[3])]
         const v = parseFloat(m[1]), a = units[m[2]], b = units[m[3]]
         if (isNaN(v) || !a || !b || a[0] !== b[0]) return null
         let r
@@ -218,7 +289,10 @@ Scope {
     readonly property var mathNames: ["sqrt", "cbrt", "sin", "cos", "tan", "asin", "acos", "atan", "log", "ln", "log2", "log10",
         "exp", "abs", "round", "floor", "ceil", "min", "max", "pow", "pi", "e"]
     function calc(text) {
-        let t = text.trim().replace(/^=/, "").trim()
+        let t = text.trim().replace(/^=/, "").trim().toLowerCase()
+            .replace(/^(?:what(?:'s| is)|how much is|calculate|calc)\s+/, "").replace(/\s*\?$/, "")
+            .replace(/(\d)\s*(?:x|times)\s*(?=[\d(])/g, "$1*").replace(/\s+plus\s+/g, "+").replace(/\s+minus\s+/g, "-")
+            .replace(/\s+divided by\s+/g, "/").replace(/\s+over\s+/g, "/")
         if (!t) return null
         const conv = convert(t)
         if (conv) return conv
@@ -242,16 +316,40 @@ Scope {
         return DesktopEntries.applications.values.filter(e => !e.noDisplay && !e.command.join(" ").includes("/.local/bin/"))
     }
     function appItem(e) {
-        return { key: "app:" + e.id, kind: "app", title: e.name, sub: e.comment || e.genericName || "",
+        return { key: "app:" + e.id, skey: "app:" + e.id, kind: "app", title: e.name, sub: e.comment || e.genericName || "",
                  image: e.icon, glyph: "󰣆", hint: "Open", tag: "Application",
+                 doc: sem.docText(e.name, [e.comment, e.genericName, (e.keywords || []).join(", "), (e.categories || []).join(", ")].filter(x => x).join(". ")),
                  extra: [e.genericName, (e.keywords || []).join(" "), e.id, e.command.length ? e.command[0].split("/").pop() : ""],
                  run: () => e.execute() }
     }
     function sh(script) { return ["sh", "-c", script] }
     function act(id, title, glyph, keys, cmd, sub) {
-        return { key: "act:" + id, kind: "action", title: title, sub: sub || "", glyph: glyph, keys: keys,
-                 hint: "Run", tag: "Action", extra: keys,
+        // a niri bind that runs the same thing is shown on this row (its key in the tag) instead of twice
+        const combos = typeof cmd === "function" ? [] : (bindSigs[cmdSig(cmd)] || [])
+        for (const sg of actionSigs[id] || []) combos.push(...(bindSigs[sg] || []))
+        return { key: "act:" + id, skey: "act:" + id, kind: "action", title: title, sub: sub || "", glyph: glyph, keys: keys,
+                 hint: "Run", tag: combos.length ? combos[0] : "Action", aliases: combos.map(c => "key:" + c),
+                 extra: keys, doc: sem.docText(title, about[id] || title),
                  run: typeof cmd === "function" ? cmd : () => Quickshell.execDetached(cmd) }
+    }
+    // what a command does, so an action and a bind running the same thing compare equal
+    function cmdSig(cmd) {
+        let c = cmd.slice()
+        if (c[0] === "niri" && c[2] === "action") {
+            if (c[3] !== "spawn" && c[3] !== "spawn-sh") return "niri " + c.slice(3).filter(x => x !== "--").join(" ")
+            c = c.slice(4).filter(x => x !== "--")
+            if (c.length === 1) c = c[0].split(/\s+/)
+        }
+        return c.map(x => x.replace(/^.*\//, "")).join(" ")
+    }
+    // actions run as functions, or differently from their bind
+    readonly property var actionSigs: ({
+        "lock": ["lockscreen"], "dnd": ["qs ipc call notifications dnd"], "clear-notifs": ["qs ipc call notifications clear"]
+    })
+    readonly property var bindSigs: {
+        const m = {}
+        for (const b of binds) (m[cmdSig(b.cmd)] = m[cmdSig(b.cmd)] || []).push(b.combo)
+        return m
     }
     function actions() {
         const b = bin
@@ -276,6 +374,11 @@ Scope {
                 sh('c=$(niri msg pick-color | awk "/Hex/{print \\$2}") && [ -n "$c" ] && printf %s "$c" | wl-copy && notify-send -a Launcher "Copied $c"'),
                 "Copies the hex value"),
             act("overview", "Overview", "󰕰", ["ov", "expose"], ["niri", "msg", "action", "toggle-overview"]),
+            act("mute", "Mute / Unmute Sound", "󰝟", ["mute", "unmute"], ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]),
+            act("volume", "Volume and Sound Output", "󰕾", ["vol", "volume", "sound"], ["qs", "ipc", "call", "quicksettings", "toggle"],
+                "Quick settings; or type e.g. volume 40"),
+            act("brightness", "Screen Brightness", "󰃟", ["br", "brightness"], ["qs", "ipc", "call", "quicksettings", "toggle"],
+                "Quick settings; or type e.g. brightness 40"),
             act("bar", "Show / Hide Bar", "󰍜", ["bar"], ["qs", "ipc", "call", "bar", "toggle"]),
             act("shortcuts", "Keyboard Shortcuts", "󰌌", ["ks", "keys", "help"], [b + "shortcuts"]),
             act("power-settings", "Power Settings", "󰂄", ["ps", "battery"], [b + "power-settings"]),
@@ -290,6 +393,104 @@ Scope {
                           t === Theme.name ? "󰄬" : "󰏘", ["theme " + t], [b + "theme", "set", t], t === Theme.name ? "Current" : ""))
         return list
     }
+    // what each action is for in plain words, and the ways people ask for each app: what the
+    // semantic search matches against (titles alone are too short to carry the meaning).
+    // Kept in launcher-phrases.json (written with help from Claude agents, edit freely).
+    property var about: ({})
+    property var appPhrases: ({})
+    property var keyPhrases: ({})     // shortcuts, by what they run (cmdSig), so every bind of an action shares them
+    FileView {
+        path: root.home + "/.config/quickshell/launcher-phrases.json"
+        printErrors: false
+        onLoaded: {
+            try {
+                const d = JSON.parse(text())
+                root.about = d.actions || {}
+                root.appPhrases = d.apps || {}
+                root.keyPhrases = d.shortcuts || {}
+            } catch (e) { console.warn("launcher-phrases.json:", e) }
+        }
+    }
+
+    // niri's binds, read from its config: "Mod+Shift+F  Fullscreen Window". Enter runs the bound
+    // action through `niri msg action` (it acts on the window you were in: the launcher never takes window focus).
+    FileView {
+        id: niriConf
+        path: root.home + "/.config/niri/config.kdl"
+        printErrors: false
+        watchChanges: true
+        onFileChanged: reload()
+        onLoaded: root.binds = root.parseBinds(text())
+    }
+    function parseBinds(text) {
+        const out = []
+        let inside = false
+        for (const raw of text.split("\n")) {
+            const line = raw.replace(/^\s+/, "")
+            if (!inside) { if (/^binds\s*\{/.test(raw)) inside = true; continue }
+            if (/^\}/.test(raw)) break
+            if (line.startsWith("//")) continue
+            const m = line.match(/^([A-Za-z0-9_+]+)\s*([^{]*)\{\s*(.*?)\s*;?\s*\}\s*$/)
+            if (!m) continue
+            const t = m[2].match(/hotkey-overlay-title=(?:"((?:[^"\\]|\\.)*)"|(null))/)
+            if (t && t[2]) continue
+            const toks = []
+            const re = /"((?:[^"\\]|\\.)*)"|(\S+)/g
+            let k
+            while ((k = re.exec(m[3])) !== null) toks.push(k[1] !== undefined ? k[1].replace(/\\(.)/g, "$1") : k[2])
+            if (!toks.length) continue
+            const action = toks[0], args = toks.slice(1)
+            const pos = args.filter(a => !/^[a-z-]+=/.test(a))
+            const props = []
+            args.filter(a => /^[a-z-]+=/.test(a)).forEach(a => props.push("--" + a.split("=")[0], a.split("=").slice(1).join("=")))
+            const cmd = action === "spawn" ? ["niri", "msg", "action", "spawn", "--", ...pos]
+                      : action === "spawn-sh" ? ["niri", "msg", "action", "spawn-sh", "--", pos.join(" ")]
+                      : ["niri", "msg", "action", action, ...props, ...(pos.length ? ["--", ...pos] : [])]
+            const title = t ? t[1] : action === "spawn" || action === "spawn-sh" ? "Run " + pos.join(" ")
+                        : (action + " " + pos.join(" ")).replace(/-/g, " ").trim().replace(/^./, c => c.toUpperCase())
+            out.push({ combo: m[1], title: title, cmd: cmd })
+        }
+        return out
+    }
+    function shortcutItems() {
+        const merged = {}
+        for (const a of actions()) for (const k of a.aliases) merged[k] = true
+        // several binds running the same thing (Mod+Left, Mod+H, Mod+WheelScrollUp) are one row,
+        // named by the first keyboard combo in the config; the others are listed under it
+        const groups = {}, order = []
+        for (const b of binds) {
+            if (merged["key:" + b.combo]) continue
+            const sg = cmdSig(b.cmd)
+            if (!groups[sg]) { groups[sg] = []; order.push(sg) }
+            groups[sg].push(b)
+        }
+        return order.map(sg => {
+            const g = groups[sg].slice().sort((x, y) => /Wheel|Mouse|Touchpad/.test(x.combo) - /Wheel|Mouse|Touchpad/.test(y.combo))
+            const b = g[0], combos = g.map(x => x.combo)
+            return { key: "key:" + b.combo, skey: "key:" + b.combo, kind: "shortcut", title: b.title, sig: sg,
+                     sub: combos.slice(0, 3).map(c => c.replace(/\+/g, " + ")).join("   or   "), glyph: "󰌌", hint: "Run", tag: b.combo,
+                     extra: combos, aliases: combos.slice(1).map(c => "key:" + c), doc: sem.docText("keyboard shortcut", b.title),
+                     run: () => Quickshell.execDetached(b.cmd) }
+        })
+    }
+    // "brightness 40", "set volume to 30%"
+    function ruleItems(q) {
+        let m = q.match(/^(?:set\s+)?(?:screen\s+)?(?:brightness|bright|backlight)\s*(?:to\s*)?(\d{1,3})\s*%?(?:\s+(?:for|in|while|during)\b.*)?$/)
+        if (m) {
+            const n = String(Math.max(1, Math.min(100, parseInt(m[1]))))
+            return [{ key: "", kind: "rule", title: "Set brightness to " + n + "%", sub: "", glyph: "󰃟", hint: "Set", tag: "Brightness",
+                      run: () => Quickshell.execDetached(["sh", "-c", 'brightnessctl -q set "$1%" && qs ipc call osd brightness "$1"', "sh", n]) }]
+        }
+        m = q.match(/^(?:set\s+)?(?:volume|vol|sound)\s*(?:to\s*)?(\d{1,3})\s*%?(?:\s+(?:for|in|while|during)\b.*)?$/)
+        if (m) {
+            const n = String(Math.min(150, parseInt(m[1])))
+            return [{ key: "", kind: "rule", title: "Set volume to " + n + "%", sub: parseInt(n) > 100 ? "Above 100% can distort" : "", glyph: "󰕾",
+                      hint: "Set", tag: "Volume",
+                      run: () => Quickshell.execDetached(["wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SINK@", n + "%"]) }]
+        }
+        return []
+    }
+
     function windowItems() {
         return windows.map(w => {
             const e = DesktopEntries.heuristicLookup(w.app_id || "")
@@ -311,7 +512,8 @@ Scope {
         const tab = line.indexOf("\t")
         const id = line.slice(0, tab), text = line.slice(tab + 1)
         const img = /^\[\[ binary data .* (png|jpe?g|webp|bmp|gif) /.test(text)
-        return { key: "", kind: "clip", title: img ? "Image  " + text.replace(/^\[\[ binary data /, "").replace(/ \]\]$/, "") : text.trim(),
+        return { key: "", skey: img ? "" : "clip:" + Qt.md5(text), doc: img ? "" : sem.docText("clipboard", text.slice(0, 300)),
+                 kind: "clip", title: img ? "Image  " + text.replace(/^\[\[ binary data /, "").replace(/ \]\]$/, "") : text.trim(),
                  sub: "", glyph: img ? "󰋩" : "󰅍", thumb: img ? "file://" + home + "/.cache/clip-menu/" + id + ".png" : "",
                  hint: "Copy", tag: "Clipboard",
                  run: () => Quickshell.execDetached(["sh", "-c", 'printf "%s\\n" "$1" | cliphist decode | wl-copy', "sh", line]) }
@@ -328,7 +530,7 @@ Scope {
         id: clipProc
         command: ["cliphist", "list"]
         stdout: StdioCollector {
-            onStreamFinished: { root.clips = text.split("\n").filter(l => l.includes("\t")).slice(0, 200); root.refresh() }
+            onStreamFinished: { root.clips = text.split("\n").filter(l => l.includes("\t")).slice(0, 200); root.refresh(); root.indexAll() }
         }
     }
     FileView {
@@ -386,47 +588,96 @@ Scope {
         return sections[section].id === "files" || (sections[section].id === "all" && q.length >= 3) ? q : ""
     }
 
+    // ---- search by meaning ----
+    Semantic { id: sem }
+    // embed whatever is new (first run: ~300 things, ~10 s in the background; later only changes)
+    function indexAll() {
+        const docs = apps().map(appItem).concat(actions(), shortcutItems(), clips.slice(0, 100).map(clipItem))
+            .filter(d => d.skey && d.doc).map(d => ({ key: d.skey, text: d.doc }))
+        // each example phrase of an action on its own: short query vs short phrase matches far
+        // better than against the whole description. Short phrases also match noise a bit more
+        // readily, hence the small penalty (keeps unrelated queries under the 0.68 cut).
+        const phrases = (key, text) => {
+            for (const ph of text.split(/[:,.]/).map(x => x.trim()).filter(x => x))
+                docs.push({ key: key, text: sem.docText("none", ph), adj: phraseAdj })
+        }
+        for (const id in about) phrases("act:" + id, about[id])
+        for (const key in appPhrases) phrases(key, appPhrases[key])
+        for (const it of shortcutItems()) if (keyPhrases[it.sig]) phrases(it.skey, keyPhrases[it.sig])
+        sem.index(docs)
+    }
+    function semEligible(raw, sec) {
+        // a phrase, or one longer word: on a short single word ("frfx") the nearest meanings are noise
+        return (raw.includes(" ") ? raw.length >= 4 : raw.length >= 5) && !/^[=>?\/~]/.test(raw) && calc(raw) === null && ruleItems(raw.toLowerCase()).length === 0
+            && (sec === "all" || sec === "apps" || sec === "actions" || sec === "clipboard")
+    }
+    // keep the close calls only: above the noise floor and near the best
+    function semFilter(res, raw) {
+        const hits = {}
+        if (!res.length) return hits
+        const best = res[0].cos, min = raw.trim().includes(" ") ? semMin : semMin1
+        res.filter(r => r.cos >= min && r.cos >= best - semWindow).slice(0, 10).forEach(r => hits[r.key] = r.cos)
+        return hits
+    }
+    Timer {
+        id: semDelay
+        interval: 90
+        onTriggered: {
+            const raw = root.query.trim()
+            if (!root.semEligible(raw, root.sections[root.section].id)) return
+            sem.search(raw, res => {
+                if (root.query.trim() !== raw || !res.length) return
+                root.semHits = root.semFilter(res, raw)
+                root.semFor = raw
+                root.refresh()
+            })
+        }
+    }
+    // cosine 0.68 -> 400 (a weak substring match), 0.76 -> 600, 0.84 -> 800 (a word-start match)
+    function semScore(c) { return Math.min(850, 400 + (c - 0.68) * 2500) }
+
     // ---- building the list ----
-    onQueryChanged: { current = 0; findDelay.restart(); refresh() }
+    onQueryChanged: { current = 0; findDelay.restart(); semHits = {}; semDelay.restart(); refresh() }
     function refresh() {
         if (!want) return
         const raw = query.trim()
-        let sec = sections[section].id
+        items = compute(raw, sections[section].id, semFor === raw ? semHits : {}, false)
+        if (current >= items.length) current = items.length - 1
+        if (debug) console.warn("launcher [" + raw + "] sem for [" + semFor + "]: " + items.slice(0, 10).map(it =>
+            it.title + " = " + Math.round(it.score || 0) + (it.skey && semHits[it.skey] !== undefined ? " (cos " + semHits[it.skey].toFixed(2) + ")" : "")).join(" | "))
+    }
+    // the result list for a query: also used headless (IPC `rank`), so it reads no UI state.
+    // hits: semantic key -> cosine. neutral: ignore your usage history (frecency, learned picks).
+    function compute(raw, sec, hits, neutral) {
         let q = raw.toLowerCase()
         let out = []
+        const frec = key => neutral ? 0 : frecency(key)
 
         // prefixes
         if (raw.startsWith(">")) {
             const cmd = raw.slice(1).trim()
-            items = cmd ? [{ key: "", kind: "cmd", title: cmd, sub: "Run in a terminal (Ctrl+Enter: without one)", glyph: "", hint: "Run",
-                             alt: "Run silently", tag: "Command",
-                             run: () => Quickshell.execDetached(["kitty", "-o", "hide_window_decorations=yes", "--hold", "sh", "-c", cmd]),
-                             runAlt: () => Quickshell.execDetached(["sh", "-c", cmd]) }]
-                         : [{ key: "", kind: "hint", title: "Type a shell command", sub: "", glyph: "", tag: "" }]
-            return
+            return cmd ? [{ key: "", kind: "cmd", title: cmd, sub: "Run in a terminal (Ctrl+Enter: without one)", glyph: "", hint: "Run",
+                            alt: "Run silently", tag: "Command",
+                            run: () => Quickshell.execDetached(["kitty", "-o", "hide_window_decorations=yes", "--hold", "sh", "-c", cmd]),
+                            runAlt: () => Quickshell.execDetached(["sh", "-c", cmd]) }]
+                       : [{ key: "", kind: "hint", title: "Type a shell command", sub: "", glyph: "", tag: "" }]
         }
-        if (raw.startsWith("?")) {
-            const s = raw.slice(1).trim()
-            items = [webItem(s || "")]
-            return
-        }
-        if (raw.startsWith("=")) {
-            const r = calc(raw)
-            items = [calcItem(raw, r)]
-            return
-        }
+        if (raw.startsWith("?")) return [webItem(raw.slice(1).trim())]
+        if (raw.startsWith("=")) return [calcItem(raw, calc(raw))]
         if (/^[\/~]/.test(raw)) { sec = "files"; q = fileQuery().toLowerCase() }
 
         const scored = (list, base) => {
             const res = []
             for (const it of list) {
-                if (!q) { res.push(Object.assign(it, { score: base + 40 * Math.log2(1 + frecency(it.key)), hits: [] })); continue }
+                if (!q) { res.push(Object.assign(it, { score: base + 40 * Math.log2(1 + frec(it.key)), hits: [] })); continue }
                 let m = matchItem(q, it.title, it.extra)
                 if (it.keys && it.keys.includes(q)) m = { score: 1100, hits: m ? m.hits : [] }
+                const c = it.skey ? hits[it.skey] : undefined
+                if (c !== undefined && (!m || semScore(c) > m.score)) m = { score: semScore(c), hits: m ? m.hits : [] }
                 if (!m) continue
-                let s = m.score + base + 60 * Math.log2(1 + frecency(it.key))
-                if (it.key && picks[q] === it.key) s += 2000
-                res.push(Object.assign(it, { score: s, hits: m.hits }))
+                let s = m.score + base + 60 * Math.log2(1 + frec(it.key))
+                if (!neutral && it.key && picks[q] === it.key) s += 2000
+                res.push(Object.assign(it, { score: s, hits: m.hits, cos: c }))
             }
             return res.sort((a, b) => b.score - a.score)
         }
@@ -434,9 +685,10 @@ Scope {
         if (sec === "all") {
             const c = q ? calc(raw) : null
             if (c !== null) out.push(calcItem(raw, c))
+            out = out.concat(ruleItems(q))
             if (!q) {
                 // suggestions: what you use most, then the open windows
-                const used = scored(apps().map(appItem).concat(actions()), 0).filter(it => frecency(it.key) > 0).slice(0, 6)
+                const used = scored(apps().map(appItem).concat(actions()), 0).filter(it => frec(it.key) > 0).slice(0, 6)
                 out = out.concat(used.length ? used : scored(apps().map(appItem), 0).sort((a, b) => a.title.localeCompare(b.title)).slice(0, 6))
                 out = out.concat(windowItems().filter(w => !w.focused).slice(0, 6))
             } else {
@@ -444,11 +696,17 @@ Scope {
                 let mixed = scored(apps().map(appItem), 0)
                     .concat(scored(actions(), -20))
                     .concat(scored(windowItems(), -40))
+                    .concat(scored(shortcutItems(), -60))
                     .concat(scored(appActs, -120))
                 mixed.sort((a, b) => b.score - a.score)
                 out = out.concat(mixed.slice(0, 30))
-                if (foundFor && foundFor.toLowerCase() === fileQuery().toLowerCase())
-                    out = out.concat(foundFiles.slice(0, 4).map(fileItem))
+                // a few files too, but only where every word starts a word of the name ("too loud"
+                // must not find "car-too-n_and_c-loud-s"); the Files section shows all of them
+                if (foundFor && foundFor.toLowerCase() === fileQuery().toLowerCase()) {
+                    const words = q.split(/\s+/).filter(w => w)
+                    const starts = n => words.every(w => new RegExp("(^|[^a-z0-9])" + w.replace(/[^a-z0-9]/g, "\\$&")).test(n.toLowerCase()))
+                    out = out.concat(foundFiles.filter(f => starts(f.split("/").pop())).slice(0, 4).map(fileItem))
+                }
             }
         } else if (sec === "apps") {
             out = q ? scored(apps().map(appItem), 0).concat(scored(desktopActions(), -120)).sort((a, b) => b.score - a.score)
@@ -456,7 +714,8 @@ Scope {
         } else if (sec === "windows") {
             out = q ? scored(windowItems(), 0) : windowItems()
         } else if (sec === "actions") {
-            out = q ? scored(actions(), 0) : actions()
+            out = ruleItems(q).concat(q ? scored(actions(), 0).concat(scored(shortcutItems(), -60)).sort((a, b) => b.score - a.score)
+                                        : actions().concat(shortcutItems()))
         } else if (sec === "files") {
             if (!q) out = recentFiles.map(fileItem)
             else if (foundFor) out = foundFiles.map(fileItem)
@@ -469,9 +728,26 @@ Scope {
 
         if (raw && (sec === "all" || sec === "apps")) out.push(webItem(raw))
         if (!out.length) out = [{ key: "", kind: "hint", title: sec === "clipboard" ? "Clipboard history is empty" : "Nothing found", sub: "", glyph: "󰍉", tag: "" }]
-        items = out
-        if (current >= items.length) current = items.length - 1
+        return out
     }
+
+    // ---- headless testing (no window): see the test harness in the dotfiles notes ----
+    // rank: the top results for a query, as JSON. vec = the query's embedding, numbers joined by ";"
+    // (qs ipc splits a JSON array into separate arguments). The caller embeds "task: search result | query: " + lower-cased query; "" = no semantic part.
+    function rankJson(q, sec, vec) {
+        const raw = q.trim()
+        let hits = {}
+        if (!Object.keys(sem.keyHash).length) indexAll()   // after a reload; vectors come from the cache
+        if (vec && semEligible(raw, sec)) hits = semFilter(sem.scoreVec(sem.cut(vec.split(";").map(Number))), raw)
+        return JSON.stringify(compute(raw, sec, hits, true).slice(0, 8).map(it =>
+            ({ key: it.skey || it.key || "", aliases: it.aliases || [], kind: it.kind, title: it.title, score: Math.round(it.score || 0), cos: it.cos })))
+    }
+    function catalogJson() {
+        const ab = it => ({ key: it.key, kind: it.kind, title: it.title, sub: it.sub || "", keys: it.keys || [], sig: it.sig,
+                            about: it.kind === "action" ? (about[it.key.slice(4)] || "") : undefined })
+        return JSON.stringify(apps().map(appItem).concat(actions(), shortcutItems()).map(ab))
+    }
+
     function desktopActions() {
         const out = []
         for (const e of apps())

@@ -1,0 +1,3020 @@
+[
+{
+"q": "close window",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-title"
+},
+{
+"q": "fullscreen window",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-title"
+},
+{
+"q": "focus column left",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp"
+],
+"cat": "key-title"
+},
+{
+"q": "focus column right",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown"
+],
+"cat": "key-title"
+},
+{
+"q": "focus window down",
+"expect": [
+"key:Mod+Down",
+"key:Mod+J"
+],
+"cat": "key-title"
+},
+{
+"q": "focus window up",
+"expect": [
+"key:Mod+Up",
+"key:Mod+K"
+],
+"cat": "key-title"
+},
+{
+"q": "move column left",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp"
+],
+"cat": "key-title"
+},
+{
+"q": "move column right",
+"expect": [
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown"
+],
+"cat": "key-title"
+},
+{
+"q": "move window down",
+"expect": [
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-title"
+},
+{
+"q": "move window up",
+"expect": [
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K"
+],
+"cat": "key-title"
+},
+{
+"q": "focus column first",
+"expect": [
+"key:Mod+Home"
+],
+"cat": "key-title"
+},
+{
+"q": "focus column last",
+"expect": [
+"key:Mod+End"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to first",
+"expect": [
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to last",
+"expect": [
+"key:Mod+Ctrl+End"
+],
+"cat": "key-title"
+},
+{
+"q": "focus monitor left",
+"expect": [
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H"
+],
+"cat": "key-title"
+},
+{
+"q": "focus monitor right",
+"expect": [
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L"
+],
+"cat": "key-title"
+},
+{
+"q": "focus monitor up",
+"expect": [
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K"
+],
+"cat": "key-title"
+},
+{
+"q": "focus monitor down",
+"expect": [
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to monitor left",
+"expect": [
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to monitor right",
+"expect": [
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L"
+],
+"cat": "key-title"
+},
+{
+"q": "focus workspace down",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-title"
+},
+{
+"q": "focus workspace up",
+"expect": [
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to workspace down",
+"expect": [
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to workspace up",
+"expect": [
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp"
+],
+"cat": "key-title"
+},
+{
+"q": "move workspace down",
+"expect": [
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U"
+],
+"cat": "key-title"
+},
+{
+"q": "move workspace up",
+"expect": [
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-title"
+},
+{
+"q": "focus workspace 1",
+"expect": [
+"key:Mod+1"
+],
+"cat": "key-title"
+},
+{
+"q": "focus workspace 5",
+"expect": [
+"key:Mod+5"
+],
+"cat": "key-title"
+},
+{
+"q": "focus workspace 9",
+"expect": [
+"key:Mod+9"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to workspace 2",
+"expect": [
+"key:Mod+Ctrl+2"
+],
+"cat": "key-title"
+},
+{
+"q": "move column to workspace 7",
+"expect": [
+"key:Mod+Ctrl+7"
+],
+"cat": "key-title"
+},
+{
+"q": "move window to workspace 4",
+"expect": [
+"key:Mod+Shift+4"
+],
+"cat": "key-title"
+},
+{
+"q": "move window to workspace 8",
+"expect": [
+"key:Mod+Shift+8"
+],
+"cat": "key-title"
+},
+{
+"q": "consume or expel window left",
+"expect": [
+"key:Mod+BracketLeft"
+],
+"cat": "key-title"
+},
+{
+"q": "consume or expel window right",
+"expect": [
+"key:Mod+BracketRight"
+],
+"cat": "key-title"
+},
+{
+"q": "consume window into column",
+"expect": [
+"key:Mod+Comma"
+],
+"cat": "key-title"
+},
+{
+"q": "expel window from column",
+"expect": [
+"key:Mod+Period"
+],
+"cat": "key-title"
+},
+{
+"q": "switch preset column width",
+"expect": [
+"key:Mod+R"
+],
+"cat": "key-title"
+},
+{
+"q": "switch preset column width back",
+"expect": [
+"key:Mod+Shift+R"
+],
+"cat": "key-title"
+},
+{
+"q": "switch preset window height",
+"expect": [
+"key:Mod+Ctrl+Shift+R"
+],
+"cat": "key-title"
+},
+{
+"q": "reset window height",
+"expect": [
+"key:Mod+Ctrl+R"
+],
+"cat": "key-title"
+},
+{
+"q": "maximize column",
+"expect": [
+"key:Mod+F"
+],
+"cat": "key-title"
+},
+{
+"q": "maximize window",
+"expect": [
+"key:Mod+M"
+],
+"cat": "key-title"
+},
+{
+"q": "maximize to screen edges",
+"expect": [
+"key:Mod+Ctrl+M"
+],
+"cat": "key-title"
+},
+{
+"q": "expand column to available width",
+"expect": [
+"key:Mod+Ctrl+F"
+],
+"cat": "key-title"
+},
+{
+"q": "center column",
+"expect": [
+"key:Mod+C"
+],
+"cat": "key-title"
+},
+{
+"q": "center visible columns",
+"expect": [
+"key:Mod+Ctrl+C"
+],
+"cat": "key-title"
+},
+{
+"q": "set column width +10%",
+"expect": [
+"key:Mod+Equal"
+],
+"cat": "key-title"
+},
+{
+"q": "set column width -10%",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-title"
+},
+{
+"q": "set window height +10%",
+"expect": [
+"key:Mod+Shift+Equal"
+],
+"cat": "key-title"
+},
+{
+"q": "set window height -10%",
+"expect": [
+"key:Mod+Shift+Minus"
+],
+"cat": "key-title"
+},
+{
+"q": "toggle window floating",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-title"
+},
+{
+"q": "switch focus between floating and tiling",
+"expect": [
+"key:Mod+Shift+V"
+],
+"cat": "key-title"
+},
+{
+"q": "toggle column tabbed display",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-title"
+},
+{
+"q": "toggle overview",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-title"
+},
+{
+"q": "show hotkey overlay",
+"expect": [
+"key:Mod+Shift+Slash"
+],
+"cat": "key-title"
+},
+{
+"q": "toggle keyboard shortcuts inhibit",
+"expect": [
+"key:Mod+Escape"
+],
+"cat": "key-title"
+},
+{
+"q": "power off monitors",
+"expect": [
+"key:Mod+Shift+P"
+],
+"cat": "key-title"
+},
+{
+"q": "screenshot window",
+"expect": [
+"key:Alt+Print"
+],
+"cat": "key-title"
+},
+{
+"q": "screenshot screen",
+"expect": [
+"key:Ctrl+Print"
+],
+"cat": "key-title"
+},
+{
+"q": "lock the screen",
+"expect": [
+"key:Super+Alt+L"
+],
+"cat": "key-title"
+},
+{
+"q": "make this window bigger",
+"expect": [
+"key:Mod+Equal",
+"key:Mod+Shift+Equal",
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "make this window smaller",
+"expect": [
+"key:Mod+Minus",
+"key:Mod+Shift+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this window on the next workspace",
+"expect": [
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to workspace 3",
+"expect": [
+"key:Mod+3"
+],
+"cat": "key-intent"
+},
+{
+"q": "move window left",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "make it take the whole screen",
+"expect": [
+"key:Mod+Shift+F",
+"key:Mod+Ctrl+M",
+"key:Mod+F",
+"key:Mod+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "stack these two windows",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "center this column",
+"expect": [
+"key:Mod+C"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch to the window on the right",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "close this app",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-intent"
+},
+{
+"q": "float this window",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-intent"
+},
+{
+"q": "pull this window out of the stack",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this window into the column next to it",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "jump to the first window in the strip",
+"expect": [
+"key:Mod+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "jump to the last column",
+"expect": [
+"key:Mod+End"
+],
+"cat": "key-intent"
+},
+{
+"q": "send this to the far left",
+"expect": [
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "send this window all the way to the right end",
+"expect": [
+"key:Mod+Ctrl+End"
+],
+"cat": "key-intent"
+},
+{
+"q": "send this window to my other monitor on the right",
+"expect": [
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this on the external screen to the left",
+"expect": [
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H"
+],
+"cat": "key-intent"
+},
+{
+"q": "move focus to the other display",
+"expect": [
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H",
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L",
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K",
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to the workspace below",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "go up one workspace",
+"expect": [
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "take this window with me to the workspace below",
+"expect": [
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "shift this window one workspace up",
+"expect": [
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "swap workspace order, push this one down",
+"expect": [
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U"
+],
+"cat": "key-intent"
+},
+{
+"q": "see all my windows at once",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-intent"
+},
+{
+"q": "zoom out to show everything",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-intent"
+},
+{
+"q": "cycle through column sizes",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "make columns half width then full width",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "go back to the previous width preset",
+"expect": [
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "window is too tall, shrink it",
+"expect": [
+"key:Mod+Shift+Minus",
+"key:Mod+Ctrl+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "make this window taller",
+"expect": [
+"key:Mod+Shift+Equal"
+],
+"cat": "key-intent"
+},
+{
+"q": "make the column narrower",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "make the column wider",
+"expect": [
+"key:Mod+Equal",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "fill the empty space on the strip with this column",
+"expect": [
+"key:Mod+Ctrl+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "undo my height changes",
+"expect": [
+"key:Mod+Ctrl+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "reset heights so stacked windows share equally",
+"expect": [
+"key:Mod+Ctrl+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch to tab style for this column",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "show windows in a column as tabs",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "let me move this window freely over others",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-intent"
+},
+{
+"q": "stop floating, tile it again",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-intent"
+},
+{
+"q": "jump between floating and tiled windows",
+"expect": [
+"key:Mod+Shift+V"
+],
+"cat": "key-intent"
+},
+{
+"q": "focus the floating window",
+"expect": [
+"key:Mod+Shift+V"
+],
+"cat": "key-intent"
+},
+{
+"q": "focus the tiled windows again",
+"expect": [
+"key:Mod+Shift+V"
+],
+"cat": "key-intent"
+},
+{
+"q": "take a picture of my screen",
+"expect": [
+"key:Print",
+"key:Ctrl+Print",
+"key:Alt+Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "capture just this window",
+"expect": [
+"key:Alt+Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "capture the entire display",
+"expect": [
+"key:Ctrl+Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "select an area to screenshot",
+"expect": [
+"key:Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "turn the screen off",
+"expect": [
+"key:Mod+Shift+P"
+],
+"cat": "key-intent"
+},
+{
+"q": "log me out",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-intent"
+},
+{
+"q": "exit the session",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-intent"
+},
+{
+"q": "lock my computer",
+"expect": [
+"key:Super+Alt+L"
+],
+"cat": "key-intent"
+},
+{
+"q": "hide the top bar",
+"expect": [
+"key:Mod+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "bring the bar back",
+"expect": [
+"key:Mod+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "what are all the shortcuts",
+"expect": [
+"key:Mod+Shift+Slash"
+],
+"cat": "key-intent"
+},
+{
+"q": "list of hotkeys",
+"expect": [
+"key:Mod+Shift+Slash"
+],
+"cat": "key-intent"
+},
+{
+"q": "let this app grab all my keys",
+"expect": [
+"key:Mod+Escape"
+],
+"cat": "key-intent"
+},
+{
+"q": "stop the compositor from stealing shortcuts from the vm",
+"expect": [
+"key:Mod+Escape"
+],
+"cat": "key-intent"
+},
+{
+"q": "swap with the window above",
+"expect": [
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K"
+],
+"cat": "key-intent"
+},
+{
+"q": "push this window below the other one",
+"expect": [
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "nudge the column one spot to the right",
+"expect": [
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "reorder columns, move this to the left",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "look at the window above",
+"expect": [
+"key:Mod+Up",
+"key:Mod+K"
+],
+"cat": "key-intent"
+},
+{
+"q": "look at the window below",
+"expect": [
+"key:Mod+Down",
+"key:Mod+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to the column on my left",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "move to previous column",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "next column over",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch to the monitor above",
+"expect": [
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K"
+],
+"cat": "key-intent"
+},
+{
+"q": "focus the screen below",
+"expect": [
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "send column up to the other monitor",
+"expect": [
+"key:Mod+Shift+Ctrl+Up",
+"key:Mod+Shift+Ctrl+K"
+],
+"cat": "key-intent"
+},
+{
+"q": "send column to the monitor underneath",
+"expect": [
+"key:Mod+Shift+Ctrl+Down",
+"key:Mod+Shift+Ctrl+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this on workspace 2",
+"expect": [
+"key:Mod+Shift+2",
+"key:Mod+Ctrl+2"
+],
+"cat": "key-intent"
+},
+{
+"q": "send this window to workspace 6",
+"expect": [
+"key:Mod+Shift+6",
+"key:Mod+Ctrl+6"
+],
+"cat": "key-intent"
+},
+{
+"q": "take me to workspace 7",
+"expect": [
+"key:Mod+7"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch to desktop 4",
+"expect": [
+"key:Mod+4"
+],
+"cat": "key-intent"
+},
+{
+"q": "open workspace 9",
+"expect": [
+"key:Mod+9"
+],
+"cat": "key-intent"
+},
+{
+"q": "move this to desktop 1",
+"expect": [
+"key:Mod+Shift+1",
+"key:Mod+Ctrl+1"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to my first workspace",
+"expect": [
+"key:Mod+1"
+],
+"cat": "key-intent"
+},
+{
+"q": "hop to the second workspace",
+"expect": [
+"key:Mod+2"
+],
+"cat": "key-intent"
+},
+{
+"q": "throw this window to workspace 5",
+"expect": [
+"key:Mod+Shift+5",
+"key:Mod+Ctrl+5"
+],
+"cat": "key-intent"
+},
+{
+"q": "make a new terminal",
+"expect": [
+"key:Mod+T"
+],
+"cat": "key-intent"
+},
+{
+"q": "open kitty",
+"expect": [
+"key:Mod+T"
+],
+"cat": "key-intent"
+},
+{
+"q": "start an app",
+"expect": [
+"key:Mod+D",
+"key:Alt+Space"
+],
+"cat": "key-intent"
+},
+{
+"q": "find an open window by name",
+"expect": [
+"key:Alt+Tab"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch between windows",
+"expect": [
+"key:Alt+Tab"
+],
+"cat": "key-intent"
+},
+{
+"q": "maximize without covering the bar corners",
+"expect": [
+"key:Mod+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "make the window fill the column area but keep rounded corners",
+"expect": [
+"key:Mod+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "true edge to edge maximize",
+"expect": [
+"key:Mod+Ctrl+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "square corners full screen",
+"expect": [
+"key:Mod+Ctrl+M",
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "presentation mode, hide everything",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "watch video full screen",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "center all the visible columns",
+"expect": [
+"key:Mod+Ctrl+C"
+],
+"cat": "key-intent"
+},
+{
+"q": "put the window in the middle of the screen",
+"expect": [
+"key:Mod+C",
+"key:Mod+Ctrl+C"
+],
+"cat": "key-intent"
+},
+{
+"q": "recenter my view",
+"expect": [
+"key:Mod+C",
+"key:Mod+Ctrl+C"
+],
+"cat": "key-intent"
+},
+{
+"q": "shrink the width by a bit",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "widen by ten percent",
+"expect": [
+"key:Mod+Equal"
+],
+"cat": "key-intent"
+},
+{
+"q": "grow this a little",
+"expect": [
+"key:Mod+Equal",
+"key:Mod+Shift+Equal"
+],
+"cat": "key-intent"
+},
+{
+"q": "shrink this a little",
+"expect": [
+"key:Mod+Minus",
+"key:Mod+Shift+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "bring the other window into this column",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketRight",
+"key:Mod+BracketLeft"
+],
+"cat": "key-intent"
+},
+{
+"q": "split this column into separate ones",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "kick this window out of its column",
+"expect": [
+"key:Mod+Period"
+],
+"cat": "key-intent"
+},
+{
+"q": "merge window with the column on its left",
+"expect": [
+"key:Mod+BracketLeft"
+],
+"cat": "key-intent"
+},
+{
+"q": "merge window with neighbor to the right",
+"expect": [
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "side by side to stacked",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "stacked to side by side",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-intent"
+},
+{
+"q": "scroll the strip right",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "scroll left to the previous app",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "quit niri",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-intent"
+},
+{
+"q": "kill the focused window",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-intent"
+},
+{
+"q": "get rid of this window",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-intent"
+},
+{
+"q": "shut this program",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-intent"
+},
+{
+"q": "kill the session",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to the last workspace down",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "previous workspace",
+"expect": [
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "next workspace",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "move the workspace itself one slot down",
+"expect": [
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U"
+],
+"cat": "key-intent"
+},
+{
+"q": "reorder my workspaces, this one goes up",
+"expect": [
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-intent"
+},
+{
+"q": "swap the workspace with the one above",
+"expect": [
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-intent"
+},
+{
+"q": "this window needs more vertical room",
+"expect": [
+"key:Mod+Shift+Equal",
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "window needs less vertical room",
+"expect": [
+"key:Mod+Shift+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "half height windows",
+"expect": [
+"key:Mod+Ctrl+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "cycle window heights",
+"expect": [
+"key:Mod+Ctrl+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch to the leftmost window",
+"expect": [
+"key:Mod+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "start of the strip",
+"expect": [
+"key:Mod+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "end of the strip",
+"expect": [
+"key:Mod+End"
+],
+"cat": "key-intent"
+},
+{
+"q": "take me to the rightmost column",
+"expect": [
+"key:Mod+End"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this column first",
+"expect": [
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "put this column last",
+"expect": [
+"key:Mod+Ctrl+End"
+],
+"cat": "key-intent"
+},
+{
+"q": "send column to the front",
+"expect": [
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-intent"
+},
+{
+"q": "make the active window fill the monitor width",
+"expect": [
+"key:Mod+Ctrl+F",
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "stretch to use the leftover width",
+"expect": [
+"key:Mod+Ctrl+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "use all remaining space horizontally",
+"expect": [
+"key:Mod+Ctrl+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "have the column fill the screen but not fullscreen",
+"expect": [
+"key:Mod+F",
+"key:Mod+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "give this app the full display",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "exit fullscreen",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "leave fullscreen mode",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-intent"
+},
+{
+"q": "un-maximize",
+"expect": [
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M"
+],
+"cat": "key-intent"
+},
+{
+"q": "restore the window size",
+"expect": [
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M",
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "change the window width to a standard size",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "one third width",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "two thirds width",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "half the screen for this window",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-intent"
+},
+{
+"q": "tab my windows",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "tabbed column",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "untab this column",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "pin a window above the others",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-intent"
+},
+{
+"q": "make window popup style",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-intent"
+},
+{
+"q": "dial down the brightness",
+"expect": [
+"key:XF86MonBrightnessDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "turn the sound up",
+"expect": [
+"key:XF86AudioRaiseVolume"
+],
+"cat": "key-intent"
+},
+{
+"q": "pause the music",
+"expect": [
+"key:XF86AudioPlay"
+],
+"cat": "key-intent"
+},
+{
+"q": "skip this song",
+"expect": [
+"key:XF86AudioNext"
+],
+"cat": "key-intent"
+},
+{
+"q": "mute the mic",
+"expect": [
+"key:XF86AudioMicMute"
+],
+"cat": "key-intent"
+},
+{
+"q": "mute my speakers",
+"expect": [
+"key:XF86AudioMute"
+],
+"cat": "key-intent"
+},
+{
+"q": "take me to the clipboard history",
+"expect": [
+"key:Mod+V"
+],
+"cat": "key-intent"
+},
+{
+"q": "toggle dnd",
+"expect": [
+"key:Mod+Ctrl+N"
+],
+"cat": "key-intent"
+},
+{
+"q": "see my notifications",
+"expect": [
+"key:Mod+N"
+],
+"cat": "key-intent"
+},
+{
+"q": "connect bluetooth headphones",
+"expect": [
+"key:Mod+B"
+],
+"cat": "key-intent"
+},
+{
+"q": "bring the window under the cursor in the column to the right into view",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "move the window one place up in the stack",
+"expect": [
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K"
+],
+"cat": "key-intent"
+},
+{
+"q": "move the window one place down in its column",
+"expect": [
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-intent"
+},
+{
+"q": "send the whole column to the next workspace",
+"expect": [
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown"
+],
+"cat": "key-intent"
+},
+{
+"q": "send the whole column to the previous workspace",
+"expect": [
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "wheel scroll to change workspace",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-intent"
+},
+{
+"q": "enlarge window height",
+"expect": [
+"key:Mod+Shift+Equal"
+],
+"cat": "key-intent"
+},
+{
+"q": "reduce window height",
+"expect": [
+"key:Mod+Shift+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "narrow this window",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "make it fatter",
+"expect": [
+"key:Mod+Equal"
+],
+"cat": "key-intent"
+},
+{
+"q": "make it skinnier",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-intent"
+},
+{
+"q": "put the focused window in the second desktop",
+"expect": [
+"key:Mod+Shift+2",
+"key:Mod+Ctrl+2"
+],
+"cat": "key-intent"
+},
+{
+"q": "put the focused window in the third desktop",
+"expect": [
+"key:Mod+Shift+3",
+"key:Mod+Ctrl+3"
+],
+"cat": "key-intent"
+},
+{
+"q": "jump to desktop 8",
+"expect": [
+"key:Mod+8"
+],
+"cat": "key-intent"
+},
+{
+"q": "jump to desktop 6",
+"expect": [
+"key:Mod+6"
+],
+"cat": "key-intent"
+},
+{
+"q": "send window to the 9th workspace",
+"expect": [
+"key:Mod+Shift+9",
+"key:Mod+Ctrl+9"
+],
+"cat": "key-intent"
+},
+{
+"q": "go to the 5th workspace",
+"expect": [
+"key:Mod+5"
+],
+"cat": "key-intent"
+},
+{
+"q": "move this to workspace four",
+"expect": [
+"key:Mod+Shift+4",
+"key:Mod+Ctrl+4"
+],
+"cat": "key-intent"
+},
+{
+"q": "workspace seven please",
+"expect": [
+"key:Mod+7"
+],
+"cat": "key-intent"
+},
+{
+"q": "what windows do i have open",
+"expect": [
+"key:Mod+O",
+"key:Alt+Tab"
+],
+"cat": "key-intent"
+},
+{
+"q": "bird eye view",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-intent"
+},
+{
+"q": "mission control",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-intent"
+},
+{
+"q": "reveal the hidden panel",
+"expect": [
+"key:Mod+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "clear screen for focus, hide panel",
+"expect": [
+"key:Mod+W"
+],
+"cat": "key-intent"
+},
+{
+"q": "capture a region",
+"expect": [
+"key:Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "screen grab of the current window",
+"expect": [
+"key:Alt+Print"
+],
+"cat": "key-intent"
+},
+{
+"q": "sleep the display",
+"expect": [
+"key:Mod+Shift+P"
+],
+"cat": "key-intent"
+},
+{
+"q": "switch off the laptop screen",
+"expect": [
+"key:Mod+Shift+P"
+],
+"cat": "key-intent"
+},
+{
+"q": "leave the desktop session",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-intent"
+},
+{
+"q": "secure my laptop",
+"expect": [
+"key:Super+Alt+L"
+],
+"cat": "key-intent"
+},
+{
+"q": "how do i close a window",
+"expect": [
+"key:Mod+Q"
+],
+"cat": "key-question"
+},
+{
+"q": "what is the key for fullscreen",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut to maximize",
+"expect": [
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i make a window float",
+"expect": [
+"key:Mod+Y"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i move a window to another workspace",
+"expect": [
+"key:Mod+Shift+1",
+"key:Mod+Ctrl+1",
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown",
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp"
+],
+"cat": "key-question"
+},
+{
+"q": "what is the shortcut to center a column",
+"expect": [
+"key:Mod+C"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i switch workspaces",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i go to workspace 2",
+"expect": [
+"key:Mod+2"
+],
+"cat": "key-question"
+},
+{
+"q": "how can i move a window to workspace 3",
+"expect": [
+"key:Mod+Shift+3",
+"key:Mod+Ctrl+3"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut to take a screenshot",
+"expect": [
+"key:Print",
+"key:Ctrl+Print",
+"key:Alt+Print"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i screenshot only one window",
+"expect": [
+"key:Alt+Print"
+],
+"cat": "key-question"
+},
+{
+"q": "how to screenshot the whole screen",
+"expect": [
+"key:Ctrl+Print"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i lock the screen",
+"expect": [
+"key:Super+Alt+L"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i log out",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i resize a column",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R",
+"key:Mod+Minus",
+"key:Mod+Equal"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i make a column wider",
+"expect": [
+"key:Mod+Equal",
+"key:Mod+Ctrl+F",
+"key:Mod+R"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut for making column narrower",
+"expect": [
+"key:Mod+Minus"
+],
+"cat": "key-question"
+},
+{
+"q": "how to change window height",
+"expect": [
+"key:Mod+Shift+Equal",
+"key:Mod+Shift+Minus",
+"key:Mod+Ctrl+Shift+R",
+"key:Mod+Ctrl+R"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i put two windows in one column",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i unstack windows",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-question"
+},
+{
+"q": "whats the key to expel a window",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-question"
+},
+{
+"q": "what key consumes a window into a column",
+"expect": [
+"key:Mod+Comma"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i see all workspaces",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-question"
+},
+{
+"q": "how to open overview",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i switch to the window on my left",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i focus the window above",
+"expect": [
+"key:Mod+Up",
+"key:Mod+K"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i focus the next monitor",
+"expect": [
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H",
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L",
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K",
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J"
+],
+"cat": "key-question"
+},
+{
+"q": "how to move window to the other monitor",
+"expect": [
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H",
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L",
+"key:Mod+Shift+Ctrl+Up",
+"key:Mod+Shift+Ctrl+K",
+"key:Mod+Shift+Ctrl+Down",
+"key:Mod+Shift+Ctrl+J"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i move a column to the far left",
+"expect": [
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i go to the last column",
+"expect": [
+"key:Mod+End"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i jump to the first column",
+"expect": [
+"key:Mod+Home"
+],
+"cat": "key-question"
+},
+{
+"q": "what is the shortcut for the hotkey list",
+"expect": [
+"key:Mod+Shift+Slash"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i see the keybindings",
+"expect": [
+"key:Mod+Shift+Slash"
+],
+"cat": "key-question"
+},
+{
+"q": "how to hide the bar",
+"expect": [
+"key:Mod+W"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i toggle tabs in a column",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i reorder columns",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp",
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown",
+"key:Mod+Ctrl+Home",
+"key:Mod+Ctrl+End"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i swap two windows in a column",
+"expect": [
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-question"
+},
+{
+"q": "what key cycles through widths",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R"
+],
+"cat": "key-question"
+},
+{
+"q": "what shortcut goes back to previous width preset",
+"expect": [
+"key:Mod+Shift+R"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i reset window heights",
+"expect": [
+"key:Mod+Ctrl+R"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i switch between floating and tiled windows",
+"expect": [
+"key:Mod+Shift+V"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i quit niri",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i turn off monitors",
+"expect": [
+"key:Mod+Shift+P"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i stop shortcuts being captured by a remote desktop window",
+"expect": [
+"key:Mod+Escape"
+],
+"cat": "key-question"
+},
+{
+"q": "keybinding for edge to edge maximize",
+"expect": [
+"key:Mod+Ctrl+M"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut to maximize but keep rounded corners",
+"expect": [
+"key:Mod+M"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i make window use remaining width",
+"expect": [
+"key:Mod+Ctrl+F"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i center all visible columns",
+"expect": [
+"key:Mod+Ctrl+C"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i move a workspace down",
+"expect": [
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U"
+],
+"cat": "key-question"
+},
+{
+"q": "how can i reorder workspaces",
+"expect": [
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U",
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i move the workspace up",
+"expect": [
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-question"
+},
+{
+"q": "what is the shortcut to open a terminal",
+"expect": [
+"key:Mod+T"
+],
+"cat": "key-question"
+},
+{
+"q": "what is the key to open the launcher",
+"expect": [
+"key:Mod+D",
+"key:Alt+Space"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i search my open windows",
+"expect": [
+"key:Alt+Tab"
+],
+"cat": "key-question"
+},
+{
+"q": "how to move a window up in the column",
+"expect": [
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i move a window down in the column",
+"expect": [
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut to focus workspace below",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-question"
+},
+{
+"q": "shortcut to focus workspace above",
+"expect": [
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-question"
+},
+{
+"q": "whats the key for moving a column to workspace 5",
+"expect": [
+"key:Mod+Ctrl+5"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i send a window to workspace 6",
+"expect": [
+"key:Mod+Shift+6",
+"key:Mod+Ctrl+6"
+],
+"cat": "key-question"
+},
+{
+"q": "how do i exit fullscreen",
+"expect": [
+"key:Mod+Shift+F"
+],
+"cat": "key-question"
+},
+{
+"q": "move window",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp",
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J",
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown",
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp",
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H",
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L",
+"key:Mod+Shift+Ctrl+Up",
+"key:Mod+Shift+Ctrl+K",
+"key:Mod+Shift+Ctrl+Down",
+"key:Mod+Shift+Ctrl+J",
+"key:Mod+Ctrl+Home",
+"key:Mod+Ctrl+End",
+"key:Mod+Shift+1",
+"key:Mod+Ctrl+1",
+"key:Mod+Shift+2",
+"key:Mod+Ctrl+2",
+"key:Mod+Shift+3",
+"key:Mod+Ctrl+3",
+"key:Mod+Shift+4",
+"key:Mod+Ctrl+4",
+"key:Mod+Shift+5",
+"key:Mod+Ctrl+5",
+"key:Mod+Shift+6",
+"key:Mod+Ctrl+6",
+"key:Mod+Shift+7",
+"key:Mod+Ctrl+7",
+"key:Mod+Shift+8",
+"key:Mod+Ctrl+8",
+"key:Mod+Shift+9",
+"key:Mod+Ctrl+9"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "move",
+"expect": [
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp",
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J",
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown",
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp",
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H",
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L",
+"key:Mod+Shift+Ctrl+Up",
+"key:Mod+Shift+Ctrl+K",
+"key:Mod+Shift+Ctrl+Down",
+"key:Mod+Shift+Ctrl+J",
+"key:Mod+Ctrl+Home",
+"key:Mod+Ctrl+End",
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U",
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "resize",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R",
+"key:Mod+Ctrl+Shift+R",
+"key:Mod+Ctrl+R",
+"key:Mod+Minus",
+"key:Mod+Equal",
+"key:Mod+Shift+Minus",
+"key:Mod+Shift+Equal",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "size",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R",
+"key:Mod+Ctrl+Shift+R",
+"key:Mod+Ctrl+R",
+"key:Mod+Minus",
+"key:Mod+Equal",
+"key:Mod+Shift+Minus",
+"key:Mod+Shift+Equal",
+"key:Mod+Ctrl+F",
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "width",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R",
+"key:Mod+Minus",
+"key:Mod+Equal",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "height",
+"expect": [
+"key:Mod+Ctrl+Shift+R",
+"key:Mod+Ctrl+R",
+"key:Mod+Shift+Minus",
+"key:Mod+Shift+Equal"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "focus",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp",
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown",
+"key:Mod+Up",
+"key:Mod+K",
+"key:Mod+Down",
+"key:Mod+J",
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H",
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L",
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K",
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J",
+"key:Mod+Home",
+"key:Mod+End",
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "workspace",
+"expect": [
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp",
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown",
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp",
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U",
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I",
+"key:Mod+1",
+"key:Mod+Ctrl+1",
+"key:Mod+Shift+1",
+"key:Mod+2",
+"key:Mod+Ctrl+2",
+"key:Mod+Shift+2",
+"key:Mod+3",
+"key:Mod+Ctrl+3",
+"key:Mod+Shift+3",
+"key:Mod+4",
+"key:Mod+Ctrl+4",
+"key:Mod+Shift+4",
+"key:Mod+5",
+"key:Mod+Ctrl+5",
+"key:Mod+Shift+5",
+"key:Mod+6",
+"key:Mod+Ctrl+6",
+"key:Mod+Shift+6",
+"key:Mod+7",
+"key:Mod+Ctrl+7",
+"key:Mod+Shift+7",
+"key:Mod+8",
+"key:Mod+Ctrl+8",
+"key:Mod+Shift+8",
+"key:Mod+9",
+"key:Mod+Ctrl+9",
+"key:Mod+Shift+9"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "monitor",
+"expect": [
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H",
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L",
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K",
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J",
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H",
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L",
+"key:Mod+Shift+Ctrl+Up",
+"key:Mod+Shift+Ctrl+K",
+"key:Mod+Shift+Ctrl+Down",
+"key:Mod+Shift+Ctrl+J",
+"key:Mod+Shift+P"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "screen",
+"expect": [
+"key:Print",
+"key:Ctrl+Print",
+"key:Alt+Print",
+"key:Mod+Shift+P",
+"key:Super+Alt+L",
+"key:Mod+Shift+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "maximize",
+"expect": [
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M",
+"key:Mod+Shift+F",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "big",
+"expect": [
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M",
+"key:Mod+Shift+F",
+"key:Mod+Equal",
+"key:Mod+Shift+Equal",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "full",
+"expect": [
+"key:Mod+Shift+F",
+"key:Mod+F",
+"key:Mod+M",
+"key:Mod+Ctrl+M",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "column",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight",
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp",
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown",
+"key:Mod+C",
+"key:Mod+Ctrl+C",
+"key:Mod+Ctrl+W",
+"key:Mod+F",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "window",
+"expect": [
+"key:Mod+Q",
+"key:Mod+Shift+F",
+"key:Mod+Y",
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J",
+"key:Mod+Comma",
+"key:Mod+Period"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "left",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp",
+"key:Mod+Ctrl+Left",
+"key:Mod+Ctrl+H",
+"key:Mod+Ctrl+WheelScrollLeft",
+"key:Mod+Ctrl+Shift+WheelScrollUp",
+"key:Mod+Shift+Left",
+"key:Mod+Shift+H",
+"key:Mod+Shift+Ctrl+Left",
+"key:Mod+Shift+Ctrl+H",
+"key:Mod+BracketLeft"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "right",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown",
+"key:Mod+Ctrl+Right",
+"key:Mod+Ctrl+L",
+"key:Mod+Ctrl+WheelScrollRight",
+"key:Mod+Ctrl+Shift+WheelScrollDown",
+"key:Mod+Shift+Right",
+"key:Mod+Shift+L",
+"key:Mod+Shift+Ctrl+Right",
+"key:Mod+Shift+Ctrl+L",
+"key:Mod+BracketRight"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "up",
+"expect": [
+"key:Mod+Up",
+"key:Mod+K",
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp",
+"key:Mod+Ctrl+Page_Up",
+"key:Mod+Ctrl+I",
+"key:Mod+Ctrl+WheelScrollUp",
+"key:Mod+Shift+Up",
+"key:Mod+Shift+K",
+"key:Mod+Shift+Page_Up",
+"key:Mod+Shift+I"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "down",
+"expect": [
+"key:Mod+Down",
+"key:Mod+J",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J",
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Ctrl+Page_Down",
+"key:Mod+Ctrl+U",
+"key:Mod+Ctrl+WheelScrollDown",
+"key:Mod+Shift+Down",
+"key:Mod+Shift+J",
+"key:Mod+Shift+Page_Down",
+"key:Mod+Shift+U"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "stack",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight",
+"key:Mod+Ctrl+W",
+"key:Mod+Ctrl+Up",
+"key:Mod+Ctrl+K",
+"key:Mod+Ctrl+Down",
+"key:Mod+Ctrl+J"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "float",
+"expect": [
+"key:Mod+Y",
+"key:Mod+Shift+V"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "center",
+"expect": [
+"key:Mod+C",
+"key:Mod+Ctrl+C"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "screenshot",
+"expect": [
+"key:Print",
+"key:Ctrl+Print",
+"key:Alt+Print"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "quit",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete",
+"key:Mod+Q"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "exit",
+"expect": [
+"key:Mod+Shift+E",
+"key:Ctrl+Alt+Delete",
+"key:Mod+Q",
+"key:Mod+Shift+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "shortcuts",
+"expect": [
+"key:Mod+Shift+Slash",
+"key:Mod+Escape"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "overview",
+"expect": [
+"key:Mod+O"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "tabs",
+"expect": [
+"key:Mod+Ctrl+W"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "first",
+"expect": [
+"key:Mod+Home",
+"key:Mod+Ctrl+Home"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "last",
+"expect": [
+"key:Mod+End",
+"key:Mod+Ctrl+End"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "merge",
+"expect": [
+"key:Mod+Comma",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "split",
+"expect": [
+"key:Mod+Period",
+"key:Mod+BracketLeft",
+"key:Mod+BracketRight"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "preset",
+"expect": [
+"key:Mod+R",
+"key:Mod+Shift+R",
+"key:Mod+Ctrl+Shift+R"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "shrink",
+"expect": [
+"key:Mod+Minus",
+"key:Mod+Shift+Minus"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "grow",
+"expect": [
+"key:Mod+Equal",
+"key:Mod+Shift+Equal",
+"key:Mod+Ctrl+F"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "switch",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp",
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown",
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp",
+"key:Mod+R",
+"key:Alt+Tab"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "go to next",
+"expect": [
+"key:Mod+Right",
+"key:Mod+L",
+"key:Mod+WheelScrollRight",
+"key:Mod+Shift+WheelScrollDown",
+"key:Mod+Page_Down",
+"key:Mod+U",
+"key:Mod+WheelScrollDown"
+],
+"cat": "key-ambiguous"
+},
+{
+"q": "previous",
+"expect": [
+"key:Mod+Left",
+"key:Mod+H",
+"key:Mod+WheelScrollLeft",
+"key:Mod+Shift+WheelScrollUp",
+"key:Mod+Page_Up",
+"key:Mod+I",
+"key:Mod+WheelScrollUp",
+"key:Mod+Shift+R"
+],
+"cat": "key-ambiguous"
+}
+]

@@ -1,0 +1,2972 @@
+[
+ {
+  "q": "toggle dark / light mode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "toggle dark mode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "dark light mode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "switch dark light",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "next theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "switch to next theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "wi-fi networks",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "wifi networks",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "turn wifi on",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "turn wi-fi off",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "wifi on off",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "bluetooth devices",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "bluetooth menu",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "turn bluetooth on",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "turn bluetooth off",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "quick settings",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "notifications",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "notification center",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "do not disturb",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "toggle do not disturb",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "clear notifications",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "clear all notifications",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "screenshot region",
+  "expect": [
+   "act:shot-region"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "screenshot screen",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "screenshot window",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "pick colour",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "pick color",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "overview",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "mute sound",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "mute / unmute",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "volume and sound output",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "screen brightness",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "show / hide bar",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "hide bar",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "keyboard shortcuts",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "power settings",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "lock screen",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "suspend",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "log out",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "reboot",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "shut down",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme: glass",
+  "expect": [
+   "act:theme-glass"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme: rose pine",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme rose pine",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme: gruvbox",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme gruvbox",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme: everforest",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme everforest",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme: mono",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "theme mono",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-title"
+ },
+ {
+  "q": "lock",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "sleep",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "standby",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "screenshot",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "screengrab",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "mute",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "unmute",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "dark",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "light",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "darkmode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "wifi",
+  "expect": [
+   "act:wifi",
+   "act:wifi-toggle"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "wi-fi",
+  "expect": [
+   "act:wifi",
+   "act:wifi-toggle"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "bluetooth",
+  "expect": [
+   "act:bt",
+   "act:bt-toggle",
+   "key:Mod+B"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "bt",
+  "expect": [
+   "act:bt",
+   "act:bt-toggle",
+   "key:Mod+B"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "dnd",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "shutdown",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "poweroff",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "restart",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "reboot now",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "logout",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "signout",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "volume",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "sound",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "brightness",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "windows",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "expose",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "eyedropper",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "color",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "hotkeys",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "keybinds",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "notifs",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "quick",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "bar",
+  "expect": [
+   "act:bar"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "panel",
+  "expect": [
+   "act:bar"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "silence",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "snip",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "capture",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-short"
+ },
+ {
+  "q": "turn the screen darker",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "everything is too bright at night",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch to light mode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "my eyes hurt from the white",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "make it dark please",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i want a dark interface",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "go back to the bright look",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "flip the color scheme",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "night mode on",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "day mode please",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "the interface is too dark now",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "try a different look",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "surprise me with another theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "cycle to the following colour scheme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "give me a new colour palette",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i'm bored of this theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "connect to a wireless network",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "which networks are around",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "join my home internet",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pick a different router",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show available hotspots",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i need to change wifi network",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "kill the wifi",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn off wireless",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "enable the internet radio",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "airplane mode on",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "disconnect from the network",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch my wireless back on",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn the wifi radio off",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "connect my earbuds",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "my headphones aren't connected",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pair a new speaker",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show paired bluetooth gadgets",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "connect the wireless mouse",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pair my phone",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "connect airpods",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "disable bluetooth",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch on the bluetooth radio",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "bluetooth is off, turn it on",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "shut off bt completely",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "enable wireless peripherals",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "open the control panel",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "settings panel with sliders",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show the status menu",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "where are the toggles",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "open the system menu",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pull up the tile panel",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show me my alerts",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "what did i miss",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "check messages popups history",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "open the notification list",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "did anything pop up while i was away",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "see the calendar and alerts",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i need to focus",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "stop the popups",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "silence notifications",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i'm in a meeting",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "no interruptions please",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "quiet mode",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pause all the pings",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "stop bugging me",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "get rid of all my alerts",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "dismiss everything in the list",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "wipe the notification history",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "empty the alerts",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "too many popups piled up",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "remove all the old notifications",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "take a pic of part of my screen",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "grab a selection of the screen",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "snip an area",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "capture a rectangle",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "crop screenshot",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "select an area to capture",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i want to screenshot just a box",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "take a pic of my screen",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "capture the whole display",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "save what's on the monitor",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "full screen capture",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "snap everything i see",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "photograph my entire desktop",
+  "expect": [
+   "act:shot-screen",
+   "key:Ctrl+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "screenshot just this app",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "capture the current window",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "grab only the focused program",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "take a picture of one window",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "snap this window only",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "what colour is that pixel",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "grab a hex code from the screen",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "sample a shade",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "get the color under my cursor",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i need the rgb of something on screen",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "copy a colour value",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show all my windows",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "see every workspace at once",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "zoom out to see everything",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "bird's eye view of windows",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "where did my windows go",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "show me all open stuff",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "can't hear anything",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "shut up the speakers",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "make it silent",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "too loud, kill the sound",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn the audio off for a sec",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "restore the sound",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "bring back audio",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "change the audio output",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "play sound through headphones",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch speakers",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "sound is too quiet",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn it up a bit",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "lower the audio",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "choose where sound comes out",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "the music is too loud",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "screen is too dim",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "make the display brighter",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "dim the monitor",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "it hurts my eyes, lower the glow",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "brighten up my laptop",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "screen too bright in the dark",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "adjust backlight",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "get the top panel out of the way",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i want more screen space",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "bring the top strip back",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "hide the status strip",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "the topbar is annoying",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "make the panel disappear",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "what are the key combos",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "how do i do things with the keyboard",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "list all the bindings",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "remind me of my hotkeys",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "cheat sheet of keys",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "what does mod plus t do",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "when does the screen turn off",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "change sleep timeout",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "battery saving options",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "configure idle lock time",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "how long until it locks",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "edit auto suspend settings",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "going to grab coffee",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "leave my desk safely",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "secure my laptop",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "step away from the computer",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "protect the screen while i'm gone",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "lock it down",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i'm heading to lunch",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "keep nosy coworkers out",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "put the laptop to sleep",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "close the lid without closing",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "save battery and pause everything",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "nap mode",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i'll be back in an hour, pause it",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "go into standby",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "low power idle for now",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "end my session",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "sign me out of the desktop",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch user",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "leave this login",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "quit the desktop environment",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "exit niri",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "done with this session",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "it's frozen, start over",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "restart the machine",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "need to reboot after update",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn it off and on again",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "the system is acting weird, cycle it",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "apply kernel update restart",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "shut it down for tonight",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "power off the laptop",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "turn the computer off",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i'm done for the day",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "switch the machine off",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "kill the power",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "finish and power down",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "frosted translucent look",
+  "expect": [
+   "act:theme-glass"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "go back to the default style",
+  "expect": [
+   "act:theme-glass"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "neutral grey blur theme",
+  "expect": [
+   "act:theme-glass"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "transparent see-through colours",
+  "expect": [
+   "act:theme-glass"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "pinkish pastel theme",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "use the rosy purple palette",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "soft pine colours",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "i want the ros\u00e9 look",
+  "expect": [
+   "act:theme-rose-pine"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "retro warm brown colours",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "use the vintage orange palette",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "earthy terminal colour scheme",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "yellowish old school theme",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "green forest colours",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "nature inspired palette",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "mossy green look",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "calm woodland scheme",
+  "expect": [
+   "act:theme-everforest"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "black and white only",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "no colours please",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "greyscale interface",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "monochrome style",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-intent"
+ },
+ {
+  "q": "how do i change to dark mode",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how can i enable light theme",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "where is the dark mode switch",
+  "expect": [
+   "act:toggle-mode"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i change the theme",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to switch colour schemes",
+  "expect": [
+   "act:theme-next"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i connect to wifi",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to join a wireless network",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "where can i see wifi networks",
+  "expect": [
+   "act:wifi"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i turn off wifi",
+  "expect": [
+   "act:wifi-toggle"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to connect bluetooth headphones",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i pair a bluetooth device",
+  "expect": [
+   "act:bt",
+   "key:Mod+B"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to turn on bluetooth",
+  "expect": [
+   "act:bt-toggle"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i silence notifications",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to enable do not disturb",
+  "expect": [
+   "act:dnd",
+   "key:Mod+Ctrl+N"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i clear all notifications",
+  "expect": [
+   "act:clear-notifs",
+   "key:Mod+Shift+N"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to take a screenshot",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i screenshot part of the screen",
+  "expect": [
+   "act:shot-region",
+   "key:Print"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i capture a single window",
+  "expect": [
+   "act:shot-window",
+   "key:Alt+Print"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how can i pick a colour from the screen",
+  "expect": [
+   "act:pick-color"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i see all my windows",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to open the overview",
+  "expect": [
+   "act:overview",
+   "key:Mod+O"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i mute the sound",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to unmute my speakers",
+  "expect": [
+   "act:mute",
+   "key:XF86AudioMute"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i change the volume",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to select the audio output",
+  "expect": [
+   "act:volume"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i make the screen brighter",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how can i lower brightness",
+  "expect": [
+   "act:brightness"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i hide the top bar",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i see keyboard shortcuts",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "what are the keybindings",
+  "expect": [
+   "act:shortcuts",
+   "key:Mod+Shift+Slash"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i change when the screen locks",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to set auto sleep time",
+  "expect": [
+   "act:power-settings"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i lock my computer",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to lock the screen",
+  "expect": [
+   "act:lock",
+   "key:Super+Alt+L"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i put the laptop to sleep",
+  "expect": [
+   "act:suspend"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i log out",
+  "expect": [
+   "act:logout"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i restart the computer",
+  "expect": [
+   "act:reboot"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to shut down the laptop",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i power off",
+  "expect": [
+   "act:shutdown"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "where are the quick settings",
+  "expect": [
+   "act:quick"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "where can i see my notifications",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i open the notification center",
+  "expect": [
+   "act:notifs",
+   "key:Mod+N"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how can i show the panel again",
+  "expect": [
+   "act:bar",
+   "key:Mod+W"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how do i use the gruvbox theme",
+  "expect": [
+   "act:theme-gruvbox"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "how to get a monochrome theme",
+  "expect": [
+   "act:theme-mono"
+  ],
+  "cat": "act-question"
+ },
+ {
+  "q": "brightness 40",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 70",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set volume to 30%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness to 80",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 50",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 100",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set brightness to 25",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume to 100%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "vol 20",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 10%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set volume 0",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 150",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 60",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 85",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set brightness 5%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness at 90",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume to 45",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "bright 70",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 15",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set the volume to 65",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 30%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 100",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set brightness to 50%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "vol 35",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 75",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 10",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set volume to 90%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness to 15",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 60%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 55",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume at 25",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 20",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set volume to 5",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness to 95%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 80",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "set brightness 45",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume 40%",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "brightness 35",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "vol 55",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "volume to 75",
+  "expect": [
+   "rule"
+  ],
+  "cat": "rule"
+ },
+ {
+  "q": "2+2",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "15% of 80",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "sqrt(144)",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "10 km in miles",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "100 f to c",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "3 gb in mb",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "2^16",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "12*12",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "100/8",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "5 miles in km",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "32 f in c",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "0 c to f",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1 tb in gb",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "7*8+3",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "(4+6)*3",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "20% of 150",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "sqrt(2)",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1000 m in km",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "5 kg in lbs",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "180 lbs to kg",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "2^10",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "99-33",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1.5*4",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "3 feet in inches",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "10 inches in cm",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "50 mb in kb",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "25% of 200",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "100 c in f",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "9^2",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "144/12",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "500 g in oz",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "6 ft in m",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1 mile in feet",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "sqrt(81)",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "3*3*3",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1024/16",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "2 hours in minutes",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "90 minutes in hours",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "1 gb in kb",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ },
+ {
+  "q": "8 oz in g",
+  "expect": [
+   "calc"
+  ],
+  "cat": "calc"
+ }
+]

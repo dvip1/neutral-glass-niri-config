@@ -1,0 +1,2750 @@
+[
+ {
+  "q": "firefox",
+  "expect": [
+   "app:org.mozilla.firefox"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "spotify",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "steam",
+  "expect": [
+   "app:steam"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "discord",
+  "expect": [
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "telegram",
+  "expect": [
+   "app:org.telegram.desktop"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "blender",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "vlc",
+  "expect": [
+   "app:vlc"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "kitty",
+  "expect": [
+   "app:kitty"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "alacritty",
+  "expect": [
+   "app:Alacritty"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "obsidian",
+  "expect": [
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "thunderbird",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "postman",
+  "expect": [
+   "app:com.getpostman.Postman"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "zoom",
+  "expect": [
+   "app:us.zoom.Zoom"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "chromium",
+  "expect": [
+   "app:chromium-browser"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "google chrome",
+  "expect": [
+   "app:google-chrome"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "zen browser",
+  "expect": [
+   "app:app.zen_browser.zen"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "brave",
+  "expect": [
+   "app:brave-origin"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "floorp",
+  "expect": [
+   "app:one.ablaze.floorp"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "mullvad browser",
+  "expect": [
+   "app:net.mullvad.MullvadBrowser"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "tor browser",
+  "expect": [
+   "app:org.torproject.torbrowser-launcher"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "joplin",
+  "expect": [
+   "app:joplin"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "pinta",
+  "expect": [
+   "app:pinta"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "handbrake",
+  "expect": [
+   "app:fr.handbrake.ghb"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "kdenlive",
+  "expect": [
+   "app:org.kde.kdenlive"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "pitivi",
+  "expect": [
+   "app:org.pitivi.Pitivi"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "lutris",
+  "expect": [
+   "app:net.lutris.Lutris"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "filezilla",
+  "expect": [
+   "app:filezilla"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "remmina",
+  "expect": [
+   "app:org.remmina.Remmina"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "anydesk",
+  "expect": [
+   "app:com.anydesk.Anydesk"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "rustdesk",
+  "expect": [
+   "app:com.rustdesk.RustDesk"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "moonlight",
+  "expect": [
+   "app:com.moonlight_stream.Moonlight"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "obs studio",
+  "expect": [
+   "app:com.obsproject.Studio"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "datagrip",
+  "expect": [
+   "app:datagrip_datagrip"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "neovim",
+  "expect": [
+   "app:nvim"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "zed",
+  "expect": [
+   "app:dev.zed.Zed"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "visual studio code",
+  "expect": [
+   "app:code"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "htop",
+  "expect": [
+   "app:htop"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "calculator",
+  "expect": [
+   "app:org.gnome.Calculator",
+   "app:libreoffice-calc"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "weather",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "amberol",
+  "expect": [
+   "app:io.bassi.Amberol"
+  ],
+  "cat": "app-exact"
+ },
+ {
+  "q": "fir",
+  "expect": [
+   "app:org.mozilla.firefox"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "spo",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "spot",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "ste",
+  "expect": [
+   "app:steam"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "disc",
+  "expect": [
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "tele",
+  "expect": [
+   "app:org.telegram.desktop"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "blen",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "kit",
+  "expect": [
+   "app:kitty"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "alac",
+  "expect": [
+   "app:Alacritty"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "obs",
+  "expect": [
+   "app:com.obsproject.Studio",
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "obsi",
+  "expect": [
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "thun",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "post",
+  "expect": [
+   "app:com.getpostman.Postman"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "zoo",
+  "expect": [
+   "app:us.zoom.Zoom"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "chrom",
+  "expect": [
+   "app:chromium-browser",
+   "app:google-chrome"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "brav",
+  "expect": [
+   "app:brave-origin"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "flo",
+  "expect": [
+   "app:one.ablaze.floorp"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "mull",
+  "expect": [
+   "app:net.mullvad.MullvadBrowser"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "jop",
+  "expect": [
+   "app:joplin"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "pin",
+  "expect": [
+   "app:pinta"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "hand",
+  "expect": [
+   "app:fr.handbrake.ghb"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "kden",
+  "expect": [
+   "app:org.kde.kdenlive"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "piti",
+  "expect": [
+   "app:org.pitivi.Pitivi"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "lut",
+  "expect": [
+   "app:net.lutris.Lutris"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "filez",
+  "expect": [
+   "app:filezilla"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "remm",
+  "expect": [
+   "app:org.remmina.Remmina"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "anyd",
+  "expect": [
+   "app:com.anydesk.Anydesk"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "rust",
+  "expect": [
+   "app:com.rustdesk.RustDesk"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "moon",
+  "expect": [
+   "app:com.moonlight_stream.Moonlight"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "data",
+  "expect": [
+   "app:datagrip_datagrip"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "neov",
+  "expect": [
+   "app:nvim"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "vis",
+  "expect": [
+   "app:code"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "calc",
+  "expect": [
+   "app:org.gnome.Calculator",
+   "app:libreoffice-calc"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "weat",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "ambe",
+  "expect": [
+   "app:io.bassi.Amberol"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "holl",
+  "expect": [
+   "app:Hollow Knight",
+   "app:Hollow Knight Silksong"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "lm s",
+  "expect": [
+   "app:ai.lmstudio.lm-studio"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "chatg",
+  "expect": [
+   "app:chatgpt"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "easy",
+  "expect": [
+   "app:com.github.wwmm.easyeffects"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "virt",
+  "expect": [
+   "app:virt-manager"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "wareh",
+  "expect": [
+   "app:io.github.flattool.Warehouse"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "baz",
+  "expect": [
+   "app:io.github.kolunmi.Bazaar"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "tray",
+  "expect": [
+   "app:dev.deedles.Trayscale"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "gear",
+  "expect": [
+   "app:it.mijorus.gearlever"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "sola",
+  "expect": [
+   "app:solaar"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "pavu",
+  "expect": [
+   "app:org.pulseaudio.pavucontrol"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "beek",
+  "expect": [
+   "app:io.beekeeperstudio.Studio"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "lemo",
+  "expect": [
+   "app:lemonade-web-app"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "hollow k",
+  "expect": [
+   "app:Hollow Knight",
+   "app:Hollow Knight Silksong"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "sid m",
+  "expect": [
+   "app:Sid Meier's Civilization VI"
+  ],
+  "cat": "app-prefix"
+ },
+ {
+  "q": "fierfox",
+  "expect": [
+   "app:org.mozilla.firefox"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "firefx",
+  "expect": [
+   "app:org.mozilla.firefox"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "frefox",
+  "expect": [
+   "app:org.mozilla.firefox"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "spotfy",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "spotifiy",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "stema",
+  "expect": [
+   "app:steam"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "stean",
+  "expect": [
+   "app:steam"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "dicsord",
+  "expect": [
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "discrod",
+  "expect": [
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "telegarm",
+  "expect": [
+   "app:org.telegram.desktop"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "telgram",
+  "expect": [
+   "app:org.telegram.desktop"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "blendr",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "blendre",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "kity",
+  "expect": [
+   "app:kitty"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "alacrity",
+  "expect": [
+   "app:Alacritty"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "alacrrity",
+  "expect": [
+   "app:Alacritty"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "obsidan",
+  "expect": [
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "thunderbrid",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "tunderbird",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "postamn",
+  "expect": [
+   "app:com.getpostman.Postman"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "zom",
+  "expect": [
+   "app:us.zoom.Zoom"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "chromuim",
+  "expect": [
+   "app:chromium-browser"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "crome",
+  "expect": [
+   "app:google-chrome",
+   "app:chromium-browser"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "braev",
+  "expect": [
+   "app:brave-origin"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "joplim",
+  "expect": [
+   "app:joplin"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "pinat",
+  "expect": [
+   "app:pinta"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "handbrke",
+  "expect": [
+   "app:fr.handbrake.ghb"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "kdenlie",
+  "expect": [
+   "app:org.kde.kdenlive"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "lutirs",
+  "expect": [
+   "app:net.lutris.Lutris"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "filezila",
+  "expect": [
+   "app:filezilla"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "remina",
+  "expect": [
+   "app:org.remmina.Remmina"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "anydsk",
+  "expect": [
+   "app:com.anydesk.Anydesk"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "rustdsk",
+  "expect": [
+   "app:com.rustdesk.RustDesk"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "moonlihgt",
+  "expect": [
+   "app:com.moonlight_stream.Moonlight"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "dtagrip",
+  "expect": [
+   "app:datagrip_datagrip"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "nvmi",
+  "expect": [
+   "app:nvim"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "vscdoe",
+  "expect": [
+   "app:code"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "vs code",
+  "expect": [
+   "app:code"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "hotp",
+  "expect": [
+   "app:htop"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "calcualtor",
+  "expect": [
+   "app:org.gnome.Calculator"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "wether",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "hollow nigth",
+  "expect": [
+   "app:Hollow Knight",
+   "app:Hollow Knight Silksong"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "libreofice",
+  "expect": [
+   "app:libreoffice-writer",
+   "app:libreoffice-calc",
+   "app:libreoffice-impress"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "libreoffce writer",
+  "expect": [
+   "app:libreoffice-writer"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "wirter",
+  "expect": [
+   "app:libreoffice-writer"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "termnial",
+  "expect": [
+   "app:org.gnome.Ptyxis",
+   "app:kitty",
+   "app:Alacritty"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "calender",
+  "expect": [
+   "app:org.gnome.Calendar"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "nautlius",
+  "expect": [
+   "app:org.gnome.Nautilus"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "virtualbxo",
+  "expect": [
+   "app:virt-manager",
+   "app:org.gnome.Boxes"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "ofice",
+  "expect": [
+   "app:libreoffice-writer",
+   "app:libreoffice-calc",
+   "app:libreoffice-impress",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-typo"
+ },
+ {
+  "q": "calculator",
+  "expect": [
+   "app:org.gnome.Calculator",
+   "app:libreoffice-calc"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "terminal",
+  "expect": [
+   "app:org.gnome.Ptyxis",
+   "app:kitty",
+   "app:Alacritty"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "pdf viewer",
+  "expect": [
+   "app:org.gnome.Papers"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "screen recorder",
+  "expect": [
+   "app:com.obsproject.Studio"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "web browser",
+  "expect": [
+   "app:org.mozilla.firefox",
+   "app:app.zen_browser.zen",
+   "app:brave-origin",
+   "app:chromium-browser",
+   "app:google-chrome",
+   "app:one.ablaze.floorp",
+   "app:net.mullvad.MullvadBrowser",
+   "app:org.torproject.torbrowser-launcher",
+   "app:org.gnome.Epiphany"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "browser",
+  "expect": [
+   "app:org.mozilla.firefox",
+   "app:app.zen_browser.zen",
+   "app:brave-origin",
+   "app:chromium-browser",
+   "app:google-chrome",
+   "app:one.ablaze.floorp",
+   "app:net.mullvad.MullvadBrowser",
+   "app:org.torproject.torbrowser-launcher",
+   "app:org.gnome.Epiphany"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "text editor",
+  "expect": [
+   "app:org.gnome.TextEditor",
+   "app:nvim",
+   "app:dev.zed.Zed",
+   "app:code"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "file manager",
+  "expect": [
+   "app:org.gnome.Nautilus"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "files",
+  "expect": [
+   "app:org.gnome.Nautilus"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "music player",
+  "expect": [
+   "app:com.spotify.Client",
+   "app:io.bassi.Amberol",
+   "app:org.gnome.Decibels"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "video player",
+  "expect": [
+   "app:org.gnome.Showtime",
+   "app:vlc",
+   "app:mpv"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "media player",
+  "expect": [
+   "app:vlc",
+   "app:mpv",
+   "app:org.gnome.Showtime"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "image viewer",
+  "expect": [
+   "app:org.gnome.Loupe"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "photo viewer",
+  "expect": [
+   "app:org.gnome.Loupe"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "email",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "mail client",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "spreadsheet",
+  "expect": [
+   "app:libreoffice-calc",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "presentation",
+  "expect": [
+   "app:libreoffice-impress",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "word processor",
+  "expect": [
+   "app:libreoffice-writer",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "notes",
+  "expect": [
+   "app:joplin",
+   "app:md.obsidian.Obsidian",
+   "app:org.gnome.gitlab.somas.Apostrophe"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "note taking",
+  "expect": [
+   "app:joplin",
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "markdown editor",
+  "expect": [
+   "app:org.gnome.gitlab.somas.Apostrophe",
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "calendar",
+  "expect": [
+   "app:org.gnome.Calendar"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "clock",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "alarm",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "timer",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "stopwatch",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "weather",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "maps",
+  "expect": [
+   "app:org.gnome.Maps"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "camera",
+  "expect": [
+   "app:org.gnome.Snapshot"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "contacts",
+  "expect": [
+   "app:org.gnome.Contacts"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "settings",
+  "expect": [
+   "app:org.gnome.Settings"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "system monitor",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde",
+   "app:net.nokyan.Resources"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "task manager",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde",
+   "app:net.nokyan.Resources",
+   "app:htop"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "disk usage",
+  "expect": [
+   "app:org.gnome.baobab"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "disk utility",
+  "expect": [
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "software store",
+  "expect": [
+   "app:org.gnome.Software",
+   "app:io.github.kolunmi.Bazaar"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "app store",
+  "expect": [
+   "app:org.gnome.Software",
+   "app:io.github.kolunmi.Bazaar"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "vm manager",
+  "expect": [
+   "app:virt-manager",
+   "app:org.gnome.Boxes"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "virtual machine",
+  "expect": [
+   "app:virt-manager",
+   "app:org.gnome.Boxes"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "torrent client",
+  "expect": [
+   "app:com.transmissionbt.Transmission"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "ftp client",
+  "expect": [
+   "app:filezilla"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "remote desktop",
+  "expect": [
+   "app:org.remmina.Remmina",
+   "app:org.kde.krdc",
+   "app:com.rustdesk.RustDesk",
+   "app:com.anydesk.Anydesk",
+   "app:remote-viewer",
+   "app:org.gnome.Connections"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "vpn",
+  "expect": [
+   "app:dev.deedles.Trayscale"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "authenticator",
+  "expect": [
+   "app:Proton Authenticator"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "video editor",
+  "expect": [
+   "app:org.kde.kdenlive",
+   "app:org.pitivi.Pitivi"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "3d modeling",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "code editor",
+  "expect": [
+   "app:code",
+   "app:dev.zed.Zed",
+   "app:nvim"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "ide",
+  "expect": [
+   "app:code",
+   "app:dev.zed.Zed",
+   "app:datagrip_datagrip"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "database",
+  "expect": [
+   "app:datagrip_datagrip",
+   "app:sqlitebrowser",
+   "app:io.beekeeperstudio.Studio"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "sql client",
+  "expect": [
+   "app:datagrip_datagrip",
+   "app:sqlitebrowser",
+   "app:io.beekeeperstudio.Studio"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "api client",
+  "expect": [
+   "app:com.getpostman.Postman",
+   "app:cn.apipost.apipost"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "chess",
+  "expect": [
+   "app:cute_chess",
+   "app:encroissant"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "color picker",
+  "expect": [
+   "app:org.gpick.gpick"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "font viewer",
+  "expect": [
+   "app:org.gnome.font-viewer"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "volume control",
+  "expect": [
+   "app:org.pulseaudio.pavucontrol"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "equalizer",
+  "expect": [
+   "app:com.github.wwmm.easyeffects"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "scanner",
+  "expect": [
+   "app:org.gnome.SimpleScan"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "sound recorder",
+  "expect": [
+   "app:org.gnome.SoundRecorder"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "chat",
+  "expect": [
+   "app:org.telegram.desktop",
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "game launcher",
+  "expect": [
+   "app:steam",
+   "app:net.lutris.Lutris"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "emulator",
+  "expect": [
+   "app:org.dosbox-staging.dosbox-staging"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "firewall",
+  "expect": [
+   "app:firewall-config"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "bluetooth",
+  "expect": [
+   "app:io.github.ebonjaeger.bluejay"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "mouse settings",
+  "expect": [
+   "app:org.freedesktop.Piper",
+   "app:solaar"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "keyboard remapper",
+  "expect": [
+   "app:input-remapper-gtk"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "typing test",
+  "expect": [
+   "app:no.bragefuglseth.Keypunch"
+  ],
+  "cat": "app-generic"
+ },
+ {
+  "q": "edit a photo",
+  "expect": [
+   "app:pinta",
+   "app:org.gnome.Loupe",
+   "app:be.alexandervanhee.gradia"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "write a document",
+  "expect": [
+   "app:libreoffice-writer",
+   "app:org.onlyoffice.desktopeditors",
+   "app:org.gnome.TextEditor"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "video call with friends",
+  "expect": [
+   "app:us.zoom.Zoom",
+   "app:com.discordapp.Discord",
+   "app:org.telegram.desktop"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "listen to podcasts",
+  "expect": [
+   "app:com.spotify.Client"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "open a zip file",
+  "expect": [
+   "app:org.gnome.Nautilus"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "check disk usage",
+  "expect": [
+   "app:org.gnome.baobab",
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "how do i read a pdf",
+  "expect": [
+   "app:org.gnome.Papers"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "browse the internet",
+  "expect": [
+   "app:org.mozilla.firefox",
+   "app:app.zen_browser.zen",
+   "app:brave-origin",
+   "app:chromium-browser",
+   "app:google-chrome",
+   "app:one.ablaze.floorp",
+   "app:net.mullvad.MullvadBrowser",
+   "app:org.torproject.torbrowser-launcher",
+   "app:org.gnome.Epiphany"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "surf the web",
+  "expect": [
+   "app:org.mozilla.firefox",
+   "app:app.zen_browser.zen",
+   "app:brave-origin",
+   "app:chromium-browser",
+   "app:google-chrome",
+   "app:one.ablaze.floorp",
+   "app:net.mullvad.MullvadBrowser",
+   "app:org.torproject.torbrowser-launcher",
+   "app:org.gnome.Epiphany"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "browse privately",
+  "expect": [
+   "app:org.torproject.torbrowser-launcher",
+   "app:net.mullvad.MullvadBrowser",
+   "app:brave-origin",
+   "app:org.mozilla.firefox",
+   "app:app.zen_browser.zen"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "anonymous browsing",
+  "expect": [
+   "app:org.torproject.torbrowser-launcher",
+   "app:net.mullvad.MullvadBrowser"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "watch a movie",
+  "expect": [
+   "app:vlc",
+   "app:mpv",
+   "app:org.gnome.Showtime"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play some music",
+  "expect": [
+   "app:com.spotify.Client",
+   "app:io.bassi.Amberol",
+   "app:org.gnome.Decibels"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play mp3 files",
+  "expect": [
+   "app:io.bassi.Amberol",
+   "app:org.gnome.Decibels",
+   "app:vlc",
+   "app:mpv"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "record my screen",
+  "expect": [
+   "app:com.obsproject.Studio"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "stream on twitch",
+  "expect": [
+   "app:com.obsproject.Studio"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "take a picture with webcam",
+  "expect": [
+   "app:org.gnome.Snapshot"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "make a presentation",
+  "expect": [
+   "app:libreoffice-impress",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "create a spreadsheet",
+  "expect": [
+   "app:libreoffice-calc",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "crunch some numbers",
+  "expect": [
+   "app:org.gnome.Calculator",
+   "app:libreoffice-calc"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "do some math",
+  "expect": [
+   "app:org.gnome.Calculator"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "see what's using my cpu",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde",
+   "app:net.nokyan.Resources",
+   "app:htop"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "kill a frozen app",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde",
+   "app:htop",
+   "app:net.nokyan.Resources"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "how much ram am i using",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde",
+   "app:net.nokyan.Resources",
+   "app:htop"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "install an app",
+  "expect": [
+   "app:org.gnome.Software",
+   "app:io.github.kolunmi.Bazaar"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "update my software",
+  "expect": [
+   "app:org.gnome.Software",
+   "app:io.github.kolunmi.Bazaar"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "download torrents",
+  "expect": [
+   "app:com.transmissionbt.Transmission"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "upload files to my server",
+  "expect": [
+   "app:filezilla"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "connect to another computer",
+  "expect": [
+   "app:org.remmina.Remmina",
+   "app:org.kde.krdc",
+   "app:com.rustdesk.RustDesk",
+   "app:com.anydesk.Anydesk",
+   "app:remote-viewer",
+   "app:org.gnome.Connections"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "control a remote desktop",
+  "expect": [
+   "app:org.remmina.Remmina",
+   "app:org.kde.krdc",
+   "app:com.rustdesk.RustDesk",
+   "app:com.anydesk.Anydesk",
+   "app:remote-viewer",
+   "app:org.gnome.Connections"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "run a virtual machine",
+  "expect": [
+   "app:virt-manager",
+   "app:org.gnome.Boxes"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "convert a video",
+  "expect": [
+   "app:fr.handbrake.ghb"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "rip a dvd",
+  "expect": [
+   "app:fr.handbrake.ghb"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "edit a video",
+  "expect": [
+   "app:org.kde.kdenlive",
+   "app:org.pitivi.Pitivi"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "cut and trim clips",
+  "expect": [
+   "app:org.kde.kdenlive",
+   "app:org.pitivi.Pitivi"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "model a 3d character",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "animate something in 3d",
+  "expect": [
+   "app:blender"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "write some code",
+  "expect": [
+   "app:code",
+   "app:dev.zed.Zed",
+   "app:nvim"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "edit config files",
+  "expect": [
+   "app:org.gnome.TextEditor",
+   "app:nvim",
+   "app:code",
+   "app:dev.zed.Zed"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "quick note",
+  "expect": [
+   "app:org.gnome.TextEditor",
+   "app:joplin",
+   "app:md.obsidian.Obsidian",
+   "app:org.gnome.gitlab.somas.Apostrophe"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "take notes for class",
+  "expect": [
+   "app:joplin",
+   "app:md.obsidian.Obsidian"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "write markdown",
+  "expect": [
+   "app:org.gnome.gitlab.somas.Apostrophe",
+   "app:md.obsidian.Obsidian",
+   "app:joplin"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "send an email",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "check my inbox",
+  "expect": [
+   "app:net.thunderbird.Thunderbird"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "text my friends",
+  "expect": [
+   "app:org.telegram.desktop",
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "voice chat while gaming",
+  "expect": [
+   "app:com.discordapp.Discord"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play a game",
+  "expect": [
+   "app:steam",
+   "app:net.lutris.Lutris"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play hollow knight",
+  "expect": [
+   "app:Hollow Knight"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play silksong",
+  "expect": [
+   "app:Hollow Knight Silksong"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "launch minecraft",
+  "expect": [
+   "app:FastClient"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play chess",
+  "expect": [
+   "app:cute_chess",
+   "app:encroissant"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "analyze chess games",
+  "expect": [
+   "app:encroissant"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play batman",
+  "expect": [
+   "app:Batman Arkham Knight"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play civilization",
+  "expect": [
+   "app:Sid Meier's Civilization VI"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play god of war",
+  "expect": [
+   "app:God of War"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play retro dos games",
+  "expect": [
+   "app:org.dosbox-staging.dosbox-staging"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "stream games to my laptop",
+  "expect": [
+   "app:com.moonlight_stream.Moonlight"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "what's the weather tomorrow",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "is it going to rain",
+  "expect": [
+   "app:org.gnome.Weather"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "find a place on a map",
+  "expect": [
+   "app:org.gnome.Maps"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "get directions",
+  "expect": [
+   "app:org.gnome.Maps"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "set an alarm",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "what time is it in tokyo",
+  "expect": [
+   "app:org.gnome.clocks"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "add an event",
+  "expect": [
+   "app:org.gnome.Calendar"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "check my schedule",
+  "expect": [
+   "app:org.gnome.Calendar"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "find a phone number",
+  "expect": [
+   "app:org.gnome.Contacts"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "pick a color from screen",
+  "expect": [
+   "app:org.gpick.gpick"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "insert a special character",
+  "expect": [
+   "app:org.gnome.Characters"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "type an emoji",
+  "expect": [
+   "app:org.gnome.Characters"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "look at fonts",
+  "expect": [
+   "app:org.gnome.font-viewer"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "change the volume",
+  "expect": [
+   "app:org.pulseaudio.pavucontrol"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "fix my audio output",
+  "expect": [
+   "app:org.pulseaudio.pavucontrol",
+   "app:com.github.wwmm.easyeffects"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "make my speakers sound better",
+  "expect": [
+   "app:com.github.wwmm.easyeffects"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "add effects to my mic",
+  "expect": [
+   "app:com.github.wwmm.easyeffects"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "record my voice",
+  "expect": [
+   "app:org.gnome.SoundRecorder"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "relaxing background noise",
+  "expect": [
+   "app:com.rafaelmardojai.Blanket"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "rain sounds to sleep",
+  "expect": [
+   "app:com.rafaelmardojai.Blanket"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "scan a document",
+  "expect": [
+   "app:org.gnome.SimpleScan"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "digitize a paper",
+  "expect": [
+   "app:org.gnome.SimpleScan"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "turn on bluetooth",
+  "expect": [
+   "app:io.github.ebonjaeger.bluejay",
+   "app:org.gnome.Settings"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "pair a bluetooth speaker",
+  "expect": [
+   "app:io.github.ebonjaeger.bluejay",
+   "app:org.gnome.Settings"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "change my wallpaper",
+  "expect": [
+   "app:org.gnome.Settings",
+   "app:org.gnome.tweaks"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "change gnome settings",
+  "expect": [
+   "app:org.gnome.tweaks",
+   "app:org.gnome.Settings"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "tweak the desktop",
+  "expect": [
+   "app:org.gnome.tweaks"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "manage gnome extensions",
+  "expect": [
+   "app:com.mattjakeman.ExtensionManager"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "manage flatpaks",
+  "expect": [
+   "app:io.github.flattool.Warehouse"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "manage podman containers",
+  "expect": [
+   "app:com.github.marhkb.Pods"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "run docker containers",
+  "expect": [
+   "app:com.github.marhkb.Pods"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "browse a sqlite database",
+  "expect": [
+   "app:sqlitebrowser"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "run sql queries",
+  "expect": [
+   "app:datagrip_datagrip",
+   "app:io.beekeeperstudio.Studio",
+   "app:sqlitebrowser"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "test an api",
+  "expect": [
+   "app:com.getpostman.Postman",
+   "app:cn.apipost.apipost"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "send http requests",
+  "expect": [
+   "app:com.getpostman.Postman",
+   "app:cn.apipost.apipost"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "run a local llm",
+  "expect": [
+   "app:ai.lmstudio.lm-studio",
+   "app:lemonade-web-app"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "chat with ai",
+  "expect": [
+   "app:chatgpt",
+   "app:ai.lmstudio.lm-studio",
+   "app:lemonade-web-app"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "ask chatgpt something",
+  "expect": [
+   "app:chatgpt"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "make a bootable usb",
+  "expect": [
+   "app:org.fedoraproject.MediaWriter",
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "format a usb drive",
+  "expect": [
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "check drive health",
+  "expect": [
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "see system logs",
+  "expect": [
+   "app:org.gnome.Logs"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "check the firewall",
+  "expect": [
+   "app:firewall-config"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "block incoming connections",
+  "expect": [
+   "app:firewall-config"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "set parental controls",
+  "expect": [
+   "app:org.freedesktop.MalcontentControl"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "use tailscale",
+  "expect": [
+   "app:dev.deedles.Trayscale"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "connect to my vpn",
+  "expect": [
+   "app:dev.deedles.Trayscale"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "2fa codes",
+  "expect": [
+   "app:Proton Authenticator"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "get my authenticator code",
+  "expect": [
+   "app:Proton Authenticator"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "upscale an image",
+  "expect": [
+   "app:io.gitlab.theevilskeleton.Upscaler",
+   "app:be.alexandervanhee.gradia"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "annotate a screenshot",
+  "expect": [
+   "app:be.alexandervanhee.gradia"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "draw on an infinite canvas",
+  "expect": [
+   "app:com.infinipaint.infinipaint"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "sketch some ideas",
+  "expect": [
+   "app:com.infinipaint.infinipaint"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "practice typing",
+  "expect": [
+   "app:no.bragefuglseth.Keypunch"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "remap my keyboard keys",
+  "expect": [
+   "app:input-remapper-gtk"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "configure my logitech mouse",
+  "expect": [
+   "app:solaar",
+   "app:org.freedesktop.Piper"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "customize my gaming mouse",
+  "expect": [
+   "app:org.freedesktop.Piper"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "change my login screen",
+  "expect": [
+   "app:io.github.realmazharhussain.GdmSettings"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "how do i get help with gnome",
+  "expect": [
+   "app:org.gnome.Yelp"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "edit the windows registry",
+  "expect": [
+   "app:wine-regedit"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "uninstall a windows program in wine",
+  "expect": [
+   "app:wine-uninstaller"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "play minesweeper",
+  "expect": [
+   "app:wine-winemine"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "open a docx file",
+  "expect": [
+   "app:libreoffice-writer",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "open a powerpoint",
+  "expect": [
+   "app:libreoffice-impress",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "open an excel file",
+  "expect": [
+   "app:libreoffice-calc",
+   "app:org.onlyoffice.desktopeditors"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "view an epub or comic",
+  "expect": [
+   "app:org.gnome.Papers"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "look at my pictures",
+  "expect": [
+   "app:org.gnome.Loupe"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "monitor battery power usage",
+  "expect": [
+   "app:org.gnome.PowerStats"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "open a terminal window",
+  "expect": [
+   "app:org.gnome.Ptyxis",
+   "app:kitty",
+   "app:Alacritty"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "remote development on a server",
+  "expect": [
+   "app:jetbrains-gateway"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "join a meeting",
+  "expect": [
+   "app:us.zoom.Zoom"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "how do i open a pdf",
+  "expect": [
+   "app:org.gnome.Papers"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "where can i edit a png",
+  "expect": [
+   "app:pinta",
+   "app:org.gnome.Loupe",
+   "app:be.alexandervanhee.gradia"
+  ],
+  "cat": "app-intent"
+ },
+ {
+  "q": "text edi",
+  "expect": [
+   "app:org.gnome.TextEditor"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "system mon",
+  "expect": [
+   "app:org.gnome.SystemMonitor",
+   "app:gnome-system-monitor-kde"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "disk usa",
+  "expect": [
+   "app:org.gnome.baobab"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "disk util",
+  "expect": [
+   "app:org.gnome.DiskUtility"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "web br",
+  "expect": [
+   "app:org.gnome.Epiphany"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "video pla",
+  "expect": [
+   "app:org.gnome.Showtime"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "audio pla",
+  "expect": [
+   "app:org.gnome.Decibels"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "image vie",
+  "expect": [
+   "app:org.gnome.Loupe"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "document vie",
+  "expect": [
+   "app:org.gnome.Papers"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "document sca",
+  "expect": [
+   "app:org.gnome.SimpleScan"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "sound rec",
+  "expect": [
+   "app:org.gnome.SoundRecorder"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "power sta",
+  "expect": [
+   "app:org.gnome.PowerStats"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "file man",
+  "expect": [
+   "app:org.gnome.Nautilus"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "libre wri",
+  "expect": [
+   "app:libreoffice-writer"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "libre calc",
+  "expect": [
+   "app:libreoffice-calc"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "libre imp",
+  "expect": [
+   "app:libreoffice-impress"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "wine note",
+  "expect": [
+   "app:wine-notepad"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "wine conf",
+  "expect": [
+   "app:wine-winecfg"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "virtual mach",
+  "expect": [
+   "app:virt-manager"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "volume con",
+  "expect": [
+   "app:org.pulseaudio.pavucontrol"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "font vie",
+  "expect": [
+   "app:org.gnome.font-viewer"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "color pro",
+  "expect": [
+   "app:org.gnome.ColorProfileViewer"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "extension man",
+  "expect": [
+   "app:com.mattjakeman.ExtensionManager"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "gear le",
+  "expect": [
+   "app:it.mijorus.gearlever"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "input rem",
+  "expect": [
+   "app:input-remapper-gtk"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "tor br",
+  "expect": [
+   "app:org.torproject.torbrowser-launcher"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "fedora me",
+  "expect": [
+   "app:org.fedoraproject.MediaWriter"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "remote vi",
+  "expect": [
+   "app:remote-viewer"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "hollow kn",
+  "expect": [
+   "app:Hollow Knight",
+   "app:Hollow Knight Silksong"
+  ],
+  "cat": "app-multi"
+ },
+ {
+  "q": "google chr",
+  "expect": [
+   "app:google-chrome"
+  ],
+  "cat": "app-multi"
+ }
+]
