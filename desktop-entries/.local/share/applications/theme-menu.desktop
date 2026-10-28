@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Change Theme
+GenericName=Theme
+Comment=Switch the whole desktop (bar, launcher, kitty, niri, lock screen) to another theme
+Exec=/home/dvip/.local/bin/theme-menu
+Icon=/usr/share/icons/breeze/preferences/22/preferences-desktop-theme-global.svg
+Terminal=false
+Categories=Settings;
+Keywords=theme;appearance;look;style;colour;color;gruvbox;rose;pine;everforest;mono;glass;

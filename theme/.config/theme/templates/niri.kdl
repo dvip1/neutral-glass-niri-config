@@ -2,6 +2,7 @@
 // Included from ~/.config/niri/config.kdl (niri reloads by itself when this changes).
 
 layout {
+    gaps {{gaps}}
     focus-ring {
         width {{ring_width}}
         active-color "{{ring_active|hash8}}"
@@ -16,11 +17,11 @@ window-rule {
     clip-to-geometry true
 }
 
-// Frosted-glass kitty: blur behind it, and don't paint the ring through its transparency.
+// Frosted-glass kitty: blur behind it (if the theme has blur), and don't paint the ring through its transparency.
 window-rule {
     match app-id="^kitty$"
     background-effect {
-        blur true
+        blur {{blur}}
     }
     draw-border-with-background false
     geometry-corner-radius {{radius}}
@@ -31,14 +32,14 @@ window-rule {
 // Radii must match what each app draws, or the blur pokes out of the corners.
 layer-rule {
     match namespace="^waybar$"
-    background-effect { blur true; }
+    background-effect { blur {{blur}}; }
     geometry-corner-radius {{radius}}
 }
 // The Quickshell bar (square: it spans the top edge). Its tooltips are not blurred: niri would show the blur box at once,
 // before the tooltip has faded in (they are nearly opaque anyway).
 layer-rule {
     match namespace="^bar$"
-    background-effect { blur true; }
+    background-effect { blur {{blur}}; }
 }
 // Quickshell's date menu (notifications + calendar) and notification popups.
 layer-rule {
@@ -46,7 +47,7 @@ layer-rule {
     match namespace="^quicksettings$"
     match namespace="^notification$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}
@@ -55,7 +56,7 @@ layer-rule {
 layer-rule {
     match namespace="^polkit$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
 }
@@ -63,7 +64,7 @@ layer-rule {
 layer-rule {
     match namespace="^osd$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}
@@ -71,7 +72,7 @@ layer-rule {
 layer-rule {
     match namespace="^swaync-control-center$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius}}
@@ -79,7 +80,7 @@ layer-rule {
 layer-rule {
     match namespace="^launcher$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}
@@ -87,7 +88,7 @@ layer-rule {
 layer-rule {
     match namespace="^nowplaying$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}
@@ -95,7 +96,7 @@ layer-rule {
 layer-rule {
     match namespace="^powerpanel$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}
@@ -103,7 +104,7 @@ layer-rule {
 layer-rule {
     match namespace="^swayosd$"
     background-effect {
-        blur true
+        blur {{blur}}
         xray false
     }
     geometry-corner-radius {{radius_large}}

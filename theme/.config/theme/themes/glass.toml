@@ -1,0 +1,162 @@
+# Glass: neutral grey frosted glass, no tint. Translucent everything with niri blur behind it.
+# Every colour is set by hand here (nothing comes from the [derive] formulas in ../theme.toml).
+description = "Neutral frosted glass, no tint"
+
+[gtk]
+accent = "yellow"
+
+[kitty]
+dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1
+light = "Modus Operandi"    # white/black, text 21:1, every colour >= 7:1
+
+[dark]
+# Base colours (used only by formulas for names not set below)
+bg      = "#1c1c1c"
+surface = "#101010"
+accent  = "#e6e6e6"
+
+# Bar (waybar)
+bar_bg       = "rgba(28, 28, 28, 0.58)"
+bar_border   = "rgba(255, 255, 255, 0.13)"
+fg           = "#e6e6e6"
+fg_strong    = "#ffffff"
+fg_muted     = "#8c8c8c"
+fg_title     = "#b8b8b8"
+pill_bg      = "rgba(255, 255, 255, 0.04)"
+pill_hover   = "rgba(255, 255, 255, 0.10)"
+ws_hover     = "rgba(255, 255, 255, 0.08)"
+ws_active_bg = "rgba(255, 255, 255, 0.13)"
+ws_dot       = "rgba(255, 255, 255, 0.32)"   # GNOME-style workspace dots; the active one is a pill
+ws_dot_hover = "rgba(255, 255, 255, 0.62)"
+ws_pill      = "#e6e6e6"
+pill_press   = "rgba(255, 255, 255, 0.16)"   # pressed button on the Quickshell bar
+ws_urgent_bg = "rgba(240, 138, 128, 0.15)"
+c_crit       = "#f08a80"
+c_warn       = "#e8c170"
+c_ok         = "#9ccc95"
+tip_bg       = "rgba(28, 28, 28, 0.88)"
+tip_border   = "rgba(255, 255, 255, 0.14)"
+
+
+# Notifications (swaync)
+sw_text        = "#ffffff"
+sw_dim         = "rgba(255, 255, 255, 0.6)"
+sw_body        = "rgba(255, 255, 255, 0.85)"
+sw_card        = "rgba(16, 16, 16, 0.78)"
+sw_border      = "rgba(255, 255, 255, 0.14)"
+sw_border_crit = "rgba(255, 255, 255, 0.55)"
+sw_btn         = "rgba(255, 255, 255, 0.12)"
+sw_btn_hover   = "rgba(255, 255, 255, 0.25)"
+sw_btn_soft    = "rgba(255, 255, 255, 0.08)"
+sw_cc          = "rgba(16, 16, 16, 0.45)"
+sw_switch_on   = "rgba(255, 255, 255, 0.45)"
+sw_slider      = "#ffffff"
+
+# Launcher + menus (fuzzel)
+fz_bg        = "#1c1c1c94"
+fz_text      = "#b8b8b8ff"
+fz_prompt    = "#ffffffff"
+fz_input     = "#ffffffff"
+fz_match     = "#ffffffff"
+fz_sel_match = "#ffffffff"
+fz_sel       = "#ffffff1f"
+fz_sel_text  = "#ffffffff"
+fz_border    = "#ffffff22"
+
+# Volume / brightness popup (swayosd)
+osd_bg     = "rgba(16, 16, 16, 0.50)"
+osd_border = "rgba(255, 255, 255, 0.14)"
+osd_fg     = "#ffffff"
+osd_trough = "rgba(255, 255, 255, 0.2)"
+osd_bar    = "#ffffff"
+
+# Window focus ring (niri)
+ring_active   = "#ffffff66"
+ring_inactive = "#ffffff1a"
+
+# Lock screen (swaylock): blurred, dimmed wallpaper (made by setwall) under a thin ring
+lock_bg       = "#1c1c1c"
+lock_inside   = "rgba(0, 0, 0, 0.25)"
+lock_ring     = "rgba(255, 255, 255, 0.18)"
+lock_text     = "#ffffff"
+lock_key_hl   = "rgba(255, 255, 255, 0.9)"
+lock_bs_hl    = "rgba(255, 255, 255, 0.4)"
+lock_ring_ver = "rgba(255, 255, 255, 0.6)"
+lock_bad      = "#f08a80"
+lock_clear    = "rgba(255, 255, 255, 0.3)"
+
+
+[light]
+bg      = "#f2f2f2"
+surface = "#fafafa"
+accent  = "#262626"
+
+# Bar (waybar)
+bar_bg       = "rgba(242, 242, 242, 0.62)"
+bar_border   = "rgba(0, 0, 0, 0.12)"
+fg           = "#262626"
+fg_strong    = "#000000"
+fg_muted     = "#6e6e6e"
+fg_title     = "#464646"
+pill_bg      = "rgba(0, 0, 0, 0.05)"
+pill_hover   = "rgba(0, 0, 0, 0.10)"
+ws_hover     = "rgba(0, 0, 0, 0.08)"
+ws_active_bg = "rgba(0, 0, 0, 0.12)"
+ws_dot       = "rgba(0, 0, 0, 0.26)"
+ws_dot_hover = "rgba(0, 0, 0, 0.55)"
+ws_pill      = "#262626"
+pill_press   = "rgba(0, 0, 0, 0.16)"
+ws_urgent_bg = "rgba(192, 57, 43, 0.15)"
+c_crit       = "#c0392b"
+c_warn       = "#a86a00"
+c_ok         = "#2e7d32"
+tip_bg       = "rgba(246, 246, 246, 0.92)"
+tip_border   = "rgba(0, 0, 0, 0.14)"
+
+
+# Notifications (swaync)
+sw_text        = "#1a1a1a"
+sw_dim         = "rgba(0, 0, 0, 0.55)"
+sw_body        = "rgba(0, 0, 0, 0.8)"
+sw_card        = "rgba(250, 250, 250, 0.86)"
+sw_border      = "rgba(0, 0, 0, 0.14)"
+sw_border_crit = "rgba(0, 0, 0, 0.55)"
+sw_btn         = "rgba(0, 0, 0, 0.10)"
+sw_btn_hover   = "rgba(0, 0, 0, 0.20)"
+sw_btn_soft    = "rgba(0, 0, 0, 0.06)"
+sw_cc          = "rgba(245, 245, 245, 0.5)"
+sw_switch_on   = "rgba(0, 0, 0, 0.5)"
+sw_slider      = "#ffffff"
+
+# Launcher + menus (fuzzel)
+fz_bg        = "#f2f2f2c8"
+fz_text      = "#3a3a3aff"
+fz_prompt    = "#000000ff"
+fz_input     = "#000000ff"
+fz_match     = "#000000ff"
+fz_sel_match = "#000000ff"
+fz_sel       = "#00000018"
+fz_sel_text  = "#000000ff"
+fz_border    = "#00000022"
+
+# Volume / brightness popup (swayosd)
+osd_bg     = "rgba(245, 245, 245, 0.55)"
+osd_border = "rgba(0, 0, 0, 0.14)"
+osd_fg     = "#1a1a1a"
+osd_trough = "rgba(0, 0, 0, 0.18)"
+osd_bar    = "#1a1a1a"
+
+# Window focus ring (niri)
+ring_active   = "#00000066"
+ring_inactive = "#0000001a"
+
+# Lock screen (swaylock): blurred, brightened wallpaper (made by setwall) under a thin ring
+lock_bg       = "#f2f2f2"
+lock_inside   = "rgba(255, 255, 255, 0.35)"
+lock_ring     = "rgba(0, 0, 0, 0.15)"
+lock_text     = "#1a1a1a"
+lock_key_hl   = "rgba(0, 0, 0, 0.8)"
+lock_bs_hl    = "rgba(0, 0, 0, 0.35)"
+lock_ring_ver = "rgba(0, 0, 0, 0.55)"
+lock_bad      = "#c0392b"
+lock_clear    = "rgba(0, 0, 0, 0.25)"

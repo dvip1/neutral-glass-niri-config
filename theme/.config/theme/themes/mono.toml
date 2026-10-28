@@ -1,0 +1,71 @@
+# Mono: stark black and white, flat and solid (no blur, no translucency), sharp corners,
+# monospace everything. Brutalist / e-ink feel.
+description = "Stark black & white, flat, sharp, monospace"
+
+[font]
+family = "JetBrains Mono"
+size = 12.5
+bar_size = 13
+
+[shape]
+radius = 3
+radius_large = 4
+radius_pill = 3
+radius_small = 2
+ring_width = 1
+gaps = 6
+
+[effects]
+blur = false
+kitty_opacity = 1.0
+
+[opacity]
+alpha_bar = 1.0
+alpha_panel = 1.0
+alpha_card = 1.0
+alpha_osd = 1.0
+alpha_tip = 1.0
+alpha_ring = 1.0
+
+[gtk]
+accent = "slate"
+
+[kitty]
+dark  = "Black Metal"
+light = "Modus Operandi"
+
+[dark]
+bg       = "#000000"
+surface  = "#0d0d0d"
+fg       = "#f0f0f0"
+fg_strong = "#ffffff"
+fg_muted = "#7a7a7a"
+accent   = "#ffffff"
+c_crit   = "#ff5f5f"
+c_warn   = "#d7d7d7"
+c_ok     = "#bdbdbd"
+bar_border = "#ffffff33"
+fz_border  = "#ffffff"
+fz_sel     = "#ffffff"
+fz_sel_text = "#000000"
+fz_sel_match = "#000000"
+tip_border = "#ffffff55"
+osd_border = "#ffffff"
+
+[light]
+bg       = "#ffffff"
+surface  = "#f5f5f5"
+fg       = "#111111"
+fg_strong = "#000000"
+fg_muted = "#707070"
+accent   = "#000000"
+c_crit   = "#c00000"
+c_warn   = "#444444"
+c_ok     = "#555555"
+bar_border = "#00000033"
+fz_border  = "#000000"
+fz_sel     = "#000000"
+fz_sel_text = "#ffffff"
+fz_sel_match = "#ffffff"
+tip_border = "#00000055"
+osd_border = "#000000"

@@ -1,0 +1,48 @@
+# Rosé Pine: soft, muted purples with a rose accent, still glass (blur), rounder corners.
+# Palette: https://rosepinetheme.com/palette  (main / dawn)
+description = "Soft muted purple glass, rose accent"
+
+[font]
+family = "Inter"
+
+[shape]
+radius = 16
+radius_large = 18
+radius_pill = 12
+radius_small = 9
+gaps = 12
+
+[effects]
+blur = true
+kitty_opacity = 0.85
+
+[gtk]
+accent = "pink"
+
+[kitty]
+dark  = "Rosé Pine"
+light = "Rosé Pine Dawn"
+
+[dark]
+bg       = "#191724"   # base
+surface  = "#1f1d2e"   # surface
+fg       = "#e0def4"   # text
+fg_muted = "#6e6a86"   # muted
+fg_title = "#908caa"   # subtle
+accent   = "#ebbcba"   # rose
+c_crit   = "#eb6f92"   # love
+c_warn   = "#f6c177"   # gold
+c_ok     = "#9ccfd8"   # foam
+ws_dot   = "#908caa66"
+
+[light]
+bg       = "#faf4ed"
+surface  = "#fffaf3"
+fg       = "#575279"
+fg_muted = "#9893a5"
+fg_title = "#797593"
+accent   = "#d7827e"
+c_crit   = "#b4637a"
+c_warn   = "#ea9d34"
+c_ok     = "#56949f"
+alpha_bar = 0.7

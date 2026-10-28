@@ -7,6 +7,7 @@ import Quickshell
 
 Singleton {
     readonly property string mode: "{{mode}}"
+    readonly property string name: "{{theme}}"
 
     // Fonts (sizes in logical px, like the CSS; Text takes points, so use px * 0.75)
     readonly property string font: "{{font}}"

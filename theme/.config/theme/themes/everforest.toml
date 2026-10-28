@@ -1,0 +1,46 @@
+# Everforest: calm green-grey forest tones, light glass (blur), medium corners.
+# Palette: https://github.com/sainnhe/everforest (medium)
+description = "Calm forest greens, light glass"
+
+[shape]
+radius = 10
+radius_large = 12
+radius_pill = 9
+radius_small = 6
+
+[effects]
+blur = true
+kitty_opacity = 0.9
+
+[opacity]
+alpha_bar = 0.78
+alpha_panel = 0.85
+alpha_card = 0.9
+alpha_osd = 0.8
+
+[gtk]
+accent = "green"
+
+[kitty]
+dark  = "Everforest Dark Medium"
+light = "Everforest Light Medium"
+
+[dark]
+bg       = "#2d353b"   # bg0
+surface  = "#343f44"   # bg1
+fg       = "#d3c6aa"
+fg_muted = "#859289"   # grey1
+accent   = "#a7c080"   # green
+c_crit   = "#e67e80"
+c_warn   = "#dbbc7f"
+c_ok     = "#83c092"   # aqua
+
+[light]
+bg       = "#fdf6e3"
+surface  = "#f4f0d9"
+fg       = "#5c6a72"
+fg_muted = "#939f91"
+accent   = "#8da101"
+c_crit   = "#f85552"
+c_warn   = "#dfa000"
+c_ok     = "#35a77c"

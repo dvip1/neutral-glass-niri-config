@@ -1,0 +1,64 @@
+# Gruvbox: warm retro, solid panels (no blur), small corners, monospace UI.
+# Palette: https://github.com/morhetz/gruvbox
+description = "Warm retro, solid panels, mono font"
+
+[font]
+family = "JetBrains Mono"
+size = 12.5
+bar_size = 13
+
+[shape]
+radius = 6
+radius_large = 8
+radius_pill = 6
+radius_small = 4
+gaps = 8
+
+[effects]
+blur = false
+kitty_opacity = 1.0
+
+[opacity]
+alpha_bar = 1.0
+alpha_panel = 0.98
+alpha_card = 1.0
+alpha_osd = 0.98
+alpha_tip = 1.0
+alpha_ring = 1.0
+
+[gtk]
+accent = "orange"
+
+[kitty]
+dark  = "Gruvbox Dark"
+light = "Gruvbox Light"
+
+[dark]
+bg       = "#282828"   # bg0
+surface  = "#32302f"   # bg0_s
+fg       = "#ebdbb2"   # fg1
+fg_muted = "#928374"   # gray
+fg_title = "#d5c4a1"   # fg2
+accent   = "#fabd2f"   # yellow
+c_crit   = "#fb4934"
+c_warn   = "#fe8019"
+c_ok     = "#b8bb26"
+bar_border = "#3c3836"
+fz_border  = "#504945"
+tip_border = "#504945"
+osd_border = "#504945"
+
+[light]
+bg       = "#fbf1c7"
+surface  = "#f2e5bc"
+fg       = "#3c3836"
+fg_muted = "#928374"
+fg_title = "#504945"
+accent   = "#b57614"
+c_crit   = "#9d0006"
+c_warn   = "#af3a03"
+c_ok     = "#79740e"
+bar_border = "#ebdbb2"
+fz_border  = "#d5c4a1"
+tip_border = "#d5c4a1"
+osd_border = "#d5c4a1"

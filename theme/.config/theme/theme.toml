@@ -1,7 +1,11 @@
-# ~/.config/theme/theme.toml  -  the one place to change how the desktop looks.
+# ~/.config/theme/theme.toml  -  what every theme shares.
 #
-#   theme apply     regenerate every app's config from this file and reload them
-#   theme toggle    flip dark <-> light (also: theme dark / theme light)
+# The themes themselves are in themes/*.toml (one file each). A theme file is laid over this one:
+# anything it sets wins, anything it leaves out comes from here.
+#
+#   theme list / theme set NAME / theme next     pick a theme
+#   theme toggle  (theme dark / theme light)      flip the mode of the current theme
+#   theme apply                                   regenerate everything after editing
 #
 # Colours can be "#rrggbb", "#rrggbbaa" or "rgba(r, g, b, a)". Alpha is the glass
 # transparency (0 = invisible, 1 = solid). Each app's layout lives in templates/.
@@ -10,14 +14,19 @@
 family = "Adwaita Sans"     # UI text everywhere (kitty/nvim keep their own mono font)
 icons = "Cascadia Code NF"  # fallback that supplies the Nerd Font icon glyphs
 size = 13          # notifications, menus, volume popup
-bar_size = 13.5    # waybar
+bar_size = 13.5    # the bar
 
 [shape]
-radius = 12        # bar, notification cards, windows (niri blur follows this too)
+radius = 12        # bar, notification cards, windows (niri blur and the window-open shader follow this too)
 radius_large = 14  # launcher / menus and the volume popup
 radius_pill = 10   # pills on the bar, tooltips
 radius_small = 7   # anything inside a pill or card: hovers, buttons, selections, thumbnails
 ring_width = 2     # focus ring around the active window, in px
+gaps = 10          # between windows (niri)
+
+[effects]
+blur = true            # niri blur behind the bar, menus, popups and kitty (false = flat, solid panels)
+kitty_opacity = 0.80   # kitty's background opacity
 
 [motion]           # bar hover/press timing (waybar CSS transitions and the Quickshell bar)
 hover_in = 70      # ms to light up under the pointer: quick
@@ -26,9 +35,84 @@ pill_ms = 240      # ms for pills, highlights and panels to move / stretch
 spring = "cubic-bezier(0.3, 1.12, 0.6, 1)"   # a hint of overshoot, like a stiff spring
 
 [kitty]            # themes from kitty's own collection (run `kitten themes` to browse names)
-dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1
-light = "Modus Operandi"    # white/black, text 21:1, every colour >= 7:1
+dark  = "Min Dark"
+light = "Modus Operandi"
 no_preference = "dark"      # which one to use if the OS reports no preference
+
+# [gtk] accent = "slate"    # optional, per theme: libadwaita accent (blue teal green yellow orange red pink purple slate)
+
+[opacity]          # named alphas the formulas below use; a theme (or its [dark]/[light]) can override them
+alpha_bar = 0.6    # the bar
+alpha_panel = 0.7  # launcher, menus
+alpha_card = 0.8   # notification cards
+alpha_osd = 0.55   # volume / brightness popup
+alpha_tip = 0.9    # tooltips
+alpha_ring = 0.7   # focus ring
+
+# How every colour an app uses is made from a theme's few base colours. A theme's [dark] / [light]
+# needs only: bg, surface, fg, fg_muted, accent, c_crit, c_warn, c_ok. It may also set any name
+# below directly (glass sets them all), which then wins over the formula.
+#   "fg @ 0.13"               fg with alpha 0.13 (a number or a name from [opacity])
+#   "mix(fg, fg_muted, 0.4)"  40 % of the way from fg to fg_muted
+[derive]
+fg_strong    = "fg"
+fg_title     = "mix(fg, fg_muted, 0.4)"
+# Bar
+bar_bg       = "bg @ alpha_bar"
+bar_border   = "fg @ 0.12"
+pill_bg      = "fg @ 0.05"
+pill_hover   = "fg @ 0.10"
+pill_press   = "fg @ 0.16"
+ws_hover     = "fg @ 0.08"
+ws_active_bg = "accent @ 0.18"
+ws_dot       = "fg @ 0.30"
+ws_dot_hover = "fg @ 0.60"
+ws_pill      = "accent"           # also: tiles/switches that are on, today in the calendar
+ws_urgent_bg = "c_crit @ 0.15"
+tip_bg       = "surface @ alpha_tip"
+tip_border   = "fg @ 0.14"
+# Notifications (swaync)
+sw_text        = "fg_strong"
+sw_dim         = "fg @ 0.6"
+sw_body        = "fg @ 0.85"
+sw_card        = "surface @ alpha_card"
+sw_border      = "fg @ 0.14"
+sw_border_crit = "c_crit @ 0.7"
+sw_btn         = "fg @ 0.12"
+sw_btn_hover   = "fg @ 0.25"
+sw_btn_soft    = "fg @ 0.08"
+sw_cc          = "bg @ 0.45"
+sw_switch_on   = "accent @ 0.6"
+sw_slider      = "fg_strong"
+# Launcher + menus (fuzzel)
+fz_bg        = "bg @ alpha_panel"
+fz_text      = "fg_title"
+fz_prompt    = "accent"
+fz_input     = "fg_strong"
+fz_match     = "accent"
+fz_sel_match = "accent"
+fz_sel       = "accent @ 0.16"
+fz_sel_text  = "fg_strong"
+fz_border    = "fg @ 0.13"
+# Volume / brightness popup
+osd_bg     = "surface @ alpha_osd"
+osd_border = "fg @ 0.14"
+osd_fg     = "fg_strong"
+osd_trough = "fg @ 0.2"
+osd_bar    = "accent"
+# Window focus ring (niri)
+ring_active   = "accent @ alpha_ring"
+ring_inactive = "fg @ 0.1"
+# Lock screen (swaylock)
+lock_bg       = "bg @ 1"
+lock_inside   = "bg @ 0.25"
+lock_ring     = "fg @ 0.18"
+lock_text     = "fg_strong"
+lock_key_hl   = "accent @ 0.9"
+lock_bs_hl    = "fg @ 0.4"
+lock_ring_ver = "accent @ 0.6"
+lock_bad      = "c_crit"
+lock_clear    = "fg @ 0.3"
 
 [targets]          # template -> where the generated file goes
 waybar  = { src = "templates/waybar.css",  dest = "~/.config/waybar/style.css" }
@@ -37,150 +121,9 @@ swayosd = { src = "templates/swayosd.css", dest = "~/.config/swayosd/style.css" 
 fuzzel  = { src = "templates/fuzzel.ini",  dest = "~/.config/fuzzel/fuzzel.ini" }
 swaylock = { src = "templates/swaylock.conf", dest = "~/.config/swaylock/config" }
 niri    = { src = "templates/niri.kdl",    dest = "~/.config/theme/out/niri.kdl" }
+animations = { src = "templates/animations.kdl", dest = "~/.config/niri/animations.kdl" }   # window open/close shaders (corner radius)
+kitty   = { src = "templates/kitty.conf",  dest = "~/.config/kitty/theme.conf" }   # opacity; colours come from [kitty]
 nowplaying = { src = "templates/nowplaying.css", dest = "~/.config/theme/out/nowplaying.css" }
 powerpanel = { src = "templates/powerpanel.css", dest = "~/.config/theme/out/powerpanel.css" }
 quickshell = { src = "templates/quickshell.qml", dest = "~/.config/quickshell/Theme.qml" }   # Quickshell reloads by itself
 icons   = { src = "templates/icons",       dest = "~/.config/theme/out/icons" }   # launcher icons (a folder: every file is rendered)
-
-[dark]
-# Bar (waybar)
-bar_bg       = "rgba(28, 28, 28, 0.58)"
-bar_border   = "rgba(255, 255, 255, 0.13)"
-fg           = "#e6e6e6"
-fg_strong    = "#ffffff"
-fg_muted     = "#8c8c8c"
-fg_title     = "#b8b8b8"
-pill_bg      = "rgba(255, 255, 255, 0.04)"
-pill_hover   = "rgba(255, 255, 255, 0.10)"
-ws_hover     = "rgba(255, 255, 255, 0.08)"
-ws_active_bg = "rgba(255, 255, 255, 0.13)"
-ws_dot       = "rgba(255, 255, 255, 0.32)"   # GNOME-style workspace dots; the active one is a pill
-ws_dot_hover = "rgba(255, 255, 255, 0.62)"
-ws_pill      = "#e6e6e6"
-pill_press   = "rgba(255, 255, 255, 0.16)"   # pressed button on the Quickshell bar
-ws_urgent_bg = "rgba(240, 138, 128, 0.15)"
-c_crit       = "#f08a80"
-c_warn       = "#e8c170"
-c_ok         = "#9ccc95"
-tip_bg       = "rgba(28, 28, 28, 0.88)"
-tip_border   = "rgba(255, 255, 255, 0.14)"
-
-
-# Notifications (swaync)
-sw_text        = "#ffffff"
-sw_dim         = "rgba(255, 255, 255, 0.6)"
-sw_body        = "rgba(255, 255, 255, 0.85)"
-sw_card        = "rgba(16, 16, 16, 0.78)"
-sw_border      = "rgba(255, 255, 255, 0.14)"
-sw_border_crit = "rgba(255, 255, 255, 0.55)"
-sw_btn         = "rgba(255, 255, 255, 0.12)"
-sw_btn_hover   = "rgba(255, 255, 255, 0.25)"
-sw_btn_soft    = "rgba(255, 255, 255, 0.08)"
-sw_cc          = "rgba(16, 16, 16, 0.45)"
-sw_switch_on   = "rgba(255, 255, 255, 0.45)"
-sw_slider      = "#ffffff"
-
-# Launcher + menus (fuzzel)
-fz_bg        = "#1c1c1c94"
-fz_text      = "#b8b8b8ff"
-fz_prompt    = "#ffffffff"
-fz_input     = "#ffffffff"
-fz_match     = "#ffffffff"
-fz_sel_match = "#ffffffff"
-fz_sel       = "#ffffff1f"
-fz_sel_text  = "#ffffffff"
-fz_border    = "#ffffff22"
-
-# Volume / brightness popup (swayosd)
-osd_bg     = "rgba(16, 16, 16, 0.50)"
-osd_border = "rgba(255, 255, 255, 0.14)"
-osd_fg     = "#ffffff"
-osd_trough = "rgba(255, 255, 255, 0.2)"
-osd_bar    = "#ffffff"
-
-# Window focus ring (niri)
-ring_active   = "#ffffff66"
-ring_inactive = "#ffffff1a"
-
-# Lock screen (swaylock): blurred, dimmed wallpaper (made by setwall) under a thin ring
-lock_bg       = "#1c1c1c"
-lock_inside   = "rgba(0, 0, 0, 0.25)"
-lock_ring     = "rgba(255, 255, 255, 0.18)"
-lock_text     = "#ffffff"
-lock_key_hl   = "rgba(255, 255, 255, 0.9)"
-lock_bs_hl    = "rgba(255, 255, 255, 0.4)"
-lock_ring_ver = "rgba(255, 255, 255, 0.6)"
-lock_bad      = "#f08a80"
-lock_clear    = "rgba(255, 255, 255, 0.3)"
-
-
-[light]
-# Bar (waybar)
-bar_bg       = "rgba(242, 242, 242, 0.62)"
-bar_border   = "rgba(0, 0, 0, 0.12)"
-fg           = "#262626"
-fg_strong    = "#000000"
-fg_muted     = "#6e6e6e"
-fg_title     = "#464646"
-pill_bg      = "rgba(0, 0, 0, 0.05)"
-pill_hover   = "rgba(0, 0, 0, 0.10)"
-ws_hover     = "rgba(0, 0, 0, 0.08)"
-ws_active_bg = "rgba(0, 0, 0, 0.12)"
-ws_dot       = "rgba(0, 0, 0, 0.26)"
-ws_dot_hover = "rgba(0, 0, 0, 0.55)"
-ws_pill      = "#262626"
-pill_press   = "rgba(0, 0, 0, 0.16)"
-ws_urgent_bg = "rgba(192, 57, 43, 0.15)"
-c_crit       = "#c0392b"
-c_warn       = "#a86a00"
-c_ok         = "#2e7d32"
-tip_bg       = "rgba(246, 246, 246, 0.92)"
-tip_border   = "rgba(0, 0, 0, 0.14)"
-
-
-# Notifications (swaync)
-sw_text        = "#1a1a1a"
-sw_dim         = "rgba(0, 0, 0, 0.55)"
-sw_body        = "rgba(0, 0, 0, 0.8)"
-sw_card        = "rgba(250, 250, 250, 0.86)"
-sw_border      = "rgba(0, 0, 0, 0.14)"
-sw_border_crit = "rgba(0, 0, 0, 0.55)"
-sw_btn         = "rgba(0, 0, 0, 0.10)"
-sw_btn_hover   = "rgba(0, 0, 0, 0.20)"
-sw_btn_soft    = "rgba(0, 0, 0, 0.06)"
-sw_cc          = "rgba(245, 245, 245, 0.5)"
-sw_switch_on   = "rgba(0, 0, 0, 0.5)"
-sw_slider      = "#ffffff"
-
-# Launcher + menus (fuzzel)
-fz_bg        = "#f2f2f2c8"
-fz_text      = "#3a3a3aff"
-fz_prompt    = "#000000ff"
-fz_input     = "#000000ff"
-fz_match     = "#000000ff"
-fz_sel_match = "#000000ff"
-fz_sel       = "#00000018"
-fz_sel_text  = "#000000ff"
-fz_border    = "#00000022"
-
-# Volume / brightness popup (swayosd)
-osd_bg     = "rgba(245, 245, 245, 0.55)"
-osd_border = "rgba(0, 0, 0, 0.14)"
-osd_fg     = "#1a1a1a"
-osd_trough = "rgba(0, 0, 0, 0.18)"
-osd_bar    = "#1a1a1a"
-
-# Window focus ring (niri)
-ring_active   = "#00000066"
-ring_inactive = "#0000001a"
-
-# Lock screen (swaylock): blurred, brightened wallpaper (made by setwall) under a thin ring
-lock_bg       = "#f2f2f2"
-lock_inside   = "rgba(255, 255, 255, 0.35)"
-lock_ring     = "rgba(0, 0, 0, 0.15)"
-lock_text     = "#1a1a1a"
-lock_key_hl   = "rgba(0, 0, 0, 0.8)"
-lock_bs_hl    = "rgba(0, 0, 0, 0.35)"
-lock_ring_ver = "rgba(0, 0, 0, 0.55)"
-lock_bad      = "#c0392b"
-lock_clear    = "rgba(0, 0, 0, 0.25)"

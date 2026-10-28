@@ -2,28 +2,29 @@
 // Included from ~/.config/niri/config.kdl (niri reloads by itself when this changes).
 
 layout {
+    gaps 12
     focus-ring {
         width 2
-        active-color "#ffffff66"
-        inactive-color "#ffffff1a"
+        active-color "#ebbcbab2"
+        inactive-color "#e0def41a"
     }
 }
 
 // Rounded corners for all windows. clip-to-geometry also trims the
 // client-drawn shadow (GTK/libadwaita) so the focus ring follows the corners.
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 16
     clip-to-geometry true
 }
 
-// Frosted-glass kitty: blur behind it, and don't paint the ring through its transparency.
+// Frosted-glass kitty: blur behind it (if the theme has blur), and don't paint the ring through its transparency.
 window-rule {
     match app-id="^kitty$"
     background-effect {
         blur true
     }
     draw-border-with-background false
-    geometry-corner-radius 12
+    geometry-corner-radius 16
     clip-to-geometry true
 }
 
@@ -32,7 +33,7 @@ window-rule {
 layer-rule {
     match namespace="^waybar$"
     background-effect { blur true; }
-    geometry-corner-radius 12
+    geometry-corner-radius 16
 }
 // The Quickshell bar (square: it spans the top edge). Its tooltips are not blurred: niri would show the blur box at once,
 // before the tooltip has faded in (they are nearly opaque anyway).
@@ -49,7 +50,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }
 // Quickshell's polkit prompt: the whole screen behind it is blurred (and dimmed by the prompt).
 layer-rule {
@@ -66,7 +67,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }
 layer-rule {
     match namespace="^swaync-control-center$"
@@ -74,7 +75,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 12
+    geometry-corner-radius 16
 }
 layer-rule {
     match namespace="^launcher$"
@@ -82,7 +83,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }
 layer-rule {
     match namespace="^nowplaying$"
@@ -90,7 +91,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }
 layer-rule {
     match namespace="^powerpanel$"
@@ -98,7 +99,7 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }
 layer-rule {
     match namespace="^swayosd$"
@@ -106,5 +107,5 @@ layer-rule {
         blur true
         xray false
     }
-    geometry-corner-radius 14
+    geometry-corner-radius 18
 }

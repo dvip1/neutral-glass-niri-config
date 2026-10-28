@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pick a desktop theme in fuzzel (themes live in ~/.config/theme/themes/).
+#   theme-menu --list   prints the list (debug)
+set -uo pipefail
+THEME="$HOME/.local/bin/theme"
+
+list() {
+  local cur; cur=$("$THEME" status | cut -d' ' -f1)
+  "$THEME" list --tsv | while IFS=$'\t' read -r name desc; do
+    mark="   "; [[ $name == "$cur" ]] && mark="󰄬  "
+    printf '%s\t%s%s   %s\n' "$name" "$mark" "$name" "$desc"
+  done
+  printf '%s\t%s\n' "--toggle" "󰔎  Toggle dark / light"
+}
+
+[[ ${1:-} == --list ]] && { list; exit 0; }
+
+pick=$(list | fuzzel --dmenu --width 52 --nth-delimiter=$'\t' --with-nth=2 -p "theme  ") || exit 0
+name=${pick%%$'\t'*}
+if [[ $name == --toggle ]]; then
+  exec "$THEME" toggle
+elif [[ -n $name ]]; then
+  exec "$THEME" set "$name"
+fi
