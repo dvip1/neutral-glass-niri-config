@@ -2,18 +2,18 @@
 // Included from ~/.config/niri/config.kdl (niri reloads by itself when this changes).
 
 layout {
-    gaps 12
+    gaps 8
     focus-ring {
         width 2
-        active-color "#ebbcbab2"
-        inactive-color "#e0def41a"
+        active-color "#fabd2fff"
+        inactive-color "#ebdbb21a"
     }
 }
 
 // Rounded corners for all windows. clip-to-geometry also trims the
 // client-drawn shadow (GTK/libadwaita) so the focus ring follows the corners.
 window-rule {
-    geometry-corner-radius 16
+    geometry-corner-radius 6
     clip-to-geometry true
 }
 
@@ -21,10 +21,10 @@ window-rule {
 window-rule {
     match app-id="^kitty$"
     background-effect {
-        blur true
+        blur false
     }
     draw-border-with-background false
-    geometry-corner-radius 16
+    geometry-corner-radius 6
     clip-to-geometry true
 }
 
@@ -32,14 +32,14 @@ window-rule {
 // Radii must match what each app draws, or the blur pokes out of the corners.
 layer-rule {
     match namespace="^waybar$"
-    background-effect { blur true; }
-    geometry-corner-radius 16
+    background-effect { blur false; }
+    geometry-corner-radius 6
 }
 // The Quickshell bar (square: it spans the top edge). Its tooltips are not blurred: niri would show the blur box at once,
 // before the tooltip has faded in (they are nearly opaque anyway).
 layer-rule {
     match namespace="^bar$"
-    background-effect { blur true; }
+    background-effect { blur false; }
 }
 // Quickshell's date menu (notifications + calendar) and notification popups.
 layer-rule {
@@ -47,16 +47,16 @@ layer-rule {
     match namespace="^quicksettings$"
     match namespace="^notification$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }
 // Quickshell's polkit prompt: the whole screen behind it is blurred (and dimmed by the prompt).
 layer-rule {
     match namespace="^polkit$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
 }
@@ -64,48 +64,48 @@ layer-rule {
 layer-rule {
     match namespace="^osd$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }
 layer-rule {
     match namespace="^swaync-control-center$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 16
+    geometry-corner-radius 6
 }
 layer-rule {
     match namespace="^launcher$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }
 layer-rule {
     match namespace="^nowplaying$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }
 layer-rule {
     match namespace="^powerpanel$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }
 layer-rule {
     match namespace="^swayosd$"
     background-effect {
-        blur true
+        blur false
         xray false
     }
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 }

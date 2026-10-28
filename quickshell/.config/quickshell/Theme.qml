@@ -7,19 +7,19 @@ import Quickshell
 
 Singleton {
     readonly property string mode: "dark"
-    readonly property string name: "rose-pine"
+    readonly property string name: "gruvbox"
 
     // Fonts (sizes in logical px, like the CSS; Text takes points, so use px * 0.75)
-    readonly property string font: "Inter"
+    readonly property string font: "JetBrains Mono"
     readonly property string iconFont: "Cascadia Code NF"
-    readonly property real fontPx: 13.5
-    readonly property real iconPx: 13.5 * 1.2   // Pango's "large", what waybar used for icons
+    readonly property real fontPx: 13
+    readonly property real iconPx: 13 * 1.2   // Pango's "large", what waybar used for icons
 
     // Shape
-    readonly property int radius: 16
-    readonly property int radiusLarge: 18
-    readonly property int radiusPill: 12
-    readonly property int radiusSmall: 9
+    readonly property int radius: 6
+    readonly property int radiusLarge: 8
+    readonly property int radiusPill: 6
+    readonly property int radiusSmall: 4
 
     // Motion
     readonly property int hoverIn: 70
@@ -28,29 +28,29 @@ Singleton {
     readonly property var spring: [0.3, 1.12, 0.6, 1, 1, 1]
 
     // Colours
-    readonly property color barBg: "#99191724"
-    readonly property color barBorder: "#1fe0def4"
-    readonly property color fg: "#ffe0def4"
-    readonly property color fgStrong: "#ffe0def4"
-    readonly property color fgMuted: "#ff6e6a86"
-    readonly property color fgTitle: "#ff908caa"
-    readonly property color pillBg: "#0de0def4"
-    readonly property color pillHover: "#1ae0def4"
-    readonly property color pillPress: "#29e0def4"
-    readonly property color wsDot: "#66908caa"
-    readonly property color wsDotHover: "#99e0def4"
-    readonly property color wsPill: "#ffebbcba"
-    readonly property color wsHover: "#14e0def4"
-    readonly property color wsActiveBg: "#2eebbcba"
-    readonly property color crit: "#ffeb6f92"
-    readonly property color warn: "#fff6c177"
-    readonly property color tipBg: "#e61f1d2e"
-    readonly property color tipBorder: "#24e0def4"
-    readonly property color osdBg: "#8c1f1d2e"
-    readonly property color osdBorder: "#24e0def4"
-    readonly property color osdFg: "#ffe0def4"
-    readonly property color osdTrough: "#33e0def4"
-    readonly property color osdBar: "#ffebbcba"
+    readonly property color barBg: "#ff282828"
+    readonly property color barBorder: "#ff3c3836"
+    readonly property color fg: "#ffebdbb2"
+    readonly property color fgStrong: "#ffebdbb2"
+    readonly property color fgMuted: "#ff928374"
+    readonly property color fgTitle: "#ffd5c4a1"
+    readonly property color pillBg: "#0debdbb2"
+    readonly property color pillHover: "#1aebdbb2"
+    readonly property color pillPress: "#29ebdbb2"
+    readonly property color wsDot: "#4cebdbb2"
+    readonly property color wsDotHover: "#99ebdbb2"
+    readonly property color wsPill: "#fffabd2f"
+    readonly property color wsHover: "#14ebdbb2"
+    readonly property color wsActiveBg: "#2efabd2f"
+    readonly property color crit: "#fffb4934"
+    readonly property color warn: "#fffe8019"
+    readonly property color tipBg: "#ff32302f"
+    readonly property color tipBorder: "#ff504945"
+    readonly property color osdBg: "#fa32302f"
+    readonly property color osdBorder: "#ff504945"
+    readonly property color osdFg: "#ffebdbb2"
+    readonly property color osdTrough: "#33ebdbb2"
+    readonly property color osdBar: "#fffabd2f"
 
     // the same colour, fully transparent: animating from this avoids a dark fringe
     function clear(c) { return Qt.rgba(c.r, c.g, c.b, 0) }

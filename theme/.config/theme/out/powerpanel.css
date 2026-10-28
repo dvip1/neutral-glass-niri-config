@@ -2,8 +2,8 @@
 /* powerpanel: the glass sheet under the bar's battery (GTK4). Same family as nowplaying.css. */
 
 * {
-  font-family: "Inter", "Cascadia Code NF", sans-serif;
-  font-size: 13px;
+  font-family: "JetBrains Mono", "Cascadia Code NF", sans-serif;
+  font-size: 12.5px;
 }
 
 window.powerpanel {
@@ -12,11 +12,11 @@ window.powerpanel {
 
 /* One glass sheet; niri blurs it (layer-rule "powerpanel"), so radius must match radius_large. */
 .panel {
-  background: rgba(25, 23, 36, 0.6);
-  border: 1px solid rgba(224, 222, 244, 0.12);
-  border-radius: 18px;
+  background: #282828;
+  border: 1px solid #3c3836;
+  border-radius: 8px;
   padding: 12px;
-  color: #e0def4;
+  color: #ebdbb2;
 }
 
 /* ---- battery ---- */
@@ -27,30 +27,30 @@ window.powerpanel {
 .bat-icon {
   font-family: "Cascadia Code NF";
   font-size: 26px;
-  color: #908caa;
+  color: #d5c4a1;
 }
 
 .pct {
-  color: #e0def4;
+  color: #ebdbb2;
   font-size: 18px;
   font-weight: 500;
   font-feature-settings: "tnum";
 }
 
 .status {
-  color: #908caa;
+  color: #d5c4a1;
 }
 
 .detail {
-  color: #6e6a86;
+  color: #928374;
   font-size: 12px;
   margin-top: 1px;
 }
 
 /* ---- power profile: one pill, the active segment lifted ---- */
 .profiles {
-  background: rgba(224, 222, 244, 0.05);
-  border-radius: 12px;
+  background: rgba(235, 219, 178, 0.05);
+  border-radius: 6px;
   padding: 3px;
 }
 
@@ -58,21 +58,21 @@ button.profile {
   background: none;
   border: none;
   box-shadow: none;
-  border-radius: 9px;
+  border-radius: 4px;
   padding: 6px 0 5px 0;
-  color: #6e6a86;
+  color: #928374;
   transition: background 150ms ease, color 150ms ease;
 }
 
 button.profile:hover {
-  background: rgba(224, 222, 244, 0.1);
-  color: #e0def4;
+  background: rgba(235, 219, 178, 0.1);
+  color: #ebdbb2;
 }
 
 button.profile.active,
 button.profile.active:hover {
-  background: rgba(235, 188, 186, 0.18);
-  color: #e0def4;
+  background: rgba(250, 189, 47, 0.18);
+  color: #ebdbb2;
 }
 
 button.profile:disabled {
@@ -93,33 +93,33 @@ button.settings {
   background: none;
   border: none;
   box-shadow: none;
-  border-radius: 9px;
+  border-radius: 4px;
   padding: 6px 6px;
-  color: #e0def4;
+  color: #ebdbb2;
   transition: background 150ms ease;
 }
 
 button.settings:hover {
-  background: rgba(224, 222, 244, 0.1);
+  background: rgba(235, 219, 178, 0.1);
 }
 
 .settings-icon,
 .chevron {
   font-family: "Cascadia Code NF";
   font-size: 16px;
-  color: #908caa;
+  color: #d5c4a1;
 }
 
 .settings-title {
-  color: #e0def4;
+  color: #ebdbb2;
 }
 
 .settings-sub {
-  color: #6e6a86;
+  color: #928374;
   font-size: 12px;
 }
 
 button:focus-visible {
-  outline: 1px solid #6e6a86;
+  outline: 1px solid #928374;
   outline-offset: -1px;
 }
