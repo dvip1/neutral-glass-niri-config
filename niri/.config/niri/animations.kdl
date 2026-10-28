@@ -32,7 +32,7 @@ animations {
             vec4 resize_color(vec3 coords_curr_geo, vec3 size_curr_geo) {
                 vec2 half_size = size_curr_geo.xy * 0.5;
                 vec2 px = (coords_curr_geo.xy - 0.5) * size_curr_geo.xy;
-                float mask = clamp(0.5 - rs_box(px, half_size, 6.0), 0.0, 1.0);
+                float mask = clamp(0.5 - rs_box(px, half_size, 16.0), 0.0, 1.0);
                 if (mask <= 0.0)
                     return vec4(0.0);
 
@@ -63,7 +63,7 @@ animations {
             vec4 lq_glass(vec3 coords_geo, vec3 size_geo, float scale, float lens, float glint, float alpha) {
                 vec2 half_size = size_geo.xy * 0.5;
                 vec2 px = (coords_geo.xy - 0.5) * size_geo.xy / scale;
-                float sdf = lq_box(px, half_size, 6.0);
+                float sdf = lq_box(px, half_size, 16.0);
                 float mask = clamp(0.5 - sdf * scale, 0.0, 1.0);
                 if (mask <= 0.0)
                     return vec4(0.0);
@@ -109,7 +109,7 @@ animations {
             vec4 lq_glass(vec3 coords_geo, vec3 size_geo, float scale, float lens, float glint, float alpha) {
                 vec2 half_size = size_geo.xy * 0.5;
                 vec2 px = (coords_geo.xy - 0.5) * size_geo.xy / scale;
-                float sdf = lq_box(px, half_size, 6.0);
+                float sdf = lq_box(px, half_size, 16.0);
                 float mask = clamp(0.5 - sdf * scale, 0.0, 1.0);
                 if (mask <= 0.0)
                     return vec4(0.0);

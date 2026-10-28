@@ -2,13 +2,13 @@
 
 window#osd {
   padding: 12px 20px;
-  border-radius: 8px;
-  border: 1px solid #504945;
-  background: rgba(50, 48, 47, 0.98);
+  border-radius: 18px;
+  border: 1px solid rgba(224, 222, 244, 0.14);
+  background: rgba(31, 29, 46, 0.75);
 }
 window#osd #container { margin: 6px; }
-window#osd image, window#osd label { color: #ebdbb2; font-family: "JetBrains Mono", "Cascadia Code NF", sans-serif; font-size: 12.5px; }
+window#osd image, window#osd label { color: #e0def4; font-family: "Inter", "Cascadia Code NF", sans-serif; font-size: 13px; }
 window#osd progressbar:disabled, window#osd image:disabled { opacity: 0.5; }
 window#osd progressbar { min-height: 6px; border-radius: 999px; background: transparent; }
-window#osd trough { min-height: inherit; border-radius: inherit; border: none; background: rgba(235, 219, 178, 0.2); }
-window#osd progress { min-height: inherit; border-radius: inherit; border: none; background: #fabd2f; }
+window#osd trough { min-height: inherit; border-radius: inherit; border: none; background: rgba(224, 222, 244, 0.2); }
+window#osd progress { min-height: inherit; border-radius: inherit; border: none; background: #ebbcba; }

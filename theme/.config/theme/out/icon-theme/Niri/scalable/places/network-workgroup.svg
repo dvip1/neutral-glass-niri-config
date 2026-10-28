@@ -37,8 +37,8 @@
     </linearGradient>
     <linearGradient id="j" gradientTransform="matrix(0.224856 0 0 0.22209 -200.939247 25.114628)" x1="928.741516" x2="1302.490479" xlink:href="#i" y1="216.638611" y2="216.638611"/>
     <linearGradient id="k" gradientTransform="matrix(0.45451 0 0 0.455522 -1210.292114 612.172607)" gradientUnits="userSpaceOnUse" x1="2831.385498" x2="2732.762939" y1="-1295.160156" y2="-1196.75647">
-        <stop offset="0" stop-color="#96711c"/>
-        <stop offset="1" stop-color="#705515"/>
+        <stop offset="0" stop-color="#8d7170"/>
+        <stop offset="1" stop-color="#6a5554"/>
     </linearGradient>
     <clipPath id="l">
         <path d="m 60 81 h 36 v 39 h -36 z m 0 0"/>
@@ -61,8 +61,8 @@
     </clipPath>
     <linearGradient id="s" gradientTransform="matrix(0.224856 0 0 0.22209 -172.939247 55.114628)" x1="928.741516" x2="1302.490479" xlink:href="#i" y1="216.638611" y2="216.638611"/>
     <linearGradient id="t" gradientTransform="matrix(0.337063 0 0 0.330795 -867.055597 477.291929)" gradientUnits="userSpaceOnUse" x1="2704.463135" x2="2868.168457" y1="-1148.187378" y2="-1311.529175">
-        <stop offset="0" stop-color="#af8421"/>
-        <stop offset="1" stop-color="#fabd2f"/>
+        <stop offset="0" stop-color="#a48482"/>
+        <stop offset="1" stop-color="#ebbcba"/>
     </linearGradient>
     <g clip-path="url(#a)">
         <g clip-path="url(#b)">

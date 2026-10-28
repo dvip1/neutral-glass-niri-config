@@ -2,8 +2,8 @@
 /* nowplaying: the glass sheet of player cards under the bar's media pill (GTK4). */
 
 * {
-  font-family: "JetBrains Mono", "Cascadia Code NF", sans-serif;
-  font-size: 12.5px;
+  font-family: "Inter", "Cascadia Code NF", sans-serif;
+  font-size: 13px;
 }
 
 window.nowplaying {
@@ -12,33 +12,33 @@ window.nowplaying {
 
 /* One glass sheet; niri blurs it (layer-rule "nowplaying"), so radius must match radius_large. */
 .panel {
-  background: #282828;
-  border: 1px solid #3c3836;
-  border-radius: 8px;
+  background: rgba(25, 23, 36, 0.8);
+  border: 1px solid rgba(224, 222, 244, 0.12);
+  border-radius: 18px;
   padding: 6px;
-  color: #ebdbb2;
+  color: #e0def4;
 }
 
 /* Cards: inset 6 px from the sheet, small radius keeps the corners roughly concentric. */
 .card {
-  border-radius: 4px;
+  border-radius: 9px;
   padding: 8px;
   background: transparent;
   transition: background 150ms ease, opacity 180ms ease-out, transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .card:hover {
-  background: rgba(235, 219, 178, 0.08);
+  background: rgba(224, 222, 244, 0.08);
 }
 
 /* the player the bar controls */
 .card.active,
 .card.active:hover {
-  background: rgba(250, 189, 47, 0.18);
+  background: rgba(235, 188, 186, 0.18);
 }
 
 .card:focus-visible {
-  outline: 1px solid #928374;
+  outline: 1px solid #9692b0;
   outline-offset: -1px;
 }
 
@@ -49,28 +49,28 @@ window.nowplaying {
 }
 
 .art {
-  border-radius: 4px;
-  background: rgba(235, 219, 178, 0.1);
+  border-radius: 9px;
+  background: rgba(224, 222, 244, 0.1);
 }
 
 .art-icon {
   font-size: 26px;
-  color: #928374;
+  color: #9692b0;
 }
 
 .title {
-  color: #ebdbb2;
+  color: #e0def4;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
 .artist {
-  color: #d5c4a1;
+  color: #c0bdd8;
   margin-top: 1px;
 }
 
 .card.paused .title {
-  color: #ebdbb2;
+  color: #e0def4;
 }
 
 .row {
@@ -78,7 +78,7 @@ window.nowplaying {
 }
 
 .source {
-  color: #928374;
+  color: #9692b0;
   font-size: 12px;
 }
 
@@ -89,32 +89,32 @@ button.ctl {
   min-width: 30px;
   min-height: 26px;
   padding: 0;
-  border-radius: 4px;
-  color: #ebdbb2;
+  border-radius: 9px;
+  color: #e0def4;
   font-size: 15px;
   transition: background 150ms ease;
 }
 
 button.ctl:hover {
-  background: rgba(235, 219, 178, 0.1);
+  background: rgba(224, 222, 244, 0.1);
 }
 
 button.ctl:active {
-  background: rgba(250, 189, 47, 0.18);
+  background: rgba(235, 188, 186, 0.18);
 }
 
 button.ctl:disabled {
-  color: #928374;
+  color: #9692b0;
   opacity: 0.4;
 }
 
 button.ctl:focus-visible {
-  outline: 1px solid #928374;
+  outline: 1px solid #9692b0;
   outline-offset: -1px;
 }
 
 .time {
-  color: #928374;
+  color: #9692b0;
   font-size: 11px;
   font-feature-settings: "tnum";
   min-width: 34px;
@@ -129,7 +129,7 @@ scale {
 scale trough {
   min-height: 3px;
   border-radius: 2px;
-  background: rgba(235, 219, 178, 0.1);
+  background: rgba(224, 222, 244, 0.1);
   border: none;
   outline: none;
   transition: min-height 150ms ease;
@@ -140,7 +140,7 @@ scale highlight {
   min-height: 0;
   margin: 0;
   border-radius: 2px;
-  background: #d5c4a1;
+  background: #c0bdd8;
   border: none;
 }
 
@@ -148,7 +148,7 @@ scale slider {
   min-width: 0;
   min-height: 0;
   margin: 0;
-  background: #ebdbb2;
+  background: #e0def4;
   border: none;
   box-shadow: none;
   border-radius: 50%;
@@ -166,5 +166,5 @@ scale:hover slider {
 }
 
 scale:disabled highlight {
-  background: #928374;
+  background: #9692b0;
 }
