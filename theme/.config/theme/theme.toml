@@ -49,6 +49,7 @@ alpha_card = 0.8   # notification cards
 alpha_osd = 0.55   # volume / brightness popup
 alpha_tip = 0.9    # tooltips
 alpha_ring = 0.7   # focus ring
+alpha_window = 0.88  # the settings window: read like a page, so more solid than menus
 
 # How every colour an app uses is made from a theme's few base colours. A theme's [dark] / [light]
 # needs only: bg, surface, fg, fg_muted, accent, c_crit, c_warn, c_ok. It may also set any name
@@ -131,16 +132,17 @@ gtk_ok_fg       = "on(gtk_ok_bg)"
 gtk_warn_bg     = "c_warn @ 1"
 gtk_warn_fg     = "on(gtk_warn_bg)"
 # Settings app (niri-settings, Qt)
-set_bg          = "bg @ alpha_panel"
-set_side        = "fg @ 0.03"
-set_card        = "fg @ 0.045"
-set_line        = "fg @ 0.08"
+set_bg          = "bg @ alpha_window"
+set_side        = "fg @ 0.035"
+set_card        = "fg @ 0.06"
+set_line        = "fg @ 0.1"
+set_muted       = "mix(fg, fg_muted, 0.55)"   # subtitles: fg_muted alone is too faint on a bright wallpaper
 set_line_strong = "fg @ 0.3"
 set_field       = "fg @ 0.08"
 set_field_hover = "fg @ 0.13"
 set_sel         = "accent @ 0.2"
 set_focus       = "accent @ 0.6"
-set_track       = "fg @ 0.2"
+set_track       = "fg @ 0.16"  # switch (off) and slider tracks
 set_knob        = "fg_strong"
 set_popup       = "mix(bg, surface, 0.5) @ 0.98"
 set_accent_fg   = "on(accent)"

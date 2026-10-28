@@ -61,7 +61,7 @@ QWidget *makeMiscPage()
     auto *search = new QLineEdit;
     search->setPlaceholderText("Search shortcuts");
     search->setClearButtonEnabled(true);
-    auto *tree = new QTreeWidget;
+    auto *tree = new KeyList;
     tree->setObjectName("keys");
     tree->setColumnCount(2);
     tree->setHeaderHidden(true);

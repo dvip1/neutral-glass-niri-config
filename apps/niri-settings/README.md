@@ -13,6 +13,8 @@ A small Qt6 (Widgets, C++) settings window for this desktop. Starts in ~0.2 s, ~
 
 Look: `~/.config/theme/out/settings.qss`, generated from `~/.config/theme/templates/settings.qss` (`set_*` colours in
 `theme.toml [derive]`); the app reloads it when it changes. niri blurs behind it (window rule in `templates/niri.kdl`).
+It uses the shell's own tokens (`pill_*`, `ws_pill`, `fg_title`, radii), so switches, sliders and selections look like
+Quick Settings. `NIRI_SETTINGS_QSS=file niri-settings` previews another rendered stylesheet without applying a theme.
 
 Build: `./build.sh` (needs `qt6-qtbase-devel`, cmake, ninja, g++); installs to `~/.local/lib/niri-settings/` with a link in `~/.local/bin`
 (the launcher entry uses the lib path: the launcher hides entries that run something in `~/.local/bin`).

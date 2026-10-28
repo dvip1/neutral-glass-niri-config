@@ -19,7 +19,7 @@ class Switch : public QAbstractButton {
     Q_PROPERTY(qreal knobPos READ knobPos WRITE setKnobPos)
 public:
     explicit Switch(QWidget *parent = nullptr);
-    QSize sizeHint() const override { return {44, 24}; }
+    QSize sizeHint() const override { return {38, 22}; }   // the shell's Switch.qml
     qreal knobPos() const { return pos_; }
     void setKnobPos(qreal p) { pos_ = p; update(); }
     void setCheckedQuiet(bool on);             // no toggled() signal, no animation
@@ -36,6 +36,8 @@ class ThemeCard : public QAbstractButton {
     Q_OBJECT
     Q_PROPERTY(QColor accent MEMBER accent_)
     Q_PROPERTY(QColor border MEMBER border_)
+    Q_PROPERTY(int radius MEMBER radius_)
+    Q_PROPERTY(int innerRadius MEMBER inner_)
 public:
     ThemeCard(const QString &name, const QString &desc, const QList<QColor> &swatches, QWidget *parent = nullptr);
     QSize sizeHint() const override { return {200, 92}; }
@@ -48,6 +50,32 @@ private:
     QString name_, desc_;
     QList<QColor> sw_;
     QColor accent_ {"#ffffff"}, border_ {"#33ffffff"};
+    int radius_ = 12, inner_ = 7;
+};
+
+// The wallpaper grid. thumbRadius comes from the stylesheet; thumbnails are redrawn when it changes.
+class Walls : public QListWidget {
+    Q_OBJECT
+    Q_PROPERTY(int thumbRadius MEMBER radius_ NOTIFY thumbRadiusChanged)
+public:
+    using QListWidget::QListWidget;
+    int thumbRadius() const { return radius_; }
+signals:
+    void thumbRadiusChanged();
+private:
+    int radius_ = 7;
+};
+
+// The key list: "Mod+Shift+T" in the first column is drawn as key caps (colours from the stylesheet).
+class KeyList : public QTreeWidget {
+    Q_OBJECT
+    Q_PROPERTY(QColor capColor MEMBER cap_)
+    Q_PROPERTY(QColor capText MEMBER capText_)
+    Q_PROPERTY(int capRadius MEMBER capRadius_)
+public:
+    explicit KeyList(QWidget *parent = nullptr);
+    QColor cap_ {"#1affffff"}, capText_ {Qt::white};
+    int capRadius_ = 7;
 };
 
 // [-] value [+]  (a spin box without Qt's tiny arrows)

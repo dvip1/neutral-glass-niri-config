@@ -22,7 +22,8 @@ static QImage thumbnail(const QString &path, const QSize &size, qreal radius)
 {
     const QFileInfo fi(path);
     const QByteArray key = QCryptographicHash::hash(
-        (path + "|" + QString::number(fi.lastModified().toSecsSinceEpoch()) + "|" + QString::number(size.width()))
+        (path + "|" + QString::number(fi.lastModified().toSecsSinceEpoch()) + "|" + QString::number(size.width()) +
+         "|" + QString::number(radius))
             .toUtf8(),
         QCryptographicHash::Md5).toHex();
     const QString cache = home(".cache/niri-settings/thumbs/") + key + ".png";
@@ -120,7 +121,7 @@ QWidget *makeAppearancePage()
     auto *other = new QPushButton("Other folder…");
     wcard->addRow("Folder", QString(), folder, other);
 
-    auto *walls = new QListWidget;
+    auto *walls = new Walls;
     walls->setObjectName("walls");
     walls->setViewMode(QListView::IconMode);
     walls->setMovement(QListView::Static);
@@ -129,7 +130,7 @@ QWidget *makeAppearancePage()
     walls->setIconSize(QSize(160, 100));
     walls->setGridSize(QSize(176, 116));
     walls->setSpacing(0);
-    walls->setMinimumHeight(360);
+    walls->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     walls->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     walls->setSelectionMode(QAbstractItemView::SingleSelection);
     auto *wrap = new QWidget;
@@ -158,6 +159,15 @@ QWidget *makeAppearancePage()
     pool.setMaxThreadCount(qMax(2, QThread::idealThreadCount() / 2));
     auto gen = std::make_shared<std::atomic<int>>(0);
 
+    // as tall as its rows, up to three and a half (then it scrolls)
+    auto fit = [walls] {
+        const int perRow = qMax(1, walls->viewport()->width() / walls->gridSize().width());
+        const int rows = qMax(1, (walls->count() + perRow - 1) / perRow);
+        walls->setFixedHeight(qRound(qMin(rows, 4) == 4 ? 3.5 * walls->gridSize().height()
+                                                        : rows * walls->gridSize().height()) + 4);
+    };
+    new OnEvent(walls, QEvent::Resize, fit);
+
     auto load = [=](const QString &dir) {
         const int g = ++*gen;
         pool.clear();
@@ -168,6 +178,7 @@ QWidget *makeAppearancePage()
         blank.fill(Qt::transparent);
         blank.setDevicePixelRatio(dpr);
         const QString now = currentWallpaper();
+        const int radius = walls->thumbRadius();
         const QDir d(dir);
         for (const QString &f : d.entryList(kImages, QDir::Files, QDir::Name)) {
             const QString path = d.filePath(f);
@@ -183,7 +194,7 @@ QWidget *makeAppearancePage()
             pool.start([=] {
                 if (*gen != g)
                     return;
-                QImage img = thumbnail(path, px, 8 * dpr);
+                QImage img = thumbnail(path, px, radius * dpr);
                 if (img.isNull())
                     return;
                 QMetaObject::invokeMethod(walls, [=] {
@@ -195,6 +206,7 @@ QWidget *makeAppearancePage()
                 }, Qt::QueuedConnection);
             });
         }
+        fit();
     };
 
     QObject::connect(folder, &QComboBox::currentIndexChanged, walls, [=](int i) {
@@ -218,6 +230,10 @@ QWidget *makeAppearancePage()
     });
     if (folder->count())
         QTimer::singleShot(0, walls, [=] { load(folder->currentData().toString()); });
+    QObject::connect(walls, &Walls::thumbRadiusChanged, walls, [=] {   // the theme's corners changed
+        if (folder->count())
+            load(folder->currentData().toString());
+    });
 
     page->body->addStretch(1);
     return page;

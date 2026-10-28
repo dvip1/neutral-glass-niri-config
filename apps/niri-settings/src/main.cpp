@@ -13,9 +13,16 @@
 
 static const QStringList kPages = {"appearance", "power", "theme", "shortcuts"};
 
+// NIRI_SETTINGS_QSS=file uses another stylesheet (to preview a theme without applying it)
+static QString qssPath()
+{
+    const QString env = qEnvironmentVariable("NIRI_SETTINGS_QSS");
+    return env.isEmpty() ? home(".config/theme/out/settings.qss") : env;
+}
+
 static QString styleSheet()
 {
-    QFile f(home(".config/theme/out/settings.qss"));
+    QFile f(qssPath());
     if (!f.open(QIODevice::ReadOnly))
         return {};
     return QString::fromUtf8(f.readAll()).replace("url(~/", "url(" + QDir::homePath() + "/");
@@ -59,10 +66,10 @@ int main(int argc, char **argv)
 
     app.setStyleSheet(styleSheet());
     // theme.py replaces the file atomically, so watch the folder and compare times
-    auto *watch = new QFileSystemWatcher({home(".config/theme/out")}, &app);
-    auto stamp = std::make_shared<QDateTime>(QFileInfo(home(".config/theme/out/settings.qss")).lastModified());
+    auto *watch = new QFileSystemWatcher({QFileInfo(qssPath()).absolutePath()}, &app);
+    auto stamp = std::make_shared<QDateTime>(QFileInfo(qssPath()).lastModified());
     QObject::connect(watch, &QFileSystemWatcher::directoryChanged, &app, [&app, stamp] {
-        const QDateTime t = QFileInfo(home(".config/theme/out/settings.qss")).lastModified();
+        const QDateTime t = QFileInfo(qssPath()).lastModified();
         if (t.isValid() && t != *stamp) {
             *stamp = t;
             app.setStyleSheet(styleSheet());

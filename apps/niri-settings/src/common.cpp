@@ -87,7 +87,7 @@ void ThemeCard::paintEvent(QPaintEvent *)
     const QRectF r = QRectF(rect()).adjusted(2, 2, -2, -2);
     p.setPen(Qt::NoPen);
     p.setBrush(bg);
-    p.drawRoundedRect(r, 10, 10);
+    p.drawRoundedRect(r, radius_, radius_);
     if (isChecked() || underMouse()) {
         QColor c = isChecked() ? accent_ : border_;
         p.setPen(QPen(c, isChecked() ? 2.5 : 1.5));
@@ -95,20 +95,21 @@ void ThemeCard::paintEvent(QPaintEvent *)
         p.setPen(QPen(border_, 1));
     }
     p.setBrush(Qt::NoBrush);
-    p.drawRoundedRect(r, 10, 10);
+    p.drawRoundedRect(r, radius_, radius_);
 
     // a little "window": surface panel with an accent pill
     const QRectF panel(r.right() - 64, r.top() + 12, 50, r.height() - 24);
     p.setPen(Qt::NoPen);
     p.setBrush(surface);
-    p.drawRoundedRect(panel, 6, 6);
+    p.drawRoundedRect(panel, inner_, inner_);
     p.setBrush(accent);
-    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 8, panel.width() - 16, 8), 4, 4);
+    const qreal pill = qMin<qreal>(4, inner_);
+    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 8, panel.width() - 16, 8), pill, pill);
     QColor line = fg;
     line.setAlphaF(0.35);
     p.setBrush(line);
-    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 22, panel.width() - 22, 4), 2, 2);
-    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 31, panel.width() - 16, 4), 2, 2);
+    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 22, panel.width() - 22, 4), pill / 2, pill / 2);
+    p.drawRoundedRect(QRectF(panel.left() + 8, panel.top() + 31, panel.width() - 16, 4), pill / 2, pill / 2);
 
     QFont f = font();
     f.setWeight(QFont::DemiBold);
@@ -124,6 +125,68 @@ void ThemeCard::paintEvent(QPaintEvent *)
     p.setPen(dim);
     const QRectF descBox = text.adjusted(0, QFontMetricsF(font()).height() + 4, 0, 0);
     p.drawText(descBox, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, desc_);
+}
+
+// ---------- KeyList ----------
+namespace {
+
+// "Mod+Shift+T" -> key caps; section rows and the second column are drawn as usual.
+class KeyCaps : public QStyledItemDelegate {
+public:
+    explicit KeyCaps(KeyList *list) : QStyledItemDelegate(list), list_(list) {}
+
+    static bool isKey(const QModelIndex &i) { return i.column() == 0 && i.parent().isValid(); }
+
+    QSize sizeHint(const QStyleOptionViewItem &opt, const QModelIndex &i) const override
+    {
+        QSize s = QStyledItemDelegate::sizeHint(opt, i);
+        if (!isKey(i))
+            return s;
+        const QFontMetrics fm(opt.font);
+        int w = 6;
+        for (const QString &k : keys(i))
+            w += fm.horizontalAdvance(k) + 2 * kPad + kGap;
+        return {w, qMax(s.height(), fm.height() + 10)};
+    }
+
+    void paint(QPainter *p, const QStyleOptionViewItem &opt, const QModelIndex &i) const override
+    {
+        if (!isKey(i))
+            return QStyledItemDelegate::paint(p, opt, i);
+        p->save();
+        p->setRenderHint(QPainter::Antialiasing);
+        p->setFont(opt.font);
+        const QFontMetrics fm(opt.font);
+        const qreal h = fm.height() + 4, r = qMin<qreal>(list_->capRadius_, h / 2);
+        qreal x = opt.rect.left() + 6;
+        const qreal y = opt.rect.center().y() - h / 2 + 0.5;
+        for (const QString &k : keys(i)) {
+            const QRectF cap(x, y, fm.horizontalAdvance(k) + 2 * kPad, h);
+            p->setPen(Qt::NoPen);
+            p->setBrush(list_->cap_);
+            p->drawRoundedRect(cap, r, r);
+            p->setPen(list_->capText_);
+            p->drawText(cap, Qt::AlignCenter, k);
+            x = cap.right() + kGap;
+        }
+        p->restore();
+    }
+
+private:
+    static constexpr int kPad = 7, kGap = 4;
+    KeyList *list_;
+    static QStringList keys(const QModelIndex &i)
+    {
+        // "Mod+Shift+Plus" -> Mod, Shift, Plus ("Mod++" is not niri syntax, so splitting on + is safe)
+        return i.data().toString().split('+', Qt::SkipEmptyParts);
+    }
+};
+
+} // namespace
+
+KeyList::KeyList(QWidget *parent) : QTreeWidget(parent)
+{
+    setItemDelegate(new KeyCaps(this));
 }
 
 // ---------- Stepper ----------
