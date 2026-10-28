@@ -41,11 +41,12 @@ secs() { awk -v m="$1" 'BEGIN { printf "%d", m * 60 }'; }
 
 swayidle_args() {   # $1 = battery | ac
   local s args=(-w)
-  s=$(secs "${cfg[${1}_lock]}");       ((s > 0)) && args+=(timeout "$s" 'swaylock -f')
+  s=$(secs "${cfg[${1}_lock]}");       ((s > 0)) && args+=(timeout "$s" "$HOME/.local/bin/lockscreen")
   s=$(secs "${cfg[${1}_screen_off]}"); ((s > 0)) && args+=(timeout "$s" 'niri msg action power-off-monitors'
                                                            resume 'niri msg action power-on-monitors')
   s=$(secs "${cfg[${1}_suspend]}");    ((s > 0)) && args+=(timeout "$s" 'systemctl suspend')
-  args+=(before-sleep 'swaylock -f' lock 'swaylock -f')
+  args+=(before-sleep "$HOME/.local/bin/lockscreen --for-sleep" after-resume "$HOME/.local/bin/lockscreen --scan"
+         lock "$HOME/.local/bin/lockscreen")
   printf '%s\n' "${args[@]}"
 }
 

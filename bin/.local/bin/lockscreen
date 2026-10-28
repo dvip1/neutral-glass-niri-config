@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Lock the screen with Windows-Hello-style face unlock (swaylock + Visage).
+# The monitors turn off as soon as it locks. Touching any key / the touchpad later scans
+# your face and unlocks on a match; ~/.local/bin/idle also scans right after resume from
+# suspend. Enter + password still works.
+#   lockscreen              lock now and darken the screen (returns once locked)
+#   lockscreen --for-sleep  lock without darkening (swayidle before-sleep)
+#   lockscreen --scan       one face scan; unlocks swaylock on a match
+set -uo pipefail
+
+SELF=$(readlink -f "$0")
+REDIM=10   # seconds without input before the monitors turn off again (and the next touch scans)
+
+if [[ ${1:-} == --scan ]]; then
+  exec 9>"${XDG_RUNTIME_DIR:-/tmp}/lockscreen-scan.lock"
+  flock -n 9 || exit 0                       # a scan is already running
+  pgrep -x swaylock >/dev/null || exit 0
+  # After resume visage-resume restarts the daemon; wait (up to ~8 s) until it answers.
+  for _ in {1..16}; do visage status >/dev/null 2>&1 && break; sleep 0.5; done
+  for _ in 1 2; do                           # two tries (~1.2 s each); Visage locks face out after 5 misses/min
+    pgrep -x swaylock >/dev/null || exit 0
+    if visage verify >/dev/null 2>&1; then
+      pkill -USR1 -x swaylock                # swaylock: SIGUSR1 = unlock and exit
+      exit 0
+    fi
+  done
+  exit 1
+fi
+
+pgrep -x swaylock >/dev/null && exit 0       # already locked
+swaylock -f || exit 1                        # -f: returns once the screen is locked
+[[ ${1:-} == --for-sleep ]] && exit 0        # the idle daemon scans after resume
+niri msg action power-off-monitors
+
+# While locked: once the screen has been dark for REDIM s, the next touch wakes it and scans.
+setsid bash -c '
+  swayidle timeout "$2" "niri msg action power-off-monitors" \
+           resume "niri msg action power-on-monitors; \"$1\" --scan" &
+  idle=$!
+  while pgrep -x swaylock >/dev/null; do sleep 1; done
+  kill "$idle"
+  niri msg action power-on-monitors
+' _ "$SELF" "$REDIM" </dev/null >/dev/null 2>&1 &

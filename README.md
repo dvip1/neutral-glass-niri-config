@@ -28,7 +28,7 @@ then `./install.sh <tool>`.
 | theme | central theming (`theme.toml`, templates, the `theme` engine): see `theme/.config/theme/README.md` |
 | kitty, alacritty, tmux | terminals and multiplexer |
 | nvim | **its own git repo** (`dvip1/nvim-config`), only linked here, not tracked by this repo |
-| bin | my scripts in `~/.local/bin` (theme, setwall, bt-menu, wifi-menu, clip-menu, win-menu, shortcuts) |
+| bin | my scripts in `~/.local/bin` (theme, setwall, bt-menu, wifi-menu, clip-menu, win-menu, shortcuts; idle + power for locking/suspend; lockscreen = swaylock with IR face unlock via Visage, see `~/Projects/face_detection/docs`) |
 | desktop-entries | launcher entries for those scripts (they hold absolute `/home/dvip/...` paths) |
 | git, easyeffects, mako | misc |
 

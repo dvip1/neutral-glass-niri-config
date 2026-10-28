@@ -13,7 +13,7 @@ confirm() {
 
 run() {
   case "$1" in
-    lock)     swaylock -f ;;
+    lock)     "$HOME/.local/bin/lockscreen" ;;
     suspend)  systemctl suspend ;;   # swayidle locks the screen before sleep
     logout)   confirm "Log Out"   && niri msg action quit --skip-confirmation ;;
     reboot)   confirm "Reboot"    && systemctl reboot ;;
