@@ -3,6 +3,7 @@
 //   qs ipc call bar toggle     show / hide the bar (Mod+W)
 //   qs ipc call osd brightness <percent>   show the brightness OSD (~/.local/bin/brightness)
 //   qs ipc call notifications toggle|clear|dnd   date menu, clear all, do not disturb (Mod+N...)
+//   qs ipc call launcher toggle   the app launcher (Mod+D, Alt+Space), see Launcher.qml
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -27,6 +28,7 @@ ShellRoot {
     Osd {}
     Popups { screen: Quickshell.screens[0] }
     Polkit { screen: Quickshell.screens[0] }
+    Launcher { screen: Quickshell.screens[0] }
 
     IpcHandler {
         target: "bar"
