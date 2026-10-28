@@ -727,12 +727,18 @@ Scope {
         }
     }
     // a file that matches this well may stand among the apps and actions; anything less goes below them
-    readonly property var meantStrong: ({ doc: 0.80, photo: 0.62 })
-    // cosine -> score: text-to-photo similarities run lower than text-to-text (file-index MIN)
+    readonly property var meantStrong: ({ doc: 0.80, photo: 0.78 })
+    // photos in All: an unrelated query still finds some photo at ~0.70 (0.74 at p90), so only a close one
+    // (>= 0.76: noise 3 %), unless the query asks for pictures ("beach photo"); the Files tab shows all >= 0.70
+    function photoOk(m, raw) {
+        return m.kind !== "photo" || m.cos >= 0.76
+            || /\b(photos?|pictures?|pics?|images?|screenshots?|wallpapers?|selfies?|snaps?)\b/i.test(raw)
+    }
+    // cosine -> score, from each kind's cut-off in file-index (MIN)
     function meantItem(f) {
         const it = fileItem(f.path)
         const photo = f.kind === "photo"
-        const c = photo ? 0.50 : 0.71
+        const c = photo ? 0.70 : 0.74
         return Object.assign(it, { kind: photo ? "photo" : "file", title: photo ? it.title : (f.title || it.title),
             sub: photo ? it.sub : (f.snippet ? f.snippet.slice(0, 140) : it.sub), thumb: photo ? "file://" + f.path : "",
             glyph: photo ? "󰋩" : "󰈙", tag: photo ? "Photo" : "Document", cos: f.score,
@@ -970,7 +976,7 @@ Scope {
                 }
                 // documents and photos found by meaning: a strong match takes its place by score (never above a
                 // clear app or action match: capped at 700); weaker ones come after every tool, before the web
-                const meant = meantItems(raw).slice(0, 4).filter(m => !out.some(o => o.path === m.path))
+                const meant = meantItems(raw).filter(m => photoOk(m, raw)).slice(0, 4).filter(m => !out.some(o => o.path === m.path))
                 for (const m of meant.filter(m => m.strong)) {
                     m.score = m.meantScore
                     const at = out.findIndex(o => (o.score || 0) < m.score && o.kind !== "calc" && o.kind !== "rule" && o.kind !== "answer")

@@ -170,8 +170,9 @@ def update(force):
     return 0
 
 
-# cosine cut-offs, separately: text-to-photo similarities run lower than text-to-text
-MIN = {"doc": 0.71, "photo": 0.50}
+# cosine cut-offs, measured (.tools/launcher-eval/photos.py): a right photo scores ~0.71-0.79, the best
+# photo for an unrelated query ~0.70 (0.74 at p90), so photos are only worth showing from ~0.70 up
+MIN = {"doc": 0.74, "photo": 0.70}
 
 
 def search(query, n):
