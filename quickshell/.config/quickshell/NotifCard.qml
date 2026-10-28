@@ -85,7 +85,9 @@ Rectangle {
             Text {
                 width: parent.width
                 visible: text !== ""
-                text: card.body
+                // no <img> in StyledText: Qt crashed (SIGSEGV in parseImageAttributes, 2026-10-29) laying out a
+                // body with one when the image arrived; apps send them even though we don't advertise body images
+                text: card.body.replace(/<img\b[^>]*\/?>/gi, "").replace(/<\/img>/gi, "")
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 maximumLineCount: card.popup ? 3 : 4

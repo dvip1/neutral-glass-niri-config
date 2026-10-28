@@ -8,11 +8,14 @@
 //   - quick keys for actions ("dm" dark mode, "lk" lock, ...)
 //   - calculator and unit conversion inline ("2^10", "sqrt(2)*3", "5 km in mi", "100 f to c")
 //   - prefixes: "=" calculator, "/" or "~" files, ">" shell command, "?" web search
+//   - documents and photos by what is in them ("my resume", "beach at sunset"): ~/.local/bin/file-index
 //   - the last row searches the web for what you typed; questions ("who is…", "what is…", "…?", or
 //     the "?" prefix) are asked of a local SearXNG and answered inline: a Wikipedia/Wikidata card
 //     and the top web results (searxng package; nothing happens if it is not running)
 //   - keyboard shortcuts from niri's config are searchable and runnable ("fullscreen" -> Mod+Shift+F)
 //   - "brightness 40", "volume 30" set them directly
+//   - tasks that keep running (Tasks.qml, ~/.local/bin/task): "record my screen for 2 minutes",
+//     "timer 5 min"; running ones show on the bar and here as "Stop …"
 //   - search by meaning (Semantic.qml, a local embedding model through Ollama): "edit a photo" finds
 //     an image editor, "I'm stepping away" finds Lock. Those matches arrive ~50 ms after the normal
 //     ones and are mixed in; without Ollama the launcher works as before.
@@ -54,6 +57,9 @@ Scope {
     property var clips: []
     property var recentFiles: []
     property var foundFiles: []       // plocate results for the current query
+    property var meantFiles: []       // file-index results (by meaning) for meantFor
+    property string meantFor: ""
+    property real indexedAt: 0        // when this session last started a file-index update
     property var binds: []            // keyboard shortcuts parsed from niri's config
     property var semHits: ({})        // semantic key -> cosine, for the current query
     property string semFor: ""
@@ -75,6 +81,10 @@ Scope {
         foundFiles = []; foundFor = ""
         semHits = {}; semFor = ""
         fxRefresh()
+        if (Date.now() - indexedAt > 30 * 60 * 1000) {     // file-index skips work that is done, and runs once at a time
+            indexedAt = Date.now()
+            Quickshell.execDetached([bin + "file-index", "update"])
+        }
         winProc.running = true
         clipProc.running = true
         tabProc.running = true
@@ -406,9 +416,11 @@ Scope {
         for (const sg of actionSigs[id] || []) combos.push(...(bindSigs[sg] || []))
         return { key: "act:" + id, skey: "act:" + id, kind: "action", title: title, sub: sub || "", glyph: glyph, keys: keys,
                  hint: "Run", tag: combos.length ? combos[0] : "Action", aliases: combos.map(c => "key:" + c),
-                 extra: keys, doc: sem.docText(title, about[id] || title),
+                 extra: keys, doc: sem.docText(title, about[id] || title), cmd: typeof cmd === "function" ? null : cmd,
                  run: typeof cmd === "function" ? cmd : () => Quickshell.execDetached(cmd) }
     }
+    // actions that take "for 2 minutes" (record, timer)
+    function timed(a) { a.takesDuration = true; return a }
     // what a command does, so an action and a bind running the same thing compare equal
     function cmdSig(cmd) {
         let c = cmd.slice()
@@ -451,6 +463,11 @@ Scope {
                 sh('c=$(niri msg pick-color | awk "/Hex/{print \\$2}") && [ -n "$c" ] && printf %s "$c" | wl-copy && notify-send -a Launcher "Copied $c"'),
                 "Copies the hex value"),
             act("overview", "Overview", "󰕰", ["ov", "expose"], ["niri", "msg", "action", "toggle-overview"]),
+            timed(act("rec", "Start Screen Recording", "󰑊", ["rec", "record", "screencast"], [b + "record-screen"],
+                "Screen and sound, to ~/Videos   ·   e.g. record for 2 minutes")),
+            timed(act("rec-silent", "Start Screen Recording without Sound", "󰑋", ["recs"], [b + "record-screen", "--no-audio"])),
+            timed(act("timer", "Start a Timer", "󱎫", ["timer", "countdown"],
+                () => { root.show(0); field.text = "timer " }, "Type how long, e.g. timer 5 min")),
             act("mute", "Mute / Unmute Sound", "󰝟", ["mute", "unmute"], ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]),
             act("volume", "Volume and Sound Output", "󰕾", ["vol", "volume", "sound"], ["qs", "ipc", "call", "quicksettings", "toggle"],
                 "Quick settings; or type e.g. volume 40"),
@@ -550,8 +567,42 @@ Scope {
                      run: () => Quickshell.execDetached(b.cmd) }
         })
     }
+    // "for 2 minutes", "90 seconds", "an hour", "1h30m" -> { secs, label }
+    function durationOf(q) {
+        const t = q.toLowerCase().replace(/\b(?:an|a|one)\s+(hour|minute|min)\b/, "1 $1").replace(/\bhalf an hour\b/, "30 min")
+        let secs = 0, label = []
+        const re = /(\d+(?:\.\d+)?)\s*(hours?|hrs?|h|minutes?|mins?|m|seconds?|secs?|s)\b/g
+        let m
+        while ((m = re.exec(t)) !== null) {
+            const n = parseFloat(m[1]), u = m[2][0]
+            secs += n * (u === "h" ? 3600 : u === "m" ? 60 : 1)
+            label.push(n + " " + (u === "h" ? "h" : u === "m" ? "min" : "s"))
+        }
+        return secs > 0 && secs <= 24 * 3600 ? { secs: secs, label: label.join(" ") } : null
+    }
+    function withDuration(it, d) {
+        if (it.key === "act:timer")
+            return Object.assign({}, it, { title: "Timer for " + d.label, sub: "Notifies you when it is over", hint: "Start",
+                run: () => Quickshell.execDetached([root.bin + "task", "start", "timer", "Timer " + d.label, "--for", String(d.secs), "--", "sleep", "infinity"]) })
+        return Object.assign({}, it, { title: it.title + " for " + d.label, hint: "Start",
+            run: () => Quickshell.execDetached(it.cmd.concat(["--for", String(d.secs)])) })
+    }
+    // what is running now: "Stop Screen recording · 0:42"
+    function taskItems() {
+        return Tasks.list.map(t => ({ key: "", kind: "task", title: "Stop " + t.label.replace(/^./, c => c.toLowerCase()),
+            sub: Tasks.status(t) + (t.file ? "   ·   " + t.file.replace(home, "~") : ""), glyph: "󰓛", hint: "Stop", tag: "Running",
+            extra: ["stop end finish cancel", t.kind === "rec" ? "recording record screen video" : "timer countdown"], score: 0,
+            run: () => Tasks.stop(t.unit) }))
+    }
     // "brightness 40", "set volume to 30%"
     function ruleItems(q) {
+        const d = durationOf(q)
+        if (d && /^(?:set\s+(?:a\s+)?|start\s+(?:a\s+)?)?(?:timer|countdown)\b|\btimer$/.test(q))
+            return [withDuration(actions().find(a => a.key === "act:timer"), d)]
+        if (/^(?:start\s+)?(?:(?:a\s+)?(?:screen|video)\s+)?(?:record|recording)\b/.test(q) && (d || /^(?:start\s+)?(?:screen|video)?\s*record(?:ing)?(?:\s+(?:the|my)\s+screen)?$/.test(q))) {
+            const a = actions().find(a => a.key === (/\b(?:without|no)\s+(?:sound|audio)\b|\bmuted?\b|\bsilent\b/.test(q) ? "act:rec-silent" : "act:rec"))
+            return [d ? withDuration(a, d) : a]
+        }
         let m = q.match(/^(?:set\s+)?(?:screen\s+)?(?:brightness|bright|backlight)\s*(?:to\s*)?(\d{1,3})\s*%?(?:\s+(?:for|in|while|during)\b.*)?$/)
         if (m) {
             const n = String(Math.max(1, Math.min(100, parseInt(m[1]))))
@@ -648,6 +699,47 @@ Scope {
             root.refresh()
         }
     }
+    // documents and photos by meaning (file-index: EmbeddingGemma 2; photos by their content)
+    Timer {
+        id: meantDelay
+        interval: 220
+        onTriggered: {
+            const raw = root.query.trim()
+            const q = /^[\/~]/.test(raw) ? root.fileQuery() : raw
+            const sec = root.sections[root.section].id
+            if (!(sec === "all" || sec === "files" || /^[\/~]/.test(raw)) || !(q.includes(" ") ? q.length >= 4 : q.length >= 5)
+                || root.calc(q) !== null) return
+            meantProc.running = false
+            meantProc.term = raw
+            meantProc.command = [root.bin + "file-index", "search", q, "-n", "8"]
+            meantProc.running = true
+        }
+    }
+    Process {
+        id: meantProc
+        property string term: ""
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try { root.meantFiles = JSON.parse(text) } catch (e) { root.meantFiles = [] }
+                root.meantFor = meantProc.term
+                root.refresh()
+            }
+        }
+    }
+    // a file that matches this well may stand among the apps and actions; anything less goes below them
+    readonly property var meantStrong: ({ doc: 0.80, photo: 0.62 })
+    // cosine -> score: text-to-photo similarities run lower than text-to-text (file-index MIN)
+    function meantItem(f) {
+        const it = fileItem(f.path)
+        const photo = f.kind === "photo"
+        const c = photo ? 0.50 : 0.71
+        return Object.assign(it, { kind: photo ? "photo" : "file", title: photo ? it.title : (f.title || it.title),
+            sub: photo ? it.sub : (f.snippet ? f.snippet.slice(0, 140) : it.sub), thumb: photo ? "file://" + f.path : "",
+            glyph: photo ? "󰋩" : "󰈙", tag: photo ? "Photo" : "Document", cos: f.score,
+            strong: f.score >= meantStrong[f.kind], meantScore: Math.min(700, 400 + (f.score - c) * 2500) })
+    }
+    function meantItems(raw) { return meantFor === raw ? meantFiles.map(meantItem) : [] }
+
     // plocate (the system index, updated daily): files under $HOME, no hidden folders
     Timer {
         id: findDelay
@@ -803,7 +895,7 @@ Scope {
     function semScore(c) { return Math.min(850, 400 + (c - 0.68) * 2500) }
 
     // ---- building the list ----
-    onQueryChanged: { current = 0; findDelay.restart(); semHits = {}; semDelay.restart(); askDelay.restart(); refresh() }
+    onQueryChanged: { current = 0; findDelay.restart(); meantDelay.restart(); semHits = {}; semDelay.restart(); askDelay.restart(); refresh() }
     function refresh() {
         if (!want) return
         const raw = query.trim()
@@ -853,6 +945,7 @@ Scope {
             if (c !== null) out.push(calcItem(raw, c))
             out = out.concat(ruleItems(q))
             if (!q) {
+                out = out.concat(taskItems())
                 // suggestions: what you use most, then the open windows
                 const used = scored(apps().map(appItem).concat(actions()), 0).filter(it => frec(it.key) > 0).slice(0, 6)
                 out = out.concat(used.length ? used : scored(apps().map(appItem), 0).sort((a, b) => a.title.localeCompare(b.title)).slice(0, 6))
@@ -863,6 +956,7 @@ Scope {
                     .concat(scored(actions(), -20))
                     .concat(scored(windowItems(), -40))
                     .concat(scored(browserTabs.map(tabItem), -50))
+                    .concat(scored(taskItems(), 150))
                     .concat(scored(shortcutItems(), -60))
                     .concat(scored(appActs, -120))
                 mixed.sort((a, b) => b.score - a.score)
@@ -874,6 +968,15 @@ Scope {
                     const starts = n => words.every(w => new RegExp("(^|[^a-z0-9])" + w.replace(/[^a-z0-9]/g, "\\$&")).test(n.toLowerCase()))
                     out = out.concat(foundFiles.filter(f => starts(f.split("/").pop())).slice(0, 4).map(fileItem))
                 }
+                // documents and photos found by meaning: a strong match takes its place by score (never above a
+                // clear app or action match: capped at 700); weaker ones come after every tool, before the web
+                const meant = meantItems(raw).slice(0, 4).filter(m => !out.some(o => o.path === m.path))
+                for (const m of meant.filter(m => m.strong)) {
+                    m.score = m.meantScore
+                    const at = out.findIndex(o => (o.score || 0) < m.score && o.kind !== "calc" && o.kind !== "rule" && o.kind !== "answer")
+                    at < 0 ? out.push(m) : out.splice(at, 0, m)
+                }
+                out = out.concat(meant.filter(m => !m.strong).map(m => Object.assign(m, { score: m.meantScore - 400 })))
             }
         } else if (sec === "apps") {
             out = q ? scored(apps().map(appItem), 0).concat(scored(desktopActions(), -120)).sort((a, b) => b.score - a.score)
@@ -882,11 +985,14 @@ Scope {
             out = q ? scored(windowItems(), 0).concat(scored(browserTabs.map(tabItem), -10)).sort((a, b) => b.score - a.score)
                     : windowItems().concat(browserTabs.map(tabItem))
         } else if (sec === "actions") {
-            out = ruleItems(q).concat(q ? scored(actions(), 0).concat(scored(shortcutItems(), -60)).sort((a, b) => b.score - a.score)
-                                        : actions().concat(shortcutItems()))
+            out = ruleItems(q).concat(q ? scored(taskItems(), 150).concat(scored(actions(), 0), scored(shortcutItems(), -60)).sort((a, b) => b.score - a.score)
+                                        : taskItems().concat(actions(), shortcutItems()))
         } else if (sec === "files") {
             if (!q) out = recentFiles.map(fileItem)
-            else if (foundFor) out = foundFiles.map(fileItem)
+            else {
+                const meant = meantItems(raw)
+                out = meant.concat((foundFor ? foundFiles : []).filter(f => !meant.some(m => m.path === f)).map(fileItem))
+            }
             if (q && !out.length) out = [{ key: "", kind: "hint", title: findProc.running || findDelay.running ? "Searching…" : "No files found",
                                            sub: "", glyph: "󰍉", tag: "" }]
         } else if (sec === "clipboard") {
@@ -899,6 +1005,16 @@ Scope {
             const strong = out.length && (out[0].score || 0) >= 900
             out = strong ? out.concat(rows) : rows.slice(0, 1).concat(out, rows.slice(1))
         }
+        const dur = q ? durationOf(q) : null
+        if (dur) out = out.map(it => it.takesDuration && it.kind !== "rule" && !/ for \d/.test(it.title) ? withDuration(it, dur) : it)
+        // the same row twice (a rule and the normal search both found it): keep the first
+        const seen = {}
+        out = out.filter(it => {
+            if (!it.key) return true
+            if (seen[it.key + it.title]) return false
+            seen[it.key + it.title] = true
+            return true
+        })
         if (raw && (sec === "all" || sec === "apps")) out.push(webItem(raw))
         if (!out.length) out = [{ key: "", kind: "hint", title: sec === "clipboard" ? "Clipboard history is empty" : "Nothing found", sub: "", glyph: "󰍉", tag: "" }]
         return out

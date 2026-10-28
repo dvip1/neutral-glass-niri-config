@@ -119,6 +119,12 @@ PanelWindow {
         onDismiss: bar.popover = ""
     }
 
+    TaskPill {
+        anchors.right: status.left
+        anchors.rightMargin: 8
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
     Status {
         id: status
         onOpened: bar.toggle("quick")

@@ -1,0 +1,184 @@
+[
+ {
+  "q": "record my screen",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "start screen recording",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record my screen for 1 minute",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "start video recording for 1 minute",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "screencast",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record a video of my screen",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "capture my screen as a video",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record screen for 30 seconds",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record gameplay",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "start recording",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record a tutorial",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "screen record for 2 min",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "make a screen video",
+  "expect": [
+   "act:rec"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record screen without audio",
+  "expect": [
+   "act:rec-silent"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record screen without sound for 30s",
+  "expect": [
+   "act:rec-silent"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "silent screen recording",
+  "expect": [
+   "act:rec-silent"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "record screen no audio",
+  "expect": [
+   "act:rec-silent"
+  ],
+  "cat": "task-rec"
+ },
+ {
+  "q": "timer 5 min",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "set a timer for 90 seconds",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "remind me in 10 minutes",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "5 minute timer",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "countdown 2 minutes",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "start a timer for half an hour",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "egg timer",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "pomodoro",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ },
+ {
+  "q": "set a timer",
+  "expect": [
+   "act:timer"
+  ],
+  "cat": "task-timer"
+ }
+]

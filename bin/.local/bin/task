@@ -1,0 +1,114 @@
+#!/usr/bin/env -S python3 -I
+"""Background tasks started from the launcher (screen recording, timers), shown on the bar.
+
+Each task is a transient systemd user unit (qstask-<kind>-<time>), so it survives Quickshell
+reloads, "for N seconds" is systemd's RuntimeMaxSec, and stopping sends SIGINT (wf-recorder then
+finishes the file properly). ~/.local/state/tasks/active.json lists the running ones; the bar
+watches that file.
+
+  task start KIND LABEL [--for SECONDS] [--file PATH] -- COMMAND...
+  task list                       JSON: [{unit, kind, label, started, ends, file}]
+  task stop UNIT|KIND|all
+  task done UNIT                  (systemd runs this when the unit stops: notify, update the list)
+"""
+import json, os, subprocess, sys, time
+
+STATE = os.path.expanduser("~/.local/state/tasks")
+ACTIVE = os.path.join(STATE, "active.json")
+SELF = os.path.realpath(__file__)
+
+
+def load():
+    try:
+        return json.load(open(ACTIVE))
+    except (OSError, ValueError):
+        return []
+
+
+def save(tasks):
+    os.makedirs(STATE, exist_ok=True)
+    tmp = ACTIVE + ".tmp"
+    json.dump(tasks, open(tmp, "w"))
+    os.replace(tmp, ACTIVE)
+
+
+def alive(unit):
+    return subprocess.run(["systemctl", "--user", "is-active", "--quiet", unit]).returncode == 0
+
+
+def prune():
+    tasks = load()
+    live = [t for t in tasks if alive(t["unit"])]
+    if len(live) != len(tasks):
+        save(live)
+    return live
+
+
+def start(argv):
+    kind, label, rest = argv[0], argv[1], argv[2:]
+    secs, path = None, ""
+    while rest and rest[0] != "--":
+        if rest[0] == "--for":
+            secs = float(rest[1]); rest = rest[2:]
+        elif rest[0] == "--file":
+            path = rest[1]; rest = rest[2:]
+        else:
+            sys.exit(f"task: unknown option {rest[0]}")
+    cmd = rest[1:]
+    unit = f"qstask-{kind}-{int(time.time() * 1000)}"
+    run = ["systemd-run", "--user", "--quiet", "--collect", f"--unit={unit}", f"--description={label}",
+           "-p", "KillSignal=SIGINT", "-p", "TimeoutStopSec=15", "-p", f"ExecStopPost={SELF} done {unit}"]
+    if secs:
+        run += ["-p", f"RuntimeMaxSec={secs:g}"]
+    now = time.time() * 1000
+    tasks = prune()
+    tasks.append({"unit": unit, "kind": kind, "label": label, "started": now,
+                  "ends": now + secs * 1000 if secs else None, "file": path})
+    save(tasks)
+    r = subprocess.run(run + ["--", *cmd])
+    if r.returncode != 0:
+        save([t for t in load() if t["unit"] != unit])
+        notify("Could not start " + label.lower(), " ".join(cmd))
+    return r.returncode
+
+
+def notify(summary, body="", icon="media-record"):
+    subprocess.run(["notify-send", "-a", "Tasks", "-i", icon, summary, body])
+
+
+def done(unit):
+    tasks = load()
+    t = next((x for x in tasks if x["unit"] == unit), None)
+    save([x for x in tasks if x["unit"] != unit])
+    if not t:
+        return
+    timed_out = os.environ.get("SERVICE_RESULT") == "timeout"
+    if t["kind"] == "rec":
+        path = t.get("file", "")
+        if path and os.path.exists(path) and os.path.getsize(path) > 0:
+            notify("Screen recording saved", path.replace(os.path.expanduser("~"), "~"), "video-x-generic")
+        else:
+            notify("Screen recording failed", "No video was written", "dialog-error")
+    elif t["kind"] == "timer" and timed_out:
+        notify("Time's up", t["label"], "alarm-symbolic")
+
+
+def stop(what):
+    tasks = prune()
+    for t in tasks:
+        if what in ("all", t["unit"], t["kind"]):
+            subprocess.run(["systemctl", "--user", "stop", "--no-block", t["unit"]])
+
+
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    if not a or a[0] == "list":
+        print(json.dumps(prune()))
+    elif a[0] == "start" and len(a) >= 4:
+        sys.exit(start(a[1:]))
+    elif a[0] == "stop" and len(a) == 2:
+        stop(a[1])
+    elif a[0] == "done" and len(a) == 2:
+        done(a[1])
+    else:
+        sys.exit(__doc__)

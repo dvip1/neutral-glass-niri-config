@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Record the screen as a background task (see `task`): the focused monitor, with what you hear
+# (the default output's monitor, e.g. easyeffects_sink.monitor), to ~/Videos.
+#   record-screen [--for SECONDS] [--no-audio]
+#   record-screen --stop
+set -euo pipefail
+
+secs="" audio=1
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --for) secs="$2"; shift 2 ;;
+    --no-audio) audio=0; shift ;;
+    --stop) exec "$HOME/.local/bin/task" stop rec ;;
+    *) echo "usage: record-screen [--for SECONDS] [--no-audio] | --stop" >&2; exit 2 ;;
+  esac
+done
+
+# one recording at a time
+if "$HOME/.local/bin/task" list | grep -q '"kind": "rec"'; then
+  notify-send -a Tasks -i media-record "Already recording" "Stop it from the bar or the launcher"
+  exit 1
+fi
+
+out=$(niri msg --json focused-output | python3 -I -c 'import json,sys; print(json.load(sys.stdin)["name"])')
+mkdir -p "$HOME/Videos"
+file="$HOME/Videos/Recording $(date '+%Y-%m-%d %H-%M-%S').mp4"
+args=(wf-recorder -o "$out" -f "$file")
+label="Screen recording"
+if [[ $audio == 1 ]]; then
+  args+=("--audio=$(pactl get-default-sink).monitor")
+else
+  label="Screen recording (no audio)"
+fi
+exec "$HOME/.local/bin/task" start rec "$label" ${secs:+--for "$secs"} --file "$file" -- "${args[@]}"

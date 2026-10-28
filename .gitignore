@@ -9,6 +9,7 @@ alacritty/.config/alacritty/themes/
 nvim/
 # local context notes for the next AI session (not pushed)
 CLAUDE.md
+AGENTS.md
 # compiled apps (apps/*/build.sh)
 apps/*/build/
 # SearXNG secret key (SEARXNG_SECRET), generated locally

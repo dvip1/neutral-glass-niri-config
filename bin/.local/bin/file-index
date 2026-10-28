@@ -1,0 +1,219 @@
+#!/usr/bin/env -S python3 -I
+"""Search files and photos by meaning, for the launcher. Documents (text, PDF, office files) and
+photos in a few home folders are embedded with EmbeddingGemma 2 through Ollama: documents with the
+text model, photos with the text+vision model. Both put text in the same space (the 270m model's
+text vectors equal the 440m one's), so a typed query finds photos by what is in them.
+
+  file-index update [--force]    embed new or changed files (resumable, low priority; photos are
+                                 skipped on battery unless --force). Safe to start often: one runs at a time.
+  file-index search QUERY [-n N] JSON list, best first: {path, kind: doc|photo, title, snippet, score}
+  file-index status              counts, last update, whether an update is running
+Index: ~/.cache/file-index/index.db (sqlite: one row per file with its 256-dim vector).
+"""
+import base64, fcntl, glob, html, io, json, os, re, sqlite3, subprocess, sys, time, urllib.request, zipfile
+
+HOME = os.path.expanduser("~")
+ROOTS = ["Documents", "Desktop", "Downloads", "Pictures", "Videos"]   # ~/Projects is left out on purpose (datasets, code)
+SKIP_DIRS = {"node_modules", "target", "build", "dist", "venv", ".venv", "__pycache__", "thumbnails", ".thumbnails", "site-packages"}
+DOCS = (".txt", ".md", ".org", ".rst", ".tex", ".pdf", ".docx", ".odt", ".pptx", ".odp", ".xlsx", ".ods", ".epub", ".rtf")
+PHOTOS = (".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp")
+OLLAMA = "http://localhost:11434/api/embed"
+TEXT_MODEL, VISION_MODEL = "embeddinggemma-2:270m", "embeddinggemma-2:440m"
+DIMS, SIDE = 256, 384
+CACHE = os.path.join(HOME, ".cache", "file-index")
+DB = os.path.join(CACHE, "index.db")
+
+
+def db():
+    os.makedirs(CACHE, exist_ok=True)
+    c = sqlite3.connect(DB, timeout=30)
+    c.execute("CREATE TABLE IF NOT EXISTS files (path TEXT PRIMARY KEY, mtime REAL, size INTEGER, kind TEXT, title TEXT, snippet TEXT, vec BLOB)")
+    c.execute("CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT)")
+    return c
+
+
+def embed(model, inputs, keep="1m"):
+    body = json.dumps({"model": model, "input": inputs, "keep_alive": keep}).encode()
+    with urllib.request.urlopen(urllib.request.Request(OLLAMA, body), timeout=900) as r:
+        out = []
+        for v in json.load(r)["embeddings"]:
+            v = v[:DIMS]
+            n = sum(x * x for x in v) ** 0.5 or 1
+            out.append([x / n for x in v])
+        return out
+
+
+def pack(v):
+    import numpy as np
+    return np.asarray(v, dtype=np.float16).tobytes()
+
+
+# ---- reading files ----
+def strip_xml(s):
+    return html.unescape(re.sub(r"<[^>]+>", " ", s))
+
+
+def doc_text(path):
+    ext = os.path.splitext(path)[1].lower()
+    try:
+        if ext == ".pdf":
+            return subprocess.run(["pdftotext", "-q", "-l", "2", path, "-"], capture_output=True, text=True, timeout=30).stdout
+        if ext in (".docx", ".pptx", ".xlsx", ".odt", ".odp", ".ods", ".epub"):
+            with zipfile.ZipFile(path) as z:
+                names = z.namelist()
+                parts = ([n for n in names if n == "word/document.xml"] + sorted(n for n in names if re.match(r"ppt/slides/slide\d+\.xml", n))
+                         + [n for n in names if n == "xl/sharedStrings.xml"] + [n for n in names if n == "content.xml"]
+                         + sorted(n for n in names if n.endswith((".xhtml", ".html")))[:3])
+                return " ".join(strip_xml(z.read(n).decode("utf-8", "ignore")) for n in parts[:6])
+        with open(path, "rb") as f:
+            t = f.read(8000).decode("utf-8", "ignore")
+        return re.sub(r"\\[a-z]+\d*|[{}]", " ", t) if ext == ".rtf" else t
+    except Exception:
+        return ""
+
+
+def title_of(path):
+    return re.sub(r"[_\-.]+", " ", os.path.splitext(os.path.basename(path))[0]).strip()
+
+
+def photo_b64(path):
+    from PIL import Image
+    im = Image.open(path)
+    if min(im.size) < 64:
+        return None                      # icons, sprites
+    im.thumbnail((SIDE, SIDE))
+    b = io.BytesIO()
+    im.convert("RGB").save(b, "JPEG", quality=85)
+    return base64.b64encode(b.getvalue()).decode()
+
+
+def on_battery():
+    for f in glob.glob("/sys/class/power_supply/*/online"):
+        try:
+            if open(f).read().strip() == "1":
+                return False
+        except OSError:
+            pass
+    return bool(glob.glob("/sys/class/power_supply/BAT*"))
+
+
+def walk():
+    for root in ROOTS:
+        base = os.path.join(HOME, root)
+        for d, dirs, files in os.walk(base):
+            dirs[:] = [x for x in dirs if not x.startswith(".") and x not in SKIP_DIRS]
+            for f in files:
+                if f.startswith("."):
+                    continue
+                low = f.lower()
+                kind = "doc" if low.endswith(DOCS) else "photo" if low.endswith(PHOTOS) else None
+                if kind:
+                    p = os.path.join(d, f)
+                    try:
+                        st = os.stat(p)
+                    except OSError:
+                        continue
+                    if st.st_size and st.st_size < 60_000_000:
+                        yield p, kind, st
+
+
+def update(force):
+    lock = open(os.path.join(CACHE if os.path.isdir(CACHE) else (os.makedirs(CACHE) or CACHE), "update.lock"), "w")
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        return 0                          # one is already running
+    os.nice(15)
+    c = db()
+    known = {p: (m, s) for p, m, s in c.execute("SELECT path, mtime, size FROM files")}
+    seen, docs, photos = set(), [], []
+    for p, kind, st in walk():
+        seen.add(p)
+        if known.get(p) != (st.st_mtime, st.st_size):
+            (docs if kind == "doc" else photos).append((p, st))
+    gone = [p for p in known if p not in seen]
+    c.executemany("DELETE FROM files WHERE path = ?", [(p,) for p in gone])
+    c.commit()
+    # documents: cheap, always
+    for i in range(0, len(docs), 16):
+        batch = []
+        for p, st in docs[i:i + 16]:
+            text = re.sub(r"\s+", " ", doc_text(p)).strip()
+            batch.append((p, st, text))
+        vecs = embed(TEXT_MODEL, [("title: " + title_of(p) + " | text: " + t[:1500]).lower() for p, _, t in batch])
+        c.executemany("INSERT OR REPLACE INTO files VALUES (?,?,?,?,?,?,?)",
+                      [(p, st.st_mtime, st.st_size, "doc", title_of(p), t[:300], pack(v)) for (p, st, t), v in zip(batch, vecs)])
+        c.commit()
+    # photos: ~1 s each on the CPU, so not on battery; newest first so recent ones are searchable soonest
+    if photos and (force or not on_battery()):
+        photos.sort(key=lambda x: -x[1].st_mtime)
+        for i in range(0, len(photos), 8):
+            if not force and on_battery():
+                break
+            batch = []
+            for p, st in photos[i:i + 8]:
+                try:
+                    b = photo_b64(p)
+                except Exception:
+                    b = None
+                if b:
+                    batch.append((p, st, b))
+                else:   # unreadable or an icon: remember it so it is not retried every time
+                    c.execute("INSERT OR REPLACE INTO files VALUES (?,?,?,?,?,?,?)", (p, st.st_mtime, st.st_size, "skip", "", "", None))
+            if batch:
+                vecs = embed(VISION_MODEL, [{"image": b} for _, _, b in batch])
+                c.executemany("INSERT OR REPLACE INTO files VALUES (?,?,?,?,?,?,?)",
+                              [(p, st.st_mtime, st.st_size, "photo", title_of(p), "", pack(v)) for (p, st, _), v in zip(batch, vecs)])
+            c.commit()
+    c.execute("INSERT OR REPLACE INTO meta VALUES ('updated', ?)", (str(time.time()),))
+    c.commit()
+    return 0
+
+
+# cosine cut-offs, separately: text-to-photo similarities run lower than text-to-text
+MIN = {"doc": 0.71, "photo": 0.50}
+
+
+def search(query, n):
+    import numpy as np
+    c = db()
+    rows = c.execute("SELECT path, kind, title, snippet, vec FROM files WHERE vec IS NOT NULL").fetchall()
+    if not rows:
+        return []
+    q = np.asarray(embed(TEXT_MODEL, ["task: search result | query: " + query.lower()], keep="5m")[0], dtype=np.float32)
+    m = np.frombuffer(b"".join(r[4] for r in rows), dtype=np.float16).reshape(len(rows), DIMS).astype(np.float32)
+    s = m @ q
+    out = []
+    for i in np.argsort(-s)[: n * 4]:
+        p, kind, title, snip, _ = rows[i]
+        if s[i] >= MIN.get(kind, 1) and os.path.exists(p):
+            out.append({"path": p, "kind": kind, "title": title, "snippet": snip, "score": round(float(s[i]), 4)})
+        if len(out) >= n:
+            break
+    return out
+
+
+def status():
+    c = db()
+    counts = dict(c.execute("SELECT kind, COUNT(*) FROM files GROUP BY kind").fetchall())
+    upd = c.execute("SELECT v FROM meta WHERE k = 'updated'").fetchone()
+    lock = open(os.path.join(CACHE, "update.lock"), "w")
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB); running = False
+    except BlockingIOError:
+        running = True
+    return {"counts": counts, "updated": float(upd[0]) if upd else None, "running": running}
+
+
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    if a[:1] == ["update"]:
+        sys.exit(update("--force" in a))
+    elif a[:1] == ["search"] and len(a) >= 2:
+        n = int(a[a.index("-n") + 1]) if "-n" in a else 8
+        q = " ".join(x for i, x in enumerate(a[1:], 1) if x != "-n" and (i < 2 or a[i - 1] != "-n"))
+        print(json.dumps(search(q, n), ensure_ascii=False))
+    elif a[:1] == ["status"]:
+        print(json.dumps(status()))
+    else:
+        sys.exit(__doc__)
