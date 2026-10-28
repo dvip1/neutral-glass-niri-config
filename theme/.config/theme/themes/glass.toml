@@ -10,6 +10,7 @@ dark  = "Min Dark"          # neutral #1f1f1f, text 15:1, every colour >= 6:1
 light = "Modus Operandi"    # white/black, text 21:1, every colour >= 7:1
 
 [dark]
+folder = "#a8a8a8"   # folder icons (accent is near-white here)
 # Base colours (used only by formulas for names not set below)
 bg      = "#1c1c1c"
 surface = "#101010"
@@ -87,6 +88,7 @@ lock_clear    = "rgba(255, 255, 255, 0.3)"
 
 
 [light]
+folder = "#8a8a8a"   # folder icons (accent is near-black here)
 bg      = "#f2f2f2"
 surface = "#fafafa"
 accent  = "#262626"

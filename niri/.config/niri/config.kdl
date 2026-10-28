@@ -220,6 +220,7 @@ spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist -max-items 50
 // Idle lock / screen off / suspend and battery warnings: settings in ~/.config/power/power.conf
 spawn-at-startup "sh" "-c" "$HOME/.local/bin/idle"
 spawn-at-startup "sh" "-c" "$HOME/.local/bin/setwall"
+spawn-at-startup "sh" "-c" "$HOME/.local/bin/theme gtk3"   // GTK3 theme + folder icons from the theme (GNOME resets them)
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

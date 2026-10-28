@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Adwaita GTK3 + icon theme for GNOME
+Comment=niri switches GTK to the generated "Niri" GTK3 and icon themes; put GNOME back on Adwaita
+Exec=sh -c "gsettings reset org.gnome.desktop.interface gtk-theme; gsettings reset org.gnome.desktop.interface icon-theme"
+OnlyShowIn=GNOME;
+NoDisplay=true
+X-GNOME-Autostart-Phase=Initialization

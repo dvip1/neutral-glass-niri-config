@@ -71,5 +71,13 @@ Unknown names stop `theme apply` before anything is written.
   light file by itself when the system colour scheme changes. Opacity changes reach kitty windows opened
   after `dynamic_background_opacity` was added (2026-10-28); older windows keep theirs until restarted.
 - **GTK4 / libadwaita apps** (Files, ...) follow the system colour scheme, which
-  `theme dark/light/toggle` sets. They have no per-colour settings here.
+  `theme dark/light/toggle` sets, and get the theme's `[gtk] accent` (shared with GNOME). Nothing else.
+- **GTK3 apps** get the theme's full colours: `templates/gtk3.css` (adw-gtk3 + `gtk_*` colours from `[derive]`)
+  becomes the GTK3 theme "Niri" (`out/gtk/Niri`, linked into `~/.local/share/themes` as `Niri` and `Niri-alt`).
+  Only under niri: `theme` (and `theme gtk3` at niri startup) sets gsettings `gtk-theme`, flipping between the two
+  names so running apps reload live. GNOME resets it to Adwaita at login (`~/.config/autostart/gtk-theme-gnome.desktop`).
+  `GTK_THEME` is NOT used: it makes libadwaita apps lose the accent colour. Needs `adw-gtk3-theme` (dnf).
+- **Folder icons** (Files, file pickers): icon theme "Niri" = Adwaita with its folder / home / desktop / bookmarks
+  icons recoloured (`templates/folders/`, copied from Adwaita 50 with the blues replaced by `folder*` tokens; `folder`
+  defaults to the accent, glass and mono set a grey). Same niri-only switching as GTK3 (gsettings `icon-theme`).
 - **Wallpaper** is separate (`setwall`).

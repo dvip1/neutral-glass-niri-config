@@ -7,6 +7,7 @@
   theme list           the themes in themes/ (the current one is marked)
   theme set NAME       switch to another theme (keeps the dark/light mode)
   theme next | prev    cycle through the themes
+  theme gtk3           (niri startup) point GTK at the generated GTK3 + icon themes
   theme status [-v]    show the current theme + mode and what gets generated
   theme edit [NAME]    open a theme file (default: the current one) in $EDITOR
 """
@@ -49,6 +50,8 @@ def fmt_colour(c, how):
         return f'{r:02x}{g:02x}{b:02x}{a8:02x}'
     if how == 'hex6':     # rrggbb     (swaylock)
         return f'{r:02x}{g:02x}{b:02x}'
+    if how == 'hash6':    # #rrggbb    (SVG)
+        return f'#{r:02x}{g:02x}{b:02x}'
     if how == 'hash8':    # #rrggbbaa  (niri)
         return f'#{r:02x}{g:02x}{b:02x}{a8:02x}'
     if how == 'qml':      # #aarrggbb  (quickshell / Qt)
@@ -75,6 +78,7 @@ class Palette:
 
         "fg @ 0.13"             fg with alpha 0.13 (or with a named alpha from [opacity]: "bg @ alpha_bar")
         "mix(fg, fg_muted, 0.4)" 40 % of the way from fg to fg_muted
+        "on(accent)"            readable text on top of accent: near-black or white
         "#rrggbb", "rgba(...)"  a literal
     """
 
@@ -128,6 +132,12 @@ class Palette:
                 raise ValueError(f'{where}: mix() takes (a, b, amount): {s!r}')
             a, b, t = self.expr(args[0], where), self.expr(args[1], where), self.alpha(args[2], where)
             return tuple(round(x + (y - x) * t) for x, y in zip(a[:3], b[:3])) + (a[3] + (b[3] - a[3]) * t,)
+        m = re.fullmatch(r'on\((.*)\)', s)
+        if m:
+            r, g, b, _ = self.expr(m.group(1), where)
+            lum = sum(w * ((c / 255) / 12.92 if c <= 10 else ((c / 255 + 0.055) / 1.055) ** 2.4)
+                      for w, c in zip((0.2126, 0.7152, 0.0722), (r, g, b)))
+            return (0, 0, 0, 0.8) if lum > 0.18 else (255, 255, 255, 1.0)
         if s.startswith('#') or s.startswith('rgb'):
             return parse_colour(s)
         if re.fullmatch(r'[A-Za-z0-9_]+', s):
@@ -196,6 +206,7 @@ def context(cfg, mode):
         'gaps': cfg['shape'].get('gaps', 10),
         'blur': 'true' if fx.get('blur', True) else 'false',
         'kitty_opacity': fx.get('kitty_opacity', 0.8),
+        'gtk3_base': 'adw-gtk3-dark' if mode == 'dark' else 'adw-gtk3',
         **cfg.get('motion', {}),
     }
     # the same spring for Qt: cubic-bezier(a, b, c, d) -> "a, b, c, d" (QML wants [a, b, c, d, 1, 1])
@@ -297,6 +308,36 @@ def gtk_accent(cfg):
             sh('gsettings', 'set', SCHEMA, 'accent-color', want)
 
 
+# Under niri only, GTK3 apps get the generated GTK3 theme and every GTK app the generated icon theme (themed
+# folders). Each lives under two names (Niri, Niri-alt) so that a changed file is picked up live by switching
+# name. GNOME resets both at login (~/.config/autostart/gtk-theme-gnome.desktop). GTK_THEME can't be used:
+# it makes libadwaita (GTK4) apps drop the accent colour.
+SESSION_THEMES = {   # gsettings key: (generated folder, where GTK looks for it, target)
+    'gtk-theme': ('~/.config/theme/out/gtk/Niri', '~/.local/share/themes', 'gtk3'),
+    'icon-theme': ('~/.config/theme/out/icon-theme/Niri', '~/.local/share/icons', 'folders'),
+}
+
+
+def session_themes(changed):
+    for key, (src, where, target) in SESSION_THEMES.items():
+        want = path(src)
+        for name in ('Niri', 'Niri-alt'):
+            link = os.path.join(path(where), name)
+            if os.path.isdir(want) and not (os.path.islink(link) and os.readlink(link) == want):
+                if os.path.islink(link):
+                    os.remove(link)
+                if not os.path.exists(link):
+                    os.makedirs(os.path.dirname(link), exist_ok=True)
+                    os.symlink(want, link)
+        if 'NIRI_SOCKET' not in os.environ:      # run from GNOME (or a tty): leave GNOME's themes alone
+            continue
+        now = subprocess.run(['gsettings', 'get', SCHEMA, key], capture_output=True, text=True).stdout.strip().strip("'")
+        if now not in ('Niri', 'Niri-alt'):
+            sh('gsettings', 'set', SCHEMA, key, 'Niri')
+        elif target in changed:
+            sh('gsettings', 'set', SCHEMA, key, 'Niri-alt' if now == 'Niri' else 'Niri')
+
+
 def apply(mode=None, reload=True, name=None):
     cfg = load(name)
     mode = mode or current_mode()
@@ -323,6 +364,7 @@ def apply(mode=None, reload=True, name=None):
     if kitty_themes(cfg):
         changed.add('kitty')
     gtk_accent(cfg)
+    session_themes(changed)
     if reload:
         reload_apps(changed)
     if changed & {'niri', 'animations'}:
@@ -371,6 +413,8 @@ def main(argv):
         all_, cur = themes(), current_theme()
         i = all_.index(cur) if cur in all_ else 0
         apply(name=all_[(i + (1 if cmd == 'next' else -1)) % len(all_)])
+    elif cmd == 'gtk3':                             # niri startup: switch GTK to the generated themes
+        session_themes(set())
     elif cmd == 'status':
         print(f'{current_theme()} {current_mode()}')
         if '-v' in argv:

@@ -39,7 +39,8 @@ dark  = "Min Dark"
 light = "Modus Operandi"
 no_preference = "dark"      # which one to use if the OS reports no preference
 
-# [gtk] accent = "slate"    # optional, per theme: libadwaita accent (blue teal green yellow orange red pink purple slate)
+# [gtk] accent = "slate"    # optional, per theme: libadwaita (GTK4) accent (blue teal green yellow orange red pink purple slate)
+#                           GTK3 apps get the theme's full colours instead (template gtk3.css, niri only)
 
 [opacity]          # named alphas the formulas below use; a theme (or its [dark]/[light]) can override them
 alpha_bar = 0.6    # the bar
@@ -113,6 +114,31 @@ lock_bs_hl    = "fg @ 0.4"
 lock_ring_ver = "accent @ 0.6"
 lock_bad      = "c_crit"
 lock_clear    = "fg @ 0.3"
+# GTK3 apps under niri (adw-gtk3 recoloured; solid, GTK can't blur)
+gtk_window_bg   = "bg @ 1"
+gtk_window_fg   = "fg"
+gtk_view_bg     = "mix(bg, surface, 0.6) @ 1"
+gtk_header_bg   = "mix(bg, fg, 0.06) @ 1"
+gtk_sidebar_bg  = "mix(bg, fg, 0.04) @ 1"
+gtk_popover_bg  = "mix(bg, fg, 0.09) @ 1"
+gtk_card_bg     = "fg @ 0.06"
+gtk_accent_bg   = "accent @ 1"
+gtk_accent_fg   = "on(gtk_accent_bg)"
+gtk_crit_bg     = "c_crit @ 1"
+gtk_crit_fg     = "on(gtk_crit_bg)"
+gtk_ok_bg       = "c_ok @ 1"
+gtk_ok_fg       = "on(gtk_ok_bg)"
+gtk_warn_bg     = "c_warn @ 1"
+gtk_warn_fg     = "on(gtk_warn_bg)"
+# Folder + home/desktop icons (Files etc., niri only): Adwaita's blues, remade from one colour
+folder          = "accent @ 1"
+folder_dark     = "mix(folder, #000000, 0.14)"
+folder_light    = "mix(folder, #ffffff, 0.45)"
+folder_lighter  = "mix(folder, #ffffff, 0.55)"
+folder_paper    = "mix(folder, #ffffff, 0.65)"
+folder_deep     = "mix(folder, #000000, 0.3)"
+folder_deeper   = "mix(folder, #000000, 0.4)"
+folder_deepest  = "mix(folder, #000000, 0.55)"
 
 [targets]          # template -> where the generated file goes
 waybar  = { src = "templates/waybar.css",  dest = "~/.config/waybar/style.css" }
@@ -126,4 +152,7 @@ kitty   = { src = "templates/kitty.conf",  dest = "~/.config/kitty/theme.conf" }
 nowplaying = { src = "templates/nowplaying.css", dest = "~/.config/theme/out/nowplaying.css" }
 powerpanel = { src = "templates/powerpanel.css", dest = "~/.config/theme/out/powerpanel.css" }
 quickshell = { src = "templates/quickshell.qml", dest = "~/.config/quickshell/Theme.qml" }   # Quickshell reloads by itself
+gtk3    = { src = "templates/gtk3.css",    dest = "~/.config/theme/out/gtk/Niri/gtk-3.0/gtk.css" }   # GTK3 theme "Niri", used under niri only
+folders = { src = "templates/folders",    dest = "~/.config/theme/out/icon-theme/Niri/scalable/places" }   # icon theme "Niri", niri only
+folders_index = { src = "templates/icon-theme.index", dest = "~/.config/theme/out/icon-theme/Niri/index.theme" }
 icons   = { src = "templates/icons",       dest = "~/.config/theme/out/icons" }   # launcher icons (a folder: every file is rendered)
